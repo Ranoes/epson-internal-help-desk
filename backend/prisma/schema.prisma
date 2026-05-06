@@ -1,0 +1,65 @@
+// Prisma schema for Epson Internal Help Desk
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  /// ADMIN | AGENT | USER
+  role      String   @default("USER")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  tickets   Ticket[]
+  messages  Message[]
+}
+
+model Ticket {
+  id          String  @id @default(uuid())
+  title       String
+  description String
+  /// OPEN | IN_PROGRESS | RESOLVED | CLOSED
+  status      String  @default("OPEN")
+  /// LOW | MEDIUM | HIGH | CRITICAL
+  priority    String  @default("MEDIUM")
+  category    String?
+
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  messages  Message[]
+}
+
+model Message {
+  id        String   @id @default(uuid())
+  content   String
+  /// USER | ASSISTANT | SYSTEM
+  role      String   @default("USER")
+  ticketId  String?
+  ticket    Ticket?  @relation(fields: [ticketId], references: [id])
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model KnowledgeBase {
+  id        String   @id @default(uuid())
+  title     String
+  content   String
+  filePath  String?
+  category  String?
+  tags      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
