@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model KnowledgeBase {
+  id          String   @id @default(cuid())
+  title       String   @db.VarChar(255)
+  category    String   @db.VarChar(50)
+  subcategory String?  @db.VarChar(100)
+  content     String
+  tags        String[]
+  sourceDoc   String?  @db.VarChar(255) @map("source_doc")
+  embeddingId String?  @db.VarChar(100) @map("embedding_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("knowledge_base")
+}
+
+model ChatLog {
+  id         String   @id
+  sessionId  String   @map("session_id") @db.VarChar(50)
+  userId     String   @map("user_id") @db.VarChar(20)
+  role       String   @db.VarChar(10)
+  content    String
+  confidence Float?
+  escalated  Boolean  @default(false)
+  kbSources  String[] @map("kb_sources")
+  engineUsed String?  @map("engine_used") @db.VarChar(50)
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("chat_logs")
+}
+
+model Ticket {
+  id         String   @id
+  userId     String   @map("user_id") @db.VarChar(20)
+  sessionId  String?  @map("session_id") @db.VarChar(50)
+  question   String
+  status     String   @default("open") @db.VarChar(20)
+  assignedTo String?  @map("assigned_to") @db.VarChar(20)
+  resolution String?
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("tickets")
+}
+
+model User {
+  id           String   @id
+  username     String   @unique @db.VarChar(100)
+  passwordHash String   @map("password_hash") @db.VarChar(255)
+  name         String?  @db.VarChar(255)
+  role         String   @default("user") @db.VarChar(20)
+  department   String?  @db.VarChar(100)
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  chatLogs ChatLog[]
+  tickets  Ticket[]
+
+  @@map("users")
+}
