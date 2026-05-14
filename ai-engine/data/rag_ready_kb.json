@@ -1,0 +1,782 @@
+{
+  "metadata": {
+    "generated_at": "2026-05-08T18:41:30.022453",
+    "source": "data/knowledge_base.json",
+    "total_docs": 35,
+    "format": "rag_json",
+    "validation_errors": 0,
+    "created_by": "Kevin Alif Mahendra (195150200111063)"
+  },
+  "documents": [
+    {
+      "id": "kb_qp001",
+      "chunk_id": "kb_qp001_0ee2f4eb",
+      "document": "[QUALITY PRINTING] Hasil Cetak Bergaris atau Berpola Tidak Merata\n\nGejala: Hasil cetakan menunjukkan garis horizontal atau vertikal, warna tidak merata, atau pola berulang yang tidak diinginkan.\n\nPenyebab: Nozzle print head tersumbat oleh tinta kering, print head perlu disejajarkan, atau tinta berkualitas rendah.\n\nLangkah Penyelesaian:\n  1. Buka Epson Status Monitor atau Epson Printer Utility dari komputer.\n  2. Pilih menu Maintenance > Nozzle Check untuk mencetak pola uji.\n  3. Periksa pola cetak: jika ada celah atau garis putus, nozzle tersumbat.\n  4. Pilih Head Cleaning dan ikuti instruksi di layar.\n  5. Cetak kembali pola nozzle check untuk memverifikasi perbaikan.\n  6. Jika masalah berlanjut, ulangi head cleaning maksimal 3 kali.\n  7. Jika tetap bermasalah, lakukan Power Ink Flushing dari menu Maintenance.\n  8. Pastikan menggunakan tinta asli Epson sesuai model ET-2400.",
+      "metadata": {
+        "title": "Hasil Cetak Bergaris atau Berpola Tidak Merata",
+        "category": "quality_printing",
+        "tags": [
+          "garis cetak",
+          "nozzle tersumbat",
+          "head cleaning",
+          "kualitas cetak",
+          "print head"
+        ],
+        "source_doc": "ET-2400_TroubleshootingGuide_v3.2.pdf",
+        "last_updated": "2024-01-15",
+        "gejala": "Hasil cetakan menunjukkan garis horizontal atau vertikal, warna tidak merata, atau pola berulang yang tidak diinginkan.",
+        "penyebab": "Nozzle print head tersumbat oleh tinta kering, print head perlu disejajarkan, atau tinta berkualitas rendah.",
+        "n_steps": 8
+      },
+      "embedding_text": "[QUALITY PRINTING] Hasil Cetak Bergaris atau Berpola Tidak Merata\n\nGejala: Hasil cetakan menunjukkan garis horizontal atau vertikal, warna tidak merata, atau pola berulang yang tidak diinginkan.\n\nPenyebab: Nozzle print head tersumbat oleh tinta kering, print head perlu disejajarkan, atau tinta berkualitas rendah.\n\nLangkah Penyelesaian:\n  1. Buka Epson Status Monitor atau Epson Printer Utility dari komputer.\n  2. Pilih menu Maintenance > Nozzle Check untuk mencetak pola uji.\n  3. Periksa pola cetak: jika ada"
+    },
+    {
+      "id": "kb_qp002",
+      "chunk_id": "kb_qp002_a053d59d",
+      "document": "[QUALITY PRINTING] Warna Cetak Pudar atau Tidak Akurat\n\nGejala: Warna hasil cetak terlihat pudar, tidak sesuai dengan tampilan di layar monitor, atau terjadi pergeseran warna.\n\nPenyebab: Level tinta rendah, profil warna tidak dikalibrasi, atau pengaturan kualitas cetak tidak sesuai.\n\nLangkah Penyelesaian:\n  1. Periksa level tinta di Epson Status Monitor; isi ulang tangki jika level tinta di bawah garis minimum.\n  2. Buka driver printer, masuk ke tab Advanced atau More Options.\n  3. Pastikan Color Mode diset ke Color bukan Grayscale atau Black and White.\n  4. Set Print Quality ke High untuk cetakan yang membutuhkan akurasi warna.\n  5. Kalibrasi monitor menggunakan tool bawaan OS jika warna di layar juga terlihat tidak akurat.\n  6. Lakukan Print Head Alignment dari menu Maintenance untuk mengoptimalkan hasil cetak.\n  7. Gunakan kertas yang direkomendasikan Epson untuk hasil warna terbaik.",
+      "metadata": {
+        "title": "Warna Cetak Pudar atau Tidak Akurat",
+        "category": "quality_printing",
+        "tags": [
+          "warna pudar",
+          "color accuracy",
+          "kalibrasi warna",
+          "level tinta",
+          "color profile"
+        ],
+        "source_doc": "ET-2400_ColorManagementGuide_v2.1.pdf",
+        "last_updated": "2024-02-10",
+        "gejala": "Warna hasil cetak terlihat pudar, tidak sesuai dengan tampilan di layar monitor, atau terjadi pergeseran warna.",
+        "penyebab": "Level tinta rendah, profil warna tidak dikalibrasi, atau pengaturan kualitas cetak tidak sesuai.",
+        "n_steps": 7
+      },
+      "embedding_text": "[QUALITY PRINTING] Warna Cetak Pudar atau Tidak Akurat\n\nGejala: Warna hasil cetak terlihat pudar, tidak sesuai dengan tampilan di layar monitor, atau terjadi pergeseran warna.\n\nPenyebab: Level tinta rendah, profil warna tidak dikalibrasi, atau pengaturan kualitas cetak tidak sesuai.\n\nLangkah Penyelesaian:\n  1. Periksa level tinta di Epson Status Monitor; isi ulang tangki jika level tinta di bawah garis minimum.\n  2. Buka driver printer, masuk ke tab Advanced atau More Options.\n  3. Pastikan Color Mode diset"
+    },
+    {
+      "id": "kb_qp003",
+      "chunk_id": "kb_qp003_8ec0e039",
+      "document": "[QUALITY PRINTING] Hasil Cetak Buram atau Tidak Tajam\n\nGejala: Teks atau gambar hasil cetakan terlihat buram, tidak fokus, atau tepi gambar tidak tegas.\n\nPenyebab: Print head tidak sejajar, resolusi cetak terlalu rendah, atau kertas tidak sesuai.\n\nLangkah Penyelesaian:\n  1. Buka aplikasi printer utility dan pilih Print Head Alignment.\n  2. Ikuti instruksi: printer akan mencetak pola alignment dan meminta memilih pola terbaik.\n  3. Masukkan nomor pola yang terlihat paling lurus dan tajam untuk setiap set pola.\n  4. Pastikan resolusi dokumen minimal 300 DPI untuk cetakan foto, 150 DPI untuk dokumen teks.\n  5. Di driver printer, pilih jenis kertas yang sesuai (Photo Paper, Plain Paper, dll.).\n  6. Hindari menggunakan kertas yang lembab atau bergelombang.\n  7. Bersihkan kaca scanner jika mengalami masalah serupa saat fotokopi.",
+      "metadata": {
+        "title": "Hasil Cetak Buram atau Tidak Tajam",
+        "category": "quality_printing",
+        "tags": [
+          "cetak buram",
+          "print head alignment",
+          "resolusi",
+          "kualitas foto",
+          "focus cetak"
+        ],
+        "source_doc": "ET-2400_PrintQualityFAQ_v1.8.pdf",
+        "last_updated": "2024-01-22",
+        "gejala": "Teks atau gambar hasil cetakan terlihat buram, tidak fokus, atau tepi gambar tidak tegas.",
+        "penyebab": "Print head tidak sejajar, resolusi cetak terlalu rendah, atau kertas tidak sesuai.",
+        "n_steps": 7
+      },
+      "embedding_text": "[QUALITY PRINTING] Hasil Cetak Buram atau Tidak Tajam\n\nGejala: Teks atau gambar hasil cetakan terlihat buram, tidak fokus, atau tepi gambar tidak tegas.\n\nPenyebab: Print head tidak sejajar, resolusi cetak terlalu rendah, atau kertas tidak sesuai.\n\nLangkah Penyelesaian:\n  1. Buka aplikasi printer utility dan pilih Print Head Alignment.\n  2. Ikuti instruksi: printer akan mencetak pola alignment dan meminta memilih pola terbaik.\n  3. Masukkan nomor pola yang terlihat paling lurus dan tajam untuk setiap set pol"
+    },
+    {
+      "id": "kb_qp004",
+      "chunk_id": "kb_qp004_98bac721",
+      "document": "[QUALITY PRINTING] Cetakan Foto Menampilkan Bintik-Bintik atau Granular\n\nGejala: Hasil cetak foto menampilkan bintik-bintik terutama di area gradasi warna atau bayangan.\n\nPenyebab: Mode cetak draft aktif, jenis kertas salah dipilih, atau file foto beresolusi rendah.\n\nLangkah Penyelesaian:\n  1. Buka dialog Print, klik Properties atau Preferences.\n  2. Pastikan Print Quality tidak diset ke Draft atau Economy; gunakan Best Photo untuk foto.\n  3. Ganti jenis media ke Epson Premium Photo Paper Glossy atau sesuai kertas yang digunakan.\n  4. Periksa resolusi file foto asli: minimal 300 DPI untuk cetak 4x6 inci.\n  5. Jika menggunakan aplikasi edit foto, pastikan tidak ada kompresi berlebihan saat menyimpan.\n  6. Nonaktifkan opsi High Speed di pengaturan printer untuk hasil lebih halus (lebih lambat).\n  7. Lakukan nozzle check dan head cleaning jika langkah di atas tidak membantu.",
+      "metadata": {
+        "title": "Cetakan Foto Menampilkan Bintik-Bintik atau Granular",
+        "category": "quality_printing",
+        "tags": [
+          "foto berbintik",
+          "granular",
+          "photo quality",
+          "resolusi foto",
+          "media type"
+        ],
+        "source_doc": "ET-2400_PhotoPrintingGuide_v2.0.pdf",
+        "last_updated": "2024-03-05",
+        "gejala": "Hasil cetak foto menampilkan bintik-bintik terutama di area gradasi warna atau bayangan.",
+        "penyebab": "Mode cetak draft aktif, jenis kertas salah dipilih, atau file foto beresolusi rendah.",
+        "n_steps": 7
+      },
+      "embedding_text": "[QUALITY PRINTING] Cetakan Foto Menampilkan Bintik-Bintik atau Granular\n\nGejala: Hasil cetak foto menampilkan bintik-bintik terutama di area gradasi warna atau bayangan.\n\nPenyebab: Mode cetak draft aktif, jenis kertas salah dipilih, atau file foto beresolusi rendah.\n\nLangkah Penyelesaian:\n  1. Buka dialog Print, klik Properties atau Preferences.\n  2. Pastikan Print Quality tidak diset ke Draft atau Economy; gunakan Best Photo untuk foto.\n  3. Ganti jenis media ke Epson Premium Photo Paper Glossy atau sesuai"
+    },
+    {
+      "id": "kb_qp005",
+      "chunk_id": "kb_qp005_0ccc7b1b",
+      "document": "[QUALITY PRINTING] Tinta Menetes atau Smear pada Hasil Cetak\n\nGejala: Tinta tampak menetes, menyebar, atau meninggalkan noda pada kertas yang baru dicetak.\n\nPenyebab: Kertas tidak mampu menyerap tinta, terlalu banyak tinta diaplikasikan, atau roller kotor.\n\nLangkah Penyelesaian:\n  1. Hindari segera menyentuh hasil cetakan yang baru keluar; tunggu 30-60 detik.\n  2. Kurangi Ink Density di pengaturan printer jika tersedia.\n  3. Pastikan jenis kertas di driver printer sesuai dengan kertas fisik yang digunakan.\n  4. Jangan gunakan kertas yang sudah dicetak sebelumnya atau kertas terlalu glossy yang tidak kompatibel.\n  5. Bersihkan roller kertas: buka printer utility > Paper Guide Cleaning.\n  6. Ikuti instruksi yang muncul; masukkan beberapa lembar kertas polos saat proses pembersihan.\n  7. Pastikan tidak menggunakan tinta sublimasi atau tinta pihak ketiga di ET-2400.",
+      "metadata": {
+        "title": "Tinta Menetes atau Smear pada Hasil Cetak",
+        "category": "quality_printing",
+        "tags": [
+          "tinta menetes",
+          "smear",
+          "noda tinta",
+          "ink density",
+          "paper roller"
+        ],
+        "source_doc": "ET-2400_InkManagementGuide_v1.5.pdf",
+        "last_updated": "2024-02-28",
+        "gejala": "Tinta tampak menetes, menyebar, atau meninggalkan noda pada kertas yang baru dicetak.",
+        "penyebab": "Kertas tidak mampu menyerap tinta, terlalu banyak tinta diaplikasikan, atau roller kotor.",
+        "n_steps": 7
+      },
+      "embedding_text": "[QUALITY PRINTING] Tinta Menetes atau Smear pada Hasil Cetak\n\nGejala: Tinta tampak menetes, menyebar, atau meninggalkan noda pada kertas yang baru dicetak.\n\nPenyebab: Kertas tidak mampu menyerap tinta, terlalu banyak tinta diaplikasikan, atau roller kotor.\n\nLangkah Penyelesaian:\n  1. Hindari segera menyentuh hasil cetakan yang baru keluar; tunggu 30-60 detik.\n  2. Kurangi Ink Density di pengaturan printer jika tersedia.\n  3. Pastikan jenis kertas di driver printer sesuai dengan kertas fisik yang digunakan.\n"
+    },
+    {
+      "id": "kb_qp006",
+      "chunk_id": "kb_qp006_1ce62bd1",
+      "document": "[QUALITY PRINTING] Cetakan Tidak Lengkap atau Terpotong\n\nGejala: Dokumen tercetak tidak penuh, bagian tepi terpotong, atau isi dokumen tidak sesuai tampilan preview.\n\nPenyebab: Margin dokumen terlalu kecil, pengaturan ukuran kertas tidak sesuai, atau memory printer terbatas.\n\nLangkah Penyelesaian:\n  1. Periksa ukuran kertas di driver printer; pastikan sesuai dengan ukuran fisik kertas yang dimuat.\n  2. Di aplikasi, cek Page Setup dan atur margin minimal 3mm di semua sisi.\n  3. Pastikan skala cetak tidak mengakibatkan konten terpotong; gunakan Fit to Page jika perlu.\n  4. Untuk file PDF, buka dengan Adobe Reader dan gunakan opsi Shrink to Printable Area.\n  5. Restart printer dan kirim ulang pekerjaan cetak.\n  6. Kosongkan antrian cetak dan restart Spooler Service di Windows jika antrian menumpuk.",
+      "metadata": {
+        "title": "Cetakan Tidak Lengkap atau Terpotong",
+        "category": "quality_printing",
+        "tags": [
+          "cetakan terpotong",
+          "margin",
+          "ukuran kertas",
+          "page setup",
+          "print queue"
+        ],
+        "source_doc": "ET-2400_PrintLayoutGuide_v1.3.pdf",
+        "last_updated": "2024-01-30",
+        "gejala": "Dokumen tercetak tidak penuh, bagian tepi terpotong, atau isi dokumen tidak sesuai tampilan preview.",
+        "penyebab": "Margin dokumen terlalu kecil, pengaturan ukuran kertas tidak sesuai, atau memory printer terbatas.",
+        "n_steps": 6
+      },
+      "embedding_text": "[QUALITY PRINTING] Cetakan Tidak Lengkap atau Terpotong\n\nGejala: Dokumen tercetak tidak penuh, bagian tepi terpotong, atau isi dokumen tidak sesuai tampilan preview.\n\nPenyebab: Margin dokumen terlalu kecil, pengaturan ukuran kertas tidak sesuai, atau memory printer terbatas.\n\nLangkah Penyelesaian:\n  1. Periksa ukuran kertas di driver printer; pastikan sesuai dengan ukuran fisik kertas yang dimuat.\n  2. Di aplikasi, cek Page Setup dan atur margin minimal 3mm di semua sisi.\n  3. Pastikan skala cetak tidak men"
+    },
+    {
+      "id": "kb_qp007",
+      "chunk_id": "kb_qp007_1bdc7dd1",
+      "document": "[QUALITY PRINTING] Cetakan Hitam Putih Menampilkan Semburat Warna\n\nGejala: Saat mencetak dokumen hitam putih, hasil cetak menunjukkan semburat warna kebiruan, kehijauan, atau kemerahan.\n\nPenyebab: Nozzle warna tersumbat sebagian atau pengaturan cetak hitam putih tidak optimal.\n\nLangkah Penyelesaian:\n  1. Di driver printer, set mode cetak ke Black/Grayscale secara eksplisit.\n  2. Pilih Advanced Color Settings dan set ke Black Ink Only jika tersedia.\n  3. Lakukan nozzle check untuk semua warna; bersihkan nozzle yang menunjukkan masalah.\n  4. Pastikan tangki tinta warna tidak kosong total karena bisa mengakibatkan air masuk ke sistem tinta.\n  5. Lakukan head cleaning 1-2 kali dan cek ulang hasilnya.",
+      "metadata": {
+        "title": "Cetakan Hitam Putih Menampilkan Semburat Warna",
+        "category": "quality_printing",
+        "tags": [
+          "cetak hitam putih",
+          "color cast",
+          "grayscale",
+          "black ink",
+          "nozzle warna"
+        ],
+        "source_doc": "ET-2400_GrayscalePrintingFAQ_v1.0.pdf",
+        "last_updated": "2024-03-12",
+        "gejala": "Saat mencetak dokumen hitam putih, hasil cetak menunjukkan semburat warna kebiruan, kehijauan, atau kemerahan.",
+        "penyebab": "Nozzle warna tersumbat sebagian atau pengaturan cetak hitam putih tidak optimal.",
+        "n_steps": 5
+      },
+      "embedding_text": "[QUALITY PRINTING] Cetakan Hitam Putih Menampilkan Semburat Warna\n\nGejala: Saat mencetak dokumen hitam putih, hasil cetak menunjukkan semburat warna kebiruan, kehijauan, atau kemerahan.\n\nPenyebab: Nozzle warna tersumbat sebagian atau pengaturan cetak hitam putih tidak optimal.\n\nLangkah Penyelesaian:\n  1. Di driver printer, set mode cetak ke Black/Grayscale secara eksplisit.\n  2. Pilih Advanced Color Settings dan set ke Black Ink Only jika tersedia.\n  3. Lakukan nozzle check untuk semua warna; bersihkan nozz"
+    },
+    {
+      "id": "kb_qp008",
+      "chunk_id": "kb_qp008_76a57a73",
+      "document": "[QUALITY PRINTING] Kecepatan Cetak Sangat Lambat\n\nGejala: Pekerjaan cetak membutuhkan waktu sangat lama, lebih dari 2 menit per halaman untuk dokumen teks biasa.\n\nPenyebab: Mode kualitas tinggi aktif, koneksi lambat, atau driver printer tidak optimal.\n\nLangkah Penyelesaian:\n  1. Di driver printer, kurangi kualitas cetak ke Normal atau Draft untuk dokumen teks biasa.\n  2. Aktifkan opsi High Speed di pengaturan printer untuk cetak dua arah (bidirectional).\n  3. Pastikan printer terhubung langsung ke router dengan sinyal WiFi kuat bukan melalui repeater.\n  4. Bersihkan antrian cetak yang mungkin menumpuk; restart Print Spooler service.\n  5. Perbarui driver printer ke versi terbaru dari website Epson.\n  6. Jika mencetak via jaringan, coba switch ke koneksi USB untuk menguji apakah masalah ada di jaringan.",
+      "metadata": {
+        "title": "Kecepatan Cetak Sangat Lambat",
+        "category": "quality_printing",
+        "tags": [
+          "cetak lambat",
+          "print speed",
+          "high speed mode",
+          "driver update",
+          "koneksi printer"
+        ],
+        "source_doc": "ET-2400_PerformanceOptimizationGuide_v2.2.pdf",
+        "last_updated": "2024-02-15",
+        "gejala": "Pekerjaan cetak membutuhkan waktu sangat lama, lebih dari 2 menit per halaman untuk dokumen teks biasa.",
+        "penyebab": "Mode kualitas tinggi aktif, koneksi lambat, atau driver printer tidak optimal.",
+        "n_steps": 6
+      },
+      "embedding_text": "[QUALITY PRINTING] Kecepatan Cetak Sangat Lambat\n\nGejala: Pekerjaan cetak membutuhkan waktu sangat lama, lebih dari 2 menit per halaman untuk dokumen teks biasa.\n\nPenyebab: Mode kualitas tinggi aktif, koneksi lambat, atau driver printer tidak optimal.\n\nLangkah Penyelesaian:\n  1. Di driver printer, kurangi kualitas cetak ke Normal atau Draft untuk dokumen teks biasa.\n  2. Aktifkan opsi High Speed di pengaturan printer untuk cetak dua arah (bidirectional).\n  3. Pastikan printer terhubung langsung ke router de"
+    },
+    {
+      "id": "kb_qp009",
+      "chunk_id": "kb_qp009_5941248f",
+      "document": "[QUALITY PRINTING] Hasil Fotokopi Kualitas Buruk\n\nGejala: Hasil fotokopi tampak lebih gelap, terang, atau buram dibandingkan dokumen asli.\n\nPenyebab: Kaca scanner kotor, dokumen tidak rata, atau pengaturan densitas fotokopi tidak sesuai.\n\nLangkah Penyelesaian:\n  1. Bersihkan kaca scanner dengan kain microfiber yang sedikit lembab; keringkan setelahnya.\n  2. Pastikan dokumen asli diletakkan rata pada kaca scanner dan tutup dokumen ditekan ringan.\n  3. Pada panel kontrol printer, sesuaikan pengaturan Copy Density atau Exposure.\n  4. Pilih jenis dokumen yang tepat: Text, Photo, atau Text and Image sesuai isi dokumen.\n  5. Jika ada garis pada hasil fotokopi, bersihkan kaca scanner dengan lebih menyeluruh.",
+      "metadata": {
+        "title": "Hasil Fotokopi Kualitas Buruk",
+        "category": "quality_printing",
+        "tags": [
+          "fotokopi buruk",
+          "kaca scanner kotor",
+          "copy density",
+          "kualitas scan",
+          "scanner glass"
+        ],
+        "source_doc": "ET-2400_CopyFunctionGuide_v1.7.pdf",
+        "last_updated": "2024-01-18",
+        "gejala": "Hasil fotokopi tampak lebih gelap, terang, atau buram dibandingkan dokumen asli.",
+        "penyebab": "Kaca scanner kotor, dokumen tidak rata, atau pengaturan densitas fotokopi tidak sesuai.",
+        "n_steps": 5
+      },
+      "embedding_text": "[QUALITY PRINTING] Hasil Fotokopi Kualitas Buruk\n\nGejala: Hasil fotokopi tampak lebih gelap, terang, atau buram dibandingkan dokumen asli.\n\nPenyebab: Kaca scanner kotor, dokumen tidak rata, atau pengaturan densitas fotokopi tidak sesuai.\n\nLangkah Penyelesaian:\n  1. Bersihkan kaca scanner dengan kain microfiber yang sedikit lembab; keringkan setelahnya.\n  2. Pastikan dokumen asli diletakkan rata pada kaca scanner dan tutup dokumen ditekan ringan.\n  3. Pada panel kontrol printer, sesuaikan pengaturan Copy Den"
+    },
+    {
+      "id": "kb_qp010",
+      "chunk_id": "kb_qp010_8c067e11",
+      "document": "[QUALITY PRINTING] Printer Mencetak Halaman Kosong\n\nGejala: Printer mengeluarkan kertas tapi tidak ada cetakan sama sekali, atau hanya sebagian kecil halaman yang tercetak.\n\nPenyebab: Nozzle semua warna tersumbat parah, tinta habis, atau file yang dikirim rusak.\n\nLangkah Penyelesaian:\n  1. Periksa level tinta di semua tangki; pastikan semua di atas garis minimum.\n  2. Jalankan nozzle check dari printer utility; jika pola tidak terlihat, lakukan head cleaning.\n  3. Lakukan head cleaning dan cek ulang; ulangi jika perlu hingga 3 kali.\n  4. Coba kirim file cetak lain untuk memastikan bukan masalah file.\n  5. Jika test page juga kosong, lakukan Power Ink Flushing (menggunakan banyak tinta).\n  6. Restart printer dan komputer, lalu coba lagi.",
+      "metadata": {
+        "title": "Printer Mencetak Halaman Kosong",
+        "category": "quality_printing",
+        "tags": [
+          "halaman kosong",
+          "blank page",
+          "nozzle tersumbat",
+          "tinta habis",
+          "head cleaning"
+        ],
+        "source_doc": "ET-2400_BlankPageTroubleshoot_v1.2.pdf",
+        "last_updated": "2024-03-20",
+        "gejala": "Printer mengeluarkan kertas tapi tidak ada cetakan sama sekali, atau hanya sebagian kecil halaman yang tercetak.",
+        "penyebab": "Nozzle semua warna tersumbat parah, tinta habis, atau file yang dikirim rusak.",
+        "n_steps": 6
+      },
+      "embedding_text": "[QUALITY PRINTING] Printer Mencetak Halaman Kosong\n\nGejala: Printer mengeluarkan kertas tapi tidak ada cetakan sama sekali, atau hanya sebagian kecil halaman yang tercetak.\n\nPenyebab: Nozzle semua warna tersumbat parah, tinta habis, atau file yang dikirim rusak.\n\nLangkah Penyelesaian:\n  1. Periksa level tinta di semua tangki; pastikan semua di atas garis minimum.\n  2. Jalankan nozzle check dari printer utility; jika pola tidak terlihat, lakukan head cleaning.\n  3. Lakukan head cleaning dan cek ulang; ulangi"
+    },
+    {
+      "id": "kb_qp011",
+      "chunk_id": "kb_qp011_c875a65d",
+      "document": "[QUALITY PRINTING] Masalah Cetak Dupleks Tidak Rata\n\nGejala: Saat mencetak bolak-balik, halaman kedua tidak sejajar dengan halaman pertama atau tinta belum kering.\n\nPenyebab: Kertas terlalu tipis, pengaturan dupleks salah, atau jeda waktu tidak cukup.\n\nLangkah Penyelesaian:\n  1. Pastikan menggunakan kertas minimal 80 gsm untuk cetak dupleks.\n  2. Di driver printer Windows, aktifkan 2-Sided Printing di tab Main.\n  3. Atur Binding Edge sesuai kebutuhan: Long Edge untuk buku, Short Edge untuk kalender.\n  4. Beri waktu 30 detik setelah halaman pertama keluar sebelum memasukkan ulang jika menggunakan dupleks manual.\n  5. Kurangi ink density untuk mengurangi waktu kering tinta di halaman pertama.",
+      "metadata": {
+        "title": "Masalah Cetak Dupleks Tidak Rata",
+        "category": "quality_printing",
+        "tags": [
+          "dupleks",
+          "cetak bolak-balik",
+          "2-sided printing",
+          "binding edge",
+          "alignment dupleks"
+        ],
+        "source_doc": "ET-2400_DuplexPrintingGuide_v1.1.pdf",
+        "last_updated": "2024-02-20",
+        "gejala": "Saat mencetak bolak-balik, halaman kedua tidak sejajar dengan halaman pertama atau tinta belum kering.",
+        "penyebab": "Kertas terlalu tipis, pengaturan dupleks salah, atau jeda waktu tidak cukup.",
+        "n_steps": 5
+      },
+      "embedding_text": "[QUALITY PRINTING] Masalah Cetak Dupleks Tidak Rata\n\nGejala: Saat mencetak bolak-balik, halaman kedua tidak sejajar dengan halaman pertama atau tinta belum kering.\n\nPenyebab: Kertas terlalu tipis, pengaturan dupleks salah, atau jeda waktu tidak cukup.\n\nLangkah Penyelesaian:\n  1. Pastikan menggunakan kertas minimal 80 gsm untuk cetak dupleks.\n  2. Di driver printer Windows, aktifkan 2-Sided Printing di tab Main.\n  3. Atur Binding Edge sesuai kebutuhan: Long Edge untuk buku, Short Edge untuk kalender.\n  4. Be"
+    },
+    {
+      "id": "kb_qp012",
+      "chunk_id": "kb_qp012_c1b5ef13",
+      "document": "[QUALITY PRINTING] Cetakan Borderless Menampilkan Batas Putih\n\nGejala: Saat mencetak foto borderless (tanpa batas), tetap muncul border putih di salah satu atau semua sisi.\n\nPenyebab: Ukuran kertas tidak sesuai pilihan borderless, pengaturan ekspansi terlalu kecil.\n\nLangkah Penyelesaian:\n  1. Pastikan ukuran kertas yang dipilih di driver adalah ukuran yang mendukung borderless (4x6, 5x7, dll.).\n  2. Di driver printer, cari opsi Expansion dan atur ke Max untuk memastikan gambar menutupi seluruh kertas.\n  3. Gunakan kertas foto Epson asli yang kompatibel dengan cetak borderless.\n  4. Pastikan kertas dimasukkan dengan posisi dan orientasi yang tepat sesuai panduan.\n  5. Jika menggunakan aplikasi pihak ketiga, ekspor ke PDF dulu dan cetak dari Adobe Reader.",
+      "metadata": {
+        "title": "Cetakan Borderless Menampilkan Batas Putih",
+        "category": "quality_printing",
+        "tags": [
+          "borderless",
+          "cetak tanpa batas",
+          "foto borderless",
+          "ekspansi cetak",
+          "foto 4x6"
+        ],
+        "source_doc": "ET-2400_BorderlessPrintGuide_v1.4.pdf",
+        "last_updated": "2024-03-01",
+        "gejala": "Saat mencetak foto borderless (tanpa batas), tetap muncul border putih di salah satu atau semua sisi.",
+        "penyebab": "Ukuran kertas tidak sesuai pilihan borderless, pengaturan ekspansi terlalu kecil.",
+        "n_steps": 5
+      },
+      "embedding_text": "[QUALITY PRINTING] Cetakan Borderless Menampilkan Batas Putih\n\nGejala: Saat mencetak foto borderless (tanpa batas), tetap muncul border putih di salah satu atau semua sisi.\n\nPenyebab: Ukuran kertas tidak sesuai pilihan borderless, pengaturan ekspansi terlalu kecil.\n\nLangkah Penyelesaian:\n  1. Pastikan ukuran kertas yang dipilih di driver adalah ukuran yang mendukung borderless (4x6, 5x7, dll.).\n  2. Di driver printer, cari opsi Expansion dan atur ke Max untuk memastikan gambar menutupi seluruh kertas.\n  3. "
+    },
+    {
+      "id": "kb_hw001",
+      "chunk_id": "kb_hw001_ac5f8b19",
+      "document": "[HARDWARE] Paper Jam - Kertas Macet di Dalam Printer\n\nGejala: Printer berhenti beroperasi, lampu indikator berkedip, dan ada pesan Paper Jam di layar atau komputer.\n\nPenyebab: Kertas tidak dimuat dengan benar, kertas kusut atau sobek, atau ada benda asing di jalur kertas.\n\nLangkah Penyelesaian:\n  1. Matikan printer menggunakan tombol power dan cabut kabel listrik.\n  2. Buka penutup printer bagian depan dan belakang dengan hati-hati.\n  3. Tarik kertas yang macet perlahan dengan kedua tangan; jangan menarik secara paksa.\n  4. Jika kertas sobek, pastikan tidak ada sisa potongan kertas di dalam printer.\n  5. Periksa jalur kertas: bersihkan debu atau potongan kertas kecil.\n  6. Pastikan panduan kertas disesuaikan dengan lebar kertas yang digunakan.\n  7. Isi ulang kertas dengan cara yang benar dan nyalakan kembali printer.",
+      "metadata": {
+        "title": "Paper Jam - Kertas Macet di Dalam Printer",
+        "category": "hardware",
+        "tags": [
+          "paper jam",
+          "kertas macet",
+          "hardware error",
+          "jalur kertas",
+          "paper feed"
+        ],
+        "source_doc": "ET-2400_HardwareTroubleshoot_v4.0.pdf",
+        "last_updated": "2024-01-10",
+        "gejala": "Printer berhenti beroperasi, lampu indikator berkedip, dan ada pesan Paper Jam di layar atau komputer.",
+        "penyebab": "Kertas tidak dimuat dengan benar, kertas kusut atau sobek, atau ada benda asing di jalur kertas.",
+        "n_steps": 7
+      },
+      "embedding_text": "[HARDWARE] Paper Jam - Kertas Macet di Dalam Printer\n\nGejala: Printer berhenti beroperasi, lampu indikator berkedip, dan ada pesan Paper Jam di layar atau komputer.\n\nPenyebab: Kertas tidak dimuat dengan benar, kertas kusut atau sobek, atau ada benda asing di jalur kertas.\n\nLangkah Penyelesaian:\n  1. Matikan printer menggunakan tombol power dan cabut kabel listrik.\n  2. Buka penutup printer bagian depan dan belakang dengan hati-hati.\n  3. Tarik kertas yang macet perlahan dengan kedua tangan; jangan menarik s"
+    },
+    {
+      "id": "kb_hw002",
+      "chunk_id": "kb_hw002_2960d84b",
+      "document": "[HARDWARE] Printer Tidak Menyala\n\nGejala: Tidak ada respons saat tombol power ditekan, tidak ada lampu indikator yang menyala.\n\nPenyebab: Masalah sumber listrik, kabel power rusak, atau hardware internal bermasalah.\n\nLangkah Penyelesaian:\n  1. Pastikan kabel power tersambung kuat ke printer dan ke stopkontak.\n  2. Coba stopkontak yang berbeda untuk memastikan stopkontak berfungsi.\n  3. Periksa kondisi fisik kabel power; ganti jika ada tanda kerusakan.\n  4. Tekan dan tahan tombol power selama 3-5 detik.\n  5. Pastikan voltase listrik sesuai spesifikasi printer (100-240V).\n  6. Cabut semua kabel, tunggu 2 menit, sambungkan kembali dan coba nyalakan.\n  7. Jika tetap tidak menyala, hubungi Epson Support Center.",
+      "metadata": {
+        "title": "Printer Tidak Menyala",
+        "category": "hardware",
+        "tags": [
+          "printer tidak nyala",
+          "power issue",
+          "kabel power",
+          "hardware failure",
+          "no power"
+        ],
+        "source_doc": "ET-2400_PowerTroubleshoot_v2.0.pdf",
+        "last_updated": "2024-02-05",
+        "gejala": "Tidak ada respons saat tombol power ditekan, tidak ada lampu indikator yang menyala.",
+        "penyebab": "Masalah sumber listrik, kabel power rusak, atau hardware internal bermasalah.",
+        "n_steps": 7
+      },
+      "embedding_text": "[HARDWARE] Printer Tidak Menyala\n\nGejala: Tidak ada respons saat tombol power ditekan, tidak ada lampu indikator yang menyala.\n\nPenyebab: Masalah sumber listrik, kabel power rusak, atau hardware internal bermasalah.\n\nLangkah Penyelesaian:\n  1. Pastikan kabel power tersambung kuat ke printer dan ke stopkontak.\n  2. Coba stopkontak yang berbeda untuk memastikan stopkontak berfungsi.\n  3. Periksa kondisi fisik kabel power; ganti jika ada tanda kerusakan.\n  4. Tekan dan tahan tombol power selama 3-5 detik.\n  5."
+    },
+    {
+      "id": "kb_hw003",
+      "chunk_id": "kb_hw003_5f473492",
+      "document": "[HARDWARE] Printer Membuat Suara Berisik atau Tidak Normal\n\nGejala: Printer mengeluarkan suara grinding, clicking, atau berisik tidak normal saat mencetak atau idle.\n\nPenyebab: Ada benda asing di dalam printer, kertas sobek tertinggal, atau komponen mekanik bermasalah.\n\nLangkah Penyelesaian:\n  1. Matikan printer dan periksa bagian dalam dengan senter; cari kertas sobek, klip, atau benda lain.\n  2. Buka semua penutup yang bisa dibuka dan periksa dengan teliti.\n  3. Keluarkan semua kertas dari tray dan periksa apakah ada kertas yang menyangkut.\n  4. Nyalakan printer dan dengarkan; suara clicking saat startup adalah normal.\n  5. Jika suara terjadi saat mencetak, periksa ketinggian kertas di tray.\n  6. Jika suara grinding terus terjadi, hentikan penggunaan dan hubungi teknisi Epson resmi.",
+      "metadata": {
+        "title": "Printer Membuat Suara Berisik atau Tidak Normal",
+        "category": "hardware",
+        "tags": [
+          "printer berisik",
+          "grinding noise",
+          "suara tidak normal",
+          "benda asing",
+          "mekanik printer"
+        ],
+        "source_doc": "ET-2400_HardwareTroubleshoot_v4.0.pdf",
+        "last_updated": "2024-01-25",
+        "gejala": "Printer mengeluarkan suara grinding, clicking, atau berisik tidak normal saat mencetak atau idle.",
+        "penyebab": "Ada benda asing di dalam printer, kertas sobek tertinggal, atau komponen mekanik bermasalah.",
+        "n_steps": 6
+      },
+      "embedding_text": "[HARDWARE] Printer Membuat Suara Berisik atau Tidak Normal\n\nGejala: Printer mengeluarkan suara grinding, clicking, atau berisik tidak normal saat mencetak atau idle.\n\nPenyebab: Ada benda asing di dalam printer, kertas sobek tertinggal, atau komponen mekanik bermasalah.\n\nLangkah Penyelesaian:\n  1. Matikan printer dan periksa bagian dalam dengan senter; cari kertas sobek, klip, atau benda lain.\n  2. Buka semua penutup yang bisa dibuka dan periksa dengan teliti.\n  3. Keluarkan semua kertas dari tray dan periks"
+    },
+    {
+      "id": "kb_hw004",
+      "chunk_id": "kb_hw004_fc8330bb",
+      "document": "[HARDWARE] Lampu Indikator Berkedip - Kode Error\n\nGejala: Lampu indikator pada printer berkedip dengan pola tertentu dan printer tidak mau beroperasi.\n\nPenyebab: Berbagai error hardware atau kondisi yang perlu perhatian pengguna.\n\nLangkah Penyelesaian:\n  1. Catat pola kedipan lampu (berapa kali berkedip, warna apa).\n  2. Kunjungi halaman support Epson ET-2400 dan cari tabel kode error lampu indikator.\n  3. Lampu power berkedip 2x: Paper jam - ikuti prosedur pembersihan paper jam.\n  4. Lampu power berkedip 3x: Tidak ada kertas - isi kertas di tray.\n  5. Lampu power berkedip 4x: Ink pad hampir penuh - hubungi Epson service.\n  6. Kombinasi lampu power dan tinta berkedip: Tinta habis - isi ulang tangki tinta.\n  7. Untuk kode error tidak dikenali, lakukan reset printer dengan menahan tombol Berhenti saat menyalakan.",
+      "metadata": {
+        "title": "Lampu Indikator Berkedip - Kode Error",
+        "category": "hardware",
+        "tags": [
+          "lampu berkedip",
+          "error code",
+          "indicator light",
+          "printer error",
+          "blink pattern"
+        ],
+        "source_doc": "ET-2400_ErrorCodeReference_v3.1.pdf",
+        "last_updated": "2024-03-08",
+        "gejala": "Lampu indikator pada printer berkedip dengan pola tertentu dan printer tidak mau beroperasi.",
+        "penyebab": "Berbagai error hardware atau kondisi yang perlu perhatian pengguna.",
+        "n_steps": 7
+      },
+      "embedding_text": "[HARDWARE] Lampu Indikator Berkedip - Kode Error\n\nGejala: Lampu indikator pada printer berkedip dengan pola tertentu dan printer tidak mau beroperasi.\n\nPenyebab: Berbagai error hardware atau kondisi yang perlu perhatian pengguna.\n\nLangkah Penyelesaian:\n  1. Catat pola kedipan lampu (berapa kali berkedip, warna apa).\n  2. Kunjungi halaman support Epson ET-2400 dan cari tabel kode error lampu indikator.\n  3. Lampu power berkedip 2x: Paper jam - ikuti prosedur pembersihan paper jam.\n  4. Lampu power berkedip 3"
+    },
+    {
+      "id": "kb_hw005",
+      "chunk_id": "kb_hw005_f06b21d1",
+      "document": "[HARDWARE] Tangki Tinta Bocor atau Tinta Berceceran\n\nGejala: Tinta terlihat berceceran di sekitar tangki tinta atau ada tanda kebocoran di bagian luar printer.\n\nPenyebab: Tangki tinta diisi berlebihan, segel tidak tertutup sempurna, atau printer tersenggol saat berisi tinta.\n\nLangkah Penyelesaian:\n  1. Jangan sentuh tinta dengan tangan kosong; gunakan sarung tangan sekali pakai.\n  2. Matikan printer segera dan cabut kabel listrik.\n  3. Bersihkan tinta yang berceceran dengan kain penyerap.\n  4. Periksa kondisi segel tangki tinta; pastikan semua tutup terpasang dengan kencang.\n  5. Pastikan level tinta tidak melebihi garis batas maksimum (MAX).\n  6. Jika kebocoran berasal dari dalam printer, hubungi Epson Service Center segera.",
+      "metadata": {
+        "title": "Tangki Tinta Bocor atau Tinta Berceceran",
+        "category": "hardware",
+        "tags": [
+          "tinta bocor",
+          "ink spill",
+          "tangki tinta",
+          "ink tank",
+          "kebocoran tinta"
+        ],
+        "source_doc": "ET-2400_InkTankMaintenanceGuide_v2.3.pdf",
+        "last_updated": "2024-02-12",
+        "gejala": "Tinta terlihat berceceran di sekitar tangki tinta atau ada tanda kebocoran di bagian luar printer.",
+        "penyebab": "Tangki tinta diisi berlebihan, segel tidak tertutup sempurna, atau printer tersenggol saat berisi tinta.",
+        "n_steps": 6
+      },
+      "embedding_text": "[HARDWARE] Tangki Tinta Bocor atau Tinta Berceceran\n\nGejala: Tinta terlihat berceceran di sekitar tangki tinta atau ada tanda kebocoran di bagian luar printer.\n\nPenyebab: Tangki tinta diisi berlebihan, segel tidak tertutup sempurna, atau printer tersenggol saat berisi tinta.\n\nLangkah Penyelesaian:\n  1. Jangan sentuh tinta dengan tangan kosong; gunakan sarung tangan sekali pakai.\n  2. Matikan printer segera dan cabut kabel listrik.\n  3. Bersihkan tinta yang berceceran dengan kain penyerap.\n  4. Periksa kondi"
+    },
+    {
+      "id": "kb_hw006",
+      "chunk_id": "kb_hw006_be61c9f0",
+      "document": "[HARDWARE] Scanner Tidak Bekerja atau Tidak Terdeteksi\n\nGejala: Fungsi scan tidak tersedia, aplikasi scan menampilkan error Scanner not found atau Cannot connect to scanner.\n\nPenyebab: Driver scanner tidak terinstal, koneksi terputus, atau layanan scanner tidak berjalan.\n\nLangkah Penyelesaian:\n  1. Pastikan printer menyala dan terhubung ke komputer via USB atau WiFi.\n  2. Di Windows, buka Device Manager dan cari entry Epson Scanner; jika ada tanda seru kuning, reinstall driver.\n  3. Unduh dan instal Epson Scan 2 terbaru dari website Epson.\n  4. Jalankan Epson Scan 2 Configuration Utility dan pastikan scanner terdeteksi.\n  5. Pastikan Windows Image Acquisition (WIA) service berjalan via Services.msc.\n  6. Restart printer dan komputer, kemudian coba scan kembali.",
+      "metadata": {
+        "title": "Scanner Tidak Bekerja atau Tidak Terdeteksi",
+        "category": "hardware",
+        "tags": [
+          "scanner tidak terdeteksi",
+          "scan error",
+          "Epson Scan 2",
+          "driver scanner",
+          "WIA"
+        ],
+        "source_doc": "ET-2400_ScannerSetupGuide_v2.5.pdf",
+        "last_updated": "2024-01-28",
+        "gejala": "Fungsi scan tidak tersedia, aplikasi scan menampilkan error Scanner not found atau Cannot connect to scanner.",
+        "penyebab": "Driver scanner tidak terinstal, koneksi terputus, atau layanan scanner tidak berjalan.",
+        "n_steps": 6
+      },
+      "embedding_text": "[HARDWARE] Scanner Tidak Bekerja atau Tidak Terdeteksi\n\nGejala: Fungsi scan tidak tersedia, aplikasi scan menampilkan error Scanner not found atau Cannot connect to scanner.\n\nPenyebab: Driver scanner tidak terinstal, koneksi terputus, atau layanan scanner tidak berjalan.\n\nLangkah Penyelesaian:\n  1. Pastikan printer menyala dan terhubung ke komputer via USB atau WiFi.\n  2. Di Windows, buka Device Manager dan cari entry Epson Scanner; jika ada tanda seru kuning, reinstall driver.\n  3. Unduh dan instal Epson S"
+    },
+    {
+      "id": "kb_hw007",
+      "chunk_id": "kb_hw007_afa6f256",
+      "document": "[HARDWARE] Tombol Panel Kontrol Tidak Responsif\n\nGejala: Tombol-tombol pada panel kontrol printer tidak bereaksi saat ditekan, atau hanya sebagian tombol yang berfungsi.\n\nPenyebab: Panel kontrol locked, mode sleep, atau kerusakan hardware.\n\nLangkah Penyelesaian:\n  1. Pastikan printer tidak dalam mode sleep: tekan tombol power sekali untuk membangunkan.\n  2. Periksa apakah ada indikasi Panel Lock aktif; nonaktifkan dari menu Settings.\n  3. Matikan printer, tunggu 30 detik, nyalakan kembali.\n  4. Pastikan area sekitar tombol bersih dari debu atau cairan.\n  5. Coba operasikan printer dari komputer untuk memastikan printer berfungsi normal.\n  6. Jika tombol tertentu saja yang tidak bekerja, kemungkinan ada masalah hardware; hubungi Epson Support.",
+      "metadata": {
+        "title": "Tombol Panel Kontrol Tidak Responsif",
+        "category": "hardware",
+        "tags": [
+          "tombol tidak responsif",
+          "panel kontrol",
+          "panel lock",
+          "hardware issue",
+          "tombol macet"
+        ],
+        "source_doc": "ET-2400_ControlPanelGuide_v1.6.pdf",
+        "last_updated": "2024-03-15",
+        "gejala": "Tombol-tombol pada panel kontrol printer tidak bereaksi saat ditekan, atau hanya sebagian tombol yang berfungsi.",
+        "penyebab": "Panel kontrol locked, mode sleep, atau kerusakan hardware.",
+        "n_steps": 6
+      },
+      "embedding_text": "[HARDWARE] Tombol Panel Kontrol Tidak Responsif\n\nGejala: Tombol-tombol pada panel kontrol printer tidak bereaksi saat ditekan, atau hanya sebagian tombol yang berfungsi.\n\nPenyebab: Panel kontrol locked, mode sleep, atau kerusakan hardware.\n\nLangkah Penyelesaian:\n  1. Pastikan printer tidak dalam mode sleep: tekan tombol power sekali untuk membangunkan.\n  2. Periksa apakah ada indikasi Panel Lock aktif; nonaktifkan dari menu Settings.\n  3. Matikan printer, tunggu 30 detik, nyalakan kembali.\n  4. Pastikan are"
+    },
+    {
+      "id": "kb_hw008",
+      "chunk_id": "kb_hw008_b74cb75a",
+      "document": "[HARDWARE] Kertas Tidak Terambil atau Feed Error\n\nGejala: Printer memberikan error No Paper padahal kertas sudah ada di tray, atau kertas tidak terambil saat mencetak.\n\nPenyebab: Roller kertas kotor, terlalu banyak kertas di tray, kertas lembab, atau panduan kertas tidak pas.\n\nLangkah Penyelesaian:\n  1. Keluarkan semua kertas dari tray; bersihkan roller pengambil kertas dengan kain lembut yang sedikit lembab.\n  2. Pastikan jumlah kertas di tray tidak melebihi batas maksimum.\n  3. Kipas kertas dan ratakan tepinya sebelum dimasukkan ke tray.\n  4. Sesuaikan panduan kertas agar pas dengan ukuran kertas yang digunakan.\n  5. Hindari menggunakan kertas yang kusut, lembab, atau sudah dicetak sebelumnya.\n  6. Jalankan Paper Guide Cleaning dari printer utility untuk membersihkan roller secara otomatis.",
+      "metadata": {
+        "title": "Kertas Tidak Terambil atau Feed Error",
+        "category": "hardware",
+        "tags": [
+          "kertas tidak terambil",
+          "feed error",
+          "paper feed",
+          "roller kotor",
+          "no paper error"
+        ],
+        "source_doc": "ET-2400_PaperFeedingGuide_v2.4.pdf",
+        "last_updated": "2024-02-08",
+        "gejala": "Printer memberikan error No Paper padahal kertas sudah ada di tray, atau kertas tidak terambil saat mencetak.",
+        "penyebab": "Roller kertas kotor, terlalu banyak kertas di tray, kertas lembab, atau panduan kertas tidak pas.",
+        "n_steps": 6
+      },
+      "embedding_text": "[HARDWARE] Kertas Tidak Terambil atau Feed Error\n\nGejala: Printer memberikan error No Paper padahal kertas sudah ada di tray, atau kertas tidak terambil saat mencetak.\n\nPenyebab: Roller kertas kotor, terlalu banyak kertas di tray, kertas lembab, atau panduan kertas tidak pas.\n\nLangkah Penyelesaian:\n  1. Keluarkan semua kertas dari tray; bersihkan roller pengambil kertas dengan kain lembut yang sedikit lembab.\n  2. Pastikan jumlah kertas di tray tidak melebihi batas maksimum.\n  3. Kipas kertas dan ratakan te"
+    },
+    {
+      "id": "kb_hw009",
+      "chunk_id": "kb_hw009_c4395fce",
+      "document": "[HARDWARE] Ink Pad Penuh - Warning Service Life\n\nGejala: Muncul pesan 'Parts inside your printer are near the end of their service life' atau 'Ink pad is at the end of its service life'.\n\nPenyebab: Ink pad (bantalan tinta pembuangan) telah mencapai kapasitas maksimum setelah pemakaian jangka panjang.\n\nLangkah Penyelesaian:\n  1. Perhatikan bahwa ini adalah peringatan normal setelah penggunaan jangka panjang.\n  2. Printer masih bisa digunakan sementara dengan dismiss peringatan.\n  3. Segera hubungi Epson Authorized Service Center.\n  4. Jika printer masih dalam garansi, penggantian ink pad ditanggung garansi.\n  5. Di luar garansi, minta penggantian ink pad di service center resmi Epson.\n  6. Jangan mencoba membongkar printer sendiri untuk mengganti ink pad.",
+      "metadata": {
+        "title": "Ink Pad Penuh - Warning Service Life",
+        "category": "hardware",
+        "tags": [
+          "ink pad penuh",
+          "ink pad warning",
+          "service life",
+          "maintenance",
+          "epson service center"
+        ],
+        "source_doc": "ET-2400_InkPadMaintenanceAlert_v1.0.pdf",
+        "last_updated": "2024-03-22",
+        "gejala": "Muncul pesan 'Parts inside your printer are near the end of their service life' atau 'Ink pad is at the end of its service life'.",
+        "penyebab": "Ink pad (bantalan tinta pembuangan) telah mencapai kapasitas maksimum setelah pemakaian jangka panjang.",
+        "n_steps": 6
+      },
+      "embedding_text": "[HARDWARE] Ink Pad Penuh - Warning Service Life\n\nGejala: Muncul pesan 'Parts inside your printer are near the end of their service life' atau 'Ink pad is at the end of its service life'.\n\nPenyebab: Ink pad (bantalan tinta pembuangan) telah mencapai kapasitas maksimum setelah pemakaian jangka panjang.\n\nLangkah Penyelesaian:\n  1. Perhatikan bahwa ini adalah peringatan normal setelah penggunaan jangka panjang.\n  2. Printer masih bisa digunakan sementara dengan dismiss peringatan.\n  3. Segera hubungi Epson Auth"
+    },
+    {
+      "id": "kb_hw010",
+      "chunk_id": "kb_hw010_8b03eec1",
+      "document": "[HARDWARE] Printer Tiba-tiba Mati Sendiri\n\nGejala: Printer mati secara tiba-tiba di tengah proses cetak atau saat idle tanpa perintah dari pengguna.\n\nPenyebab: Fitur Power Off Timer aktif, overheating, atau masalah pada power supply.\n\nLangkah Penyelesaian:\n  1. Periksa pengaturan Power Off Timer di printer utility.\n  2. Nonaktifkan Power Off Timer atau atur ke nilai yang lebih tinggi.\n  3. Pastikan ventilasi printer tidak terhalang; jauhkan printer dari dinding minimal 10 cm.\n  4. Hindari menempatkan printer di area panas atau terkena sinar matahari langsung.\n  5. Biarkan printer diistirahatkan 5-10 menit setelah banyak pekerjaan cetak.\n  6. Jika mati berulang tanpa pola jelas, hubungi Epson Service Center.",
+      "metadata": {
+        "title": "Printer Tiba-tiba Mati Sendiri",
+        "category": "hardware",
+        "tags": [
+          "printer mati sendiri",
+          "power off timer",
+          "overheating",
+          "auto shutdown",
+          "power issue"
+        ],
+        "source_doc": "ET-2400_PowerManagementGuide_v1.9.pdf",
+        "last_updated": "2024-02-25",
+        "gejala": "Printer mati secara tiba-tiba di tengah proses cetak atau saat idle tanpa perintah dari pengguna.",
+        "penyebab": "Fitur Power Off Timer aktif, overheating, atau masalah pada power supply.",
+        "n_steps": 6
+      },
+      "embedding_text": "[HARDWARE] Printer Tiba-tiba Mati Sendiri\n\nGejala: Printer mati secara tiba-tiba di tengah proses cetak atau saat idle tanpa perintah dari pengguna.\n\nPenyebab: Fitur Power Off Timer aktif, overheating, atau masalah pada power supply.\n\nLangkah Penyelesaian:\n  1. Periksa pengaturan Power Off Timer di printer utility.\n  2. Nonaktifkan Power Off Timer atau atur ke nilai yang lebih tinggi.\n  3. Pastikan ventilasi printer tidak terhalang; jauhkan printer dari dinding minimal 10 cm.\n  4. Hindari menempatkan printe"
+    },
+    {
+      "id": "kb_fw001",
+      "chunk_id": "kb_fw001_d7bd565b",
+      "document": "[FIRMWARE] Cara Update Firmware Printer Epson ET-2400\n\nGejala: Printer memerlukan update firmware untuk perbaikan bug atau peningkatan performa.\n\nPenyebab: Firmware yang terinstal sudah usang (outdated).\n\nLangkah Penyelesaian:\n  1. Pastikan printer menyala dan terhubung ke internet atau komputer.\n  2. Download Epson Software Updater dari epson.com/support.\n  3. Install dan jalankan Epson Software Updater.\n  4. Aplikasi akan otomatis mendeteksi printer dan menampilkan update yang tersedia.\n  5. Pilih firmware update yang tersedia dan klik Install.\n  6. JANGAN matikan printer atau komputer selama proses update berlangsung.\n  7. Setelah selesai, printer akan restart secara otomatis.\n  8. Verifikasi versi firmware baru: Settings > Printer Information > Firmware Version.",
+      "metadata": {
+        "title": "Cara Update Firmware Printer Epson ET-2400",
+        "category": "firmware",
+        "tags": [
+          "firmware update",
+          "epson software updater",
+          "update driver",
+          "firmware version",
+          "upgrade"
+        ],
+        "source_doc": "ET-2400_FirmwareUpdateGuide_v3.0.pdf",
+        "last_updated": "2024-01-05",
+        "gejala": "Printer memerlukan update firmware untuk perbaikan bug atau peningkatan performa.",
+        "penyebab": "Firmware yang terinstal sudah usang (outdated).",
+        "n_steps": 8
+      },
+      "embedding_text": "[FIRMWARE] Cara Update Firmware Printer Epson ET-2400\n\nGejala: Printer memerlukan update firmware untuk perbaikan bug atau peningkatan performa.\n\nPenyebab: Firmware yang terinstal sudah usang (outdated).\n\nLangkah Penyelesaian:\n  1. Pastikan printer menyala dan terhubung ke internet atau komputer.\n  2. Download Epson Software Updater dari epson.com/support.\n  3. Install dan jalankan Epson Software Updater.\n  4. Aplikasi akan otomatis mendeteksi printer dan menampilkan update yang tersedia.\n  5. Pilih firmwar"
+    },
+    {
+      "id": "kb_fw002",
+      "chunk_id": "kb_fw002_25ab3a8a",
+      "document": "[FIRMWARE] Firmware Update Gagal atau Terhenti di Tengah Proses\n\nGejala: Proses update firmware berhenti di tengah jalan atau printer tidak bisa digunakan setelah update gagal.\n\nPenyebab: Koneksi internet terputus, daya baterai rendah (laptop), atau file update korup.\n\nLangkah Penyelesaian:\n  1. Jangan panik: printer biasanya memiliki mekanisme rollback firmware otomatis.\n  2. Matikan printer, cabut kabel power, tunggu 2 menit, nyalakan kembali.\n  3. Cek apakah printer bisa beroperasi normal; jika ya, coba update ulang.\n  4. Pastikan koneksi internet stabil sebelum memulai update ulang.\n  5. Jika menggunakan laptop, pastikan tersambung ke charger selama update.\n  6. Unduh file firmware secara manual dari website Epson untuk update offline.\n  7. Jika printer tidak bisa booting sama sekali, hubungi Epson Support segera.",
+      "metadata": {
+        "title": "Firmware Update Gagal atau Terhenti di Tengah Proses",
+        "category": "firmware",
+        "tags": [
+          "firmware update gagal",
+          "update error",
+          "firmware rollback",
+          "update terhenti",
+          "recovery"
+        ],
+        "source_doc": "ET-2400_FirmwareRecoveryGuide_v2.1.pdf",
+        "last_updated": "2024-02-14",
+        "gejala": "Proses update firmware berhenti di tengah jalan atau printer tidak bisa digunakan setelah update gagal.",
+        "penyebab": "Koneksi internet terputus, daya baterai rendah (laptop), atau file update korup.",
+        "n_steps": 7
+      },
+      "embedding_text": "[FIRMWARE] Firmware Update Gagal atau Terhenti di Tengah Proses\n\nGejala: Proses update firmware berhenti di tengah jalan atau printer tidak bisa digunakan setelah update gagal.\n\nPenyebab: Koneksi internet terputus, daya baterai rendah (laptop), atau file update korup.\n\nLangkah Penyelesaian:\n  1. Jangan panik: printer biasanya memiliki mekanisme rollback firmware otomatis.\n  2. Matikan printer, cabut kabel power, tunggu 2 menit, nyalakan kembali.\n  3. Cek apakah printer bisa beroperasi normal; jika ya, coba "
+    },
+    {
+      "id": "kb_fw003",
+      "chunk_id": "kb_fw003_b212b596",
+      "document": "[FIRMWARE] Printer Tidak Terdeteksi Setelah Update Firmware\n\nGejala: Setelah berhasil update firmware, printer tidak lagi terdeteksi oleh komputer.\n\nPenyebab: Update firmware dapat me-reset konfigurasi jaringan atau mengubah device ID.\n\nLangkah Penyelesaian:\n  1. Restart komputer dan printer; sambungkan ulang.\n  2. Hapus printer dari daftar printer di Settings > Devices > Printers & Scanners.\n  3. Tambahkan kembali printer dan biarkan Windows mendeteksi otomatis.\n  4. Jika tidak terdeteksi, download ulang driver terbaru dari website Epson.\n  5. Untuk koneksi WiFi: konfigurasi ulang printer ke jaringan WiFi.\n  6. Jalankan Epson Install Navi untuk setup ulang printer secara menyeluruh.",
+      "metadata": {
+        "title": "Printer Tidak Terdeteksi Setelah Update Firmware",
+        "category": "firmware",
+        "tags": [
+          "printer tidak terdeteksi",
+          "post firmware update",
+          "reinstall driver",
+          "device not found",
+          "firmware issue"
+        ],
+        "source_doc": "ET-2400_PostUpdateTroubleshoot_v1.8.pdf",
+        "last_updated": "2024-03-10",
+        "gejala": "Setelah berhasil update firmware, printer tidak lagi terdeteksi oleh komputer.",
+        "penyebab": "Update firmware dapat me-reset konfigurasi jaringan atau mengubah device ID.",
+        "n_steps": 6
+      },
+      "embedding_text": "[FIRMWARE] Printer Tidak Terdeteksi Setelah Update Firmware\n\nGejala: Setelah berhasil update firmware, printer tidak lagi terdeteksi oleh komputer.\n\nPenyebab: Update firmware dapat me-reset konfigurasi jaringan atau mengubah device ID.\n\nLangkah Penyelesaian:\n  1. Restart komputer dan printer; sambungkan ulang.\n  2. Hapus printer dari daftar printer di Settings > Devices > Printers & Scanners.\n  3. Tambahkan kembali printer dan biarkan Windows mendeteksi otomatis.\n  4. Jika tidak terdeteksi, download ulang d"
+    },
+    {
+      "id": "kb_fw004",
+      "chunk_id": "kb_fw004_638801e9",
+      "document": "[FIRMWARE] Reset Printer ke Pengaturan Pabrik\n\nGejala: Printer mengalami masalah persisten atau perlu dikonfigurasi ulang dari awal.\n\nPenyebab: Konfigurasi sistem korup atau perlu penghapusan semua pengaturan jaringan.\n\nLangkah Penyelesaian:\n  1. PERHATIAN: Factory reset akan menghapus SEMUA pengaturan termasuk konfigurasi WiFi.\n  2. Pada panel kontrol printer, masuk ke Settings (ikon gear).\n  3. Pilih Restore Default Settings atau Reset.\n  4. Pilih jenis reset: Network Settings (hanya reset jaringan) atau All Settings (reset total).\n  5. Konfirmasi pilihan; printer akan restart secara otomatis.\n  6. Setelah reset, setup ulang printer: konfigurasi WiFi dan preferensi lainnya.\n  7. Install ulang driver di komputer jika diperlukan.",
+      "metadata": {
+        "title": "Reset Printer ke Pengaturan Pabrik",
+        "category": "firmware",
+        "tags": [
+          "factory reset",
+          "reset printer",
+          "restore default",
+          "konfigurasi ulang",
+          "hard reset"
+        ],
+        "source_doc": "ET-2400_ResetProcedureGuide_v2.0.pdf",
+        "last_updated": "2024-01-20",
+        "gejala": "Printer mengalami masalah persisten atau perlu dikonfigurasi ulang dari awal.",
+        "penyebab": "Konfigurasi sistem korup atau perlu penghapusan semua pengaturan jaringan.",
+        "n_steps": 7
+      },
+      "embedding_text": "[FIRMWARE] Reset Printer ke Pengaturan Pabrik\n\nGejala: Printer mengalami masalah persisten atau perlu dikonfigurasi ulang dari awal.\n\nPenyebab: Konfigurasi sistem korup atau perlu penghapusan semua pengaturan jaringan.\n\nLangkah Penyelesaian:\n  1. PERHATIAN: Factory reset akan menghapus SEMUA pengaturan termasuk konfigurasi WiFi.\n  2. Pada panel kontrol printer, masuk ke Settings (ikon gear).\n  3. Pilih Restore Default Settings atau Reset.\n  4. Pilih jenis reset: Network Settings (hanya reset jaringan) atau "
+    },
+    {
+      "id": "kb_fw005",
+      "chunk_id": "kb_fw005_9c33db39",
+      "document": "[FIRMWARE] Fitur WiFi Direct Tidak Berfungsi Setelah Update\n\nGejala: Koneksi WiFi Direct printer tidak bisa digunakan oleh perangkat mobile setelah update firmware.\n\nPenyebab: Update firmware dapat mengubah password WiFi Direct atau menonaktifkan fitur.\n\nLangkah Penyelesaian:\n  1. Pada panel kontrol, masuk ke Settings > WiFi/Network Settings > WiFi Direct.\n  2. Aktifkan fitur WiFi Direct jika belum aktif.\n  3. Catat SSID dan password WiFi Direct yang baru.\n  4. Di perangkat mobile, hapus koneksi WiFi Direct lama ke printer.\n  5. Sambungkan ulang menggunakan SSID dan password yang baru.\n  6. Untuk Android gunakan Epson Print Enabler; untuk iOS gunakan Epson iPrint.",
+      "metadata": {
+        "title": "Fitur WiFi Direct Tidak Berfungsi Setelah Update",
+        "category": "firmware",
+        "tags": [
+          "wifi direct",
+          "mobile printing",
+          "firmware update",
+          "wifi direct password",
+          "epson iPrint"
+        ],
+        "source_doc": "ET-2400_WiFiDirectSetupGuide_v1.7.pdf",
+        "last_updated": "2024-02-22",
+        "gejala": "Koneksi WiFi Direct printer tidak bisa digunakan oleh perangkat mobile setelah update firmware.",
+        "penyebab": "Update firmware dapat mengubah password WiFi Direct atau menonaktifkan fitur.",
+        "n_steps": 6
+      },
+      "embedding_text": "[FIRMWARE] Fitur WiFi Direct Tidak Berfungsi Setelah Update\n\nGejala: Koneksi WiFi Direct printer tidak bisa digunakan oleh perangkat mobile setelah update firmware.\n\nPenyebab: Update firmware dapat mengubah password WiFi Direct atau menonaktifkan fitur.\n\nLangkah Penyelesaian:\n  1. Pada panel kontrol, masuk ke Settings > WiFi/Network Settings > WiFi Direct.\n  2. Aktifkan fitur WiFi Direct jika belum aktif.\n  3. Catat SSID dan password WiFi Direct yang baru.\n  4. Di perangkat mobile, hapus koneksi WiFi Direct"
+    },
+    {
+      "id": "kb_fw006",
+      "chunk_id": "kb_fw006_1012560c",
+      "document": "[FIRMWARE] Driver Printer Tidak Kompatibel dengan OS Baru\n\nGejala: Setelah upgrade OS (Windows 10 ke 11, macOS update), printer tidak lagi berfungsi.\n\nPenyebab: Driver lama tidak kompatibel dengan versi OS yang baru.\n\nLangkah Penyelesaian:\n  1. Uninstall driver printer lama via Control Panel > Programs > Uninstall a Program.\n  2. Restart komputer.\n  3. Kunjungi epson.com/support dan pilih produk ET-2400.\n  4. Download driver terbaru yang sesuai dengan versi OS terbaru.\n  5. Jalankan installer dan ikuti panduan instalasi.\n  6. Setelah instalasi, restart komputer dan test print.\n  7. Untuk macOS: tambahkan printer via System Settings > Printers & Scanners > Add Printer.",
+      "metadata": {
+        "title": "Driver Printer Tidak Kompatibel dengan OS Baru",
+        "category": "firmware",
+        "tags": [
+          "driver tidak kompatibel",
+          "OS upgrade",
+          "Windows 11",
+          "macOS update",
+          "reinstall driver"
+        ],
+        "source_doc": "ET-2400_DriverCompatibilityGuide_v4.2.pdf",
+        "last_updated": "2024-03-18",
+        "gejala": "Setelah upgrade OS (Windows 10 ke 11, macOS update), printer tidak lagi berfungsi.",
+        "penyebab": "Driver lama tidak kompatibel dengan versi OS yang baru.",
+        "n_steps": 7
+      },
+      "embedding_text": "[FIRMWARE] Driver Printer Tidak Kompatibel dengan OS Baru\n\nGejala: Setelah upgrade OS (Windows 10 ke 11, macOS update), printer tidak lagi berfungsi.\n\nPenyebab: Driver lama tidak kompatibel dengan versi OS yang baru.\n\nLangkah Penyelesaian:\n  1. Uninstall driver printer lama via Control Panel > Programs > Uninstall a Program.\n  2. Restart komputer.\n  3. Kunjungi epson.com/support dan pilih produk ET-2400.\n  4. Download driver terbaru yang sesuai dengan versi OS terbaru.\n  5. Jalankan installer dan ikuti pand"
+    },
+    {
+      "id": "kb_fw007",
+      "chunk_id": "kb_fw007_3a2c36ec",
+      "document": "[FIRMWARE] Pembaruan Otomatis Firmware Tidak Berjalan\n\nGejala: Printer tidak menerima update firmware secara otomatis meskipun fitur auto-update diaktifkan.\n\nPenyebab: Koneksi internet terbatas, firewall memblokir update, atau pengaturan auto-update salah.\n\nLangkah Penyelesaian:\n  1. Pastikan printer terhubung ke internet dan bisa mengakses jaringan.\n  2. Di Epson Software Updater, verifikasi: Tools > Update Settings > Enable Automatic Updates.\n  3. Periksa firewall atau antivirus yang mungkin memblokir koneksi ke server update Epson.\n  4. Pastikan port 443 (HTTPS) tidak diblokir oleh router atau firewall.\n  5. Lakukan update manual: buka Epson Software Updater > Check for Updates.",
+      "metadata": {
+        "title": "Pembaruan Otomatis Firmware Tidak Berjalan",
+        "category": "firmware",
+        "tags": [
+          "auto update firmware",
+          "firmware otomatis",
+          "update server",
+          "firewall printer",
+          "epson software updater"
+        ],
+        "source_doc": "ET-2400_AutoUpdateConfiguration_v1.4.pdf",
+        "last_updated": "2024-01-30",
+        "gejala": "Printer tidak menerima update firmware secara otomatis meskipun fitur auto-update diaktifkan.",
+        "penyebab": "Koneksi internet terbatas, firewall memblokir update, atau pengaturan auto-update salah.",
+        "n_steps": 5
+      },
+      "embedding_text": "[FIRMWARE] Pembaruan Otomatis Firmware Tidak Berjalan\n\nGejala: Printer tidak menerima update firmware secara otomatis meskipun fitur auto-update diaktifkan.\n\nPenyebab: Koneksi internet terbatas, firewall memblokir update, atau pengaturan auto-update salah.\n\nLangkah Penyelesaian:\n  1. Pastikan printer terhubung ke internet dan bisa mengakses jaringan.\n  2. Di Epson Software Updater, verifikasi: Tools > Update Settings > Enable Automatic Updates.\n  3. Periksa firewall atau antivirus yang mungkin memblokir kon"
+    },
+    {
+      "id": "kb_fw008",
+      "chunk_id": "kb_fw008_8d5d9d8f",
+      "document": "[FIRMWARE] Verifikasi Versi Firmware yang Terinstal\n\nGejala: Pengguna perlu mengetahui versi firmware yang sedang berjalan di printer.\n\nPenyebab: Informasi ini dibutuhkan untuk laporan masalah atau memastikan update berhasil.\n\nLangkah Penyelesaian:\n  1. Dari panel kontrol printer: tekan Settings (ikon gear) > Printer Information.\n  2. Gulir untuk menemukan Firmware Version; catat kode versinya (contoh: FL18I5).\n  3. Alternatif via komputer: buka Epson Printer Utility > Printer and Option Information.\n  4. Bandingkan dengan versi terbaru di website Epson support ET-2400.\n  5. Jika versi berbeda, lakukan update menggunakan Epson Software Updater.\n  6. Catat nomor versi firmware sebelum dan sesudah update untuk dokumentasi.",
+      "metadata": {
+        "title": "Verifikasi Versi Firmware yang Terinstal",
+        "category": "firmware",
+        "tags": [
+          "versi firmware",
+          "firmware version",
+          "printer information",
+          "cek firmware",
+          "FL code"
+        ],
+        "source_doc": "ET-2400_SystemInformationGuide_v1.2.pdf",
+        "last_updated": "2024-02-18",
+        "gejala": "Pengguna perlu mengetahui versi firmware yang sedang berjalan di printer.",
+        "penyebab": "Informasi ini dibutuhkan untuk laporan masalah atau memastikan update berhasil.",
+        "n_steps": 6
+      },
+      "embedding_text": "[FIRMWARE] Verifikasi Versi Firmware yang Terinstal\n\nGejala: Pengguna perlu mengetahui versi firmware yang sedang berjalan di printer.\n\nPenyebab: Informasi ini dibutuhkan untuk laporan masalah atau memastikan update berhasil.\n\nLangkah Penyelesaian:\n  1. Dari panel kontrol printer: tekan Settings (ikon gear) > Printer Information.\n  2. Gulir untuk menemukan Firmware Version; catat kode versinya (contoh: FL18I5).\n  3. Alternatif via komputer: buka Epson Printer Utility > Printer and Option Information.\n  4. B"
+    },
+    {
+      "id": "kb_go001",
+      "chunk_id": "kb_go001_75e4c08e",
+      "document": "[GENERAL OPS] Setup Awal Printer Epson ET-2400\n\nGejala: Printer baru diterima dan perlu dikonfigurasi untuk pertama kali.\n\nPenyebab: Prosedur setup awal diperlukan untuk semua printer baru.\n\nLangkah Penyelesaian:\n  1. Keluarkan printer dari kemasan dan lepas semua material pengaman.\n  2. Isi tangki tinta dengan botol tinta yang disertakan; ikuti urutan warna yang tertera.\n  3. Sambungkan kabel power dan nyalakan printer.\n  4. Ikuti panduan setup awal di panel kontrol: pilih bahasa, zona waktu, dan konfigurasi WiFi.\n  5. Download dan instal Epson Install Navi dari epson.com/support di komputer.\n  6. Ikuti instruksi Install Navi untuk menyelesaikan setup driver dan software.\n  7. Lakukan test print untuk memverifikasi printer bekerja dengan baik.",
+      "metadata": {
+        "title": "Setup Awal Printer Epson ET-2400",
+        "category": "general_ops",
+        "tags": [
+          "setup awal",
+          "first time setup",
+          "instalasi printer",
+          "unboxing",
+          "install navi"
+        ],
+        "source_doc": "ET-2400_QuickStartGuide_v5.0.pdf",
+        "last_updated": "2024-01-02",
+        "gejala": "Printer baru diterima dan perlu dikonfigurasi untuk pertama kali.",
+        "penyebab": "Prosedur setup awal diperlukan untuk semua printer baru.",
+        "n_steps": 7
+      },
+      "embedding_text": "[GENERAL OPS] Setup Awal Printer Epson ET-2400\n\nGejala: Printer baru diterima dan perlu dikonfigurasi untuk pertama kali.\n\nPenyebab: Prosedur setup awal diperlukan untuk semua printer baru.\n\nLangkah Penyelesaian:\n  1. Keluarkan printer dari kemasan dan lepas semua material pengaman.\n  2. Isi tangki tinta dengan botol tinta yang disertakan; ikuti urutan warna yang tertera.\n  3. Sambungkan kabel power dan nyalakan printer.\n  4. Ikuti panduan setup awal di panel kontrol: pilih bahasa, zona waktu, dan konfigura"
+    },
+    {
+      "id": "kb_go002",
+      "chunk_id": "kb_go002_95f84c75",
+      "document": "[GENERAL OPS] Cara Mengisi Ulang Tangki Tinta EcoTank\n\nGejala: Level tinta mendekati atau mencapai garis minimum; perlu pengisian ulang.\n\nPenyebab: Pemakaian normal yang menghabiskan tinta.\n\nLangkah Penyelesaian:\n  1. Pastikan printer menyala; buka penutup tangki tinta.\n  2. Periksa indikator level tinta untuk menentukan warna yang perlu diisi.\n  3. Buka tutup tangki tinta yang akan diisi.\n  4. Kocok botol tinta perlahan sebelum membukanya.\n  5. Tusuk segel botol tinta dan masukkan ujung botol ke dalam lubang tangki.\n  6. Biarkan tinta mengalir secara gravitasi hingga mencapai garis batas MAX.\n  7. Tutup kembali tangki dengan rapat.\n  8. Perbarui level tinta di printer utility jika diminta.",
+      "metadata": {
+        "title": "Cara Mengisi Ulang Tangki Tinta EcoTank",
+        "category": "general_ops",
+        "tags": [
+          "isi ulang tinta",
+          "refill ink",
+          "ecotank",
+          "ink level",
+          "tangki tinta"
+        ],
+        "source_doc": "ET-2400_InkRefillGuide_v3.3.pdf",
+        "last_updated": "2024-01-08",
+        "gejala": "Level tinta mendekati atau mencapai garis minimum; perlu pengisian ulang.",
+        "penyebab": "Pemakaian normal yang menghabiskan tinta.",
+        "n_steps": 8
+      },
+      "embedding_text": "[GENERAL OPS] Cara Mengisi Ulang Tangki Tinta EcoTank\n\nGejala: Level tinta mendekati atau mencapai garis minimum; perlu pengisian ulang.\n\nPenyebab: Pemakaian normal yang menghabiskan tinta.\n\nLangkah Penyelesaian:\n  1. Pastikan printer menyala; buka penutup tangki tinta.\n  2. Periksa indikator level tinta untuk menentukan warna yang perlu diisi.\n  3. Buka tutup tangki tinta yang akan diisi.\n  4. Kocok botol tinta perlahan sebelum membukanya.\n  5. Tusuk segel botol tinta dan masukkan ujung botol ke dalam luba"
+    },
+    {
+      "id": "kb_go003",
+      "chunk_id": "kb_go003_9e86b9a5",
+      "document": "[GENERAL OPS] Menghubungkan Printer ke Jaringan WiFi\n\nGejala: Printer perlu dihubungkan ke jaringan WiFi baru atau dikonfigurasi ulang setelah ganti router.\n\nPenyebab: Setup WiFi diperlukan untuk koneksi nirkabel.\n\nLangkah Penyelesaian:\n  1. Pastikan router WiFi aktif dan Anda mengetahui SSID dan password WiFi.\n  2. Pada panel kontrol printer, masuk ke Settings > WiFi/Network Settings.\n  3. Pilih WiFi Setup Wizard.\n  4. Pilih nama jaringan WiFi Anda dari daftar.\n  5. Masukkan password WiFi menggunakan keypad di layar.\n  6. Konfirmasi dan tunggu proses koneksi (30-60 detik).\n  7. Verifikasi koneksi: lampu WiFi harus menyala stabil bukan berkedip.\n  8. Print Network Status Sheet untuk melihat detail koneksi jaringan.",
+      "metadata": {
+        "title": "Menghubungkan Printer ke Jaringan WiFi",
+        "category": "general_ops",
+        "tags": [
+          "setup wifi",
+          "koneksi wifi",
+          "wireless setup",
+          "jaringan printer",
+          "wifi configuration"
+        ],
+        "source_doc": "ET-2400_NetworkSetupGuide_v4.1.pdf",
+        "last_updated": "2024-01-12",
+        "gejala": "Printer perlu dihubungkan ke jaringan WiFi baru atau dikonfigurasi ulang setelah ganti router.",
+        "penyebab": "Setup WiFi diperlukan untuk koneksi nirkabel.",
+        "n_steps": 8
+      },
+      "embedding_text": "[GENERAL OPS] Menghubungkan Printer ke Jaringan WiFi\n\nGejala: Printer perlu dihubungkan ke jaringan WiFi baru atau dikonfigurasi ulang setelah ganti router.\n\nPenyebab: Setup WiFi diperlukan untuk koneksi nirkabel.\n\nLangkah Penyelesaian:\n  1. Pastikan router WiFi aktif dan Anda mengetahui SSID dan password WiFi.\n  2. Pada panel kontrol printer, masuk ke Settings > WiFi/Network Settings.\n  3. Pilih WiFi Setup Wizard.\n  4. Pilih nama jaringan WiFi Anda dari daftar.\n  5. Masukkan password WiFi menggunakan keypa"
+    },
+    {
+      "id": "kb_go004",
+      "chunk_id": "kb_go004_5aadb24c",
+      "document": "[GENERAL OPS] Printer Offline - Tidak Bisa Cetak dari Komputer\n\nGejala: Status printer di komputer menunjukkan Offline dan pekerjaan cetak tidak dikirimkan ke printer.\n\nPenyebab: Koneksi jaringan terputus, printer sleep, atau antrian cetak bermasalah.\n\nLangkah Penyelesaian:\n  1. Pastikan printer menyala dan tidak dalam mode sleep.\n  2. Di Windows: Settings > Devices > Printers & Scanners > klik printer Epson > Open Queue.\n  3. Di menu Printer, pastikan Use Printer Offline TIDAK dicentang.\n  4. Hapus semua pekerjaan cetak yang tertahan di antrian.\n  5. Restart Print Spooler: buka Services.msc > Print Spooler > klik Restart.\n  6. Verifikasi printer dan komputer di jaringan WiFi yang sama.\n  7. Jika menggunakan USB, cabut dan pasang kembali kabel; coba port USB yang berbeda.",
+      "metadata": {
+        "title": "Printer Offline - Tidak Bisa Cetak dari Komputer",
+        "category": "general_ops",
+        "tags": [
+          "printer offline",
+          "status offline",
+          "print spooler",
+          "antrian cetak",
+          "use printer offline"
+        ],
+        "source_doc": "ET-2400_OfflineStatusFix_v2.8.pdf",
+        "last_updated": "2024-02-02",
+        "gejala": "Status printer di komputer menunjukkan Offline dan pekerjaan cetak tidak dikirimkan ke printer.",
+        "penyebab": "Koneksi jaringan terputus, printer sleep, atau antrian cetak bermasalah.",
+        "n_steps": 7
+      },
+      "embedding_text": "[GENERAL OPS] Printer Offline - Tidak Bisa Cetak dari Komputer\n\nGejala: Status printer di komputer menunjukkan Offline dan pekerjaan cetak tidak dikirimkan ke printer.\n\nPenyebab: Koneksi jaringan terputus, printer sleep, atau antrian cetak bermasalah.\n\nLangkah Penyelesaian:\n  1. Pastikan printer menyala dan tidak dalam mode sleep.\n  2. Di Windows: Settings > Devices > Printers & Scanners > klik printer Epson > Open Queue.\n  3. Di menu Printer, pastikan Use Printer Offline TIDAK dicentang.\n  4. Hapus semua p"
+    },
+    {
+      "id": "kb_go005",
+      "chunk_id": "kb_go005_05bbcf2f",
+      "document": "[GENERAL OPS] Menggunakan Epson Connect untuk Print dari Mana Saja\n\nGejala: Pengguna ingin mencetak dokumen dari luar jaringan rumah atau kantor menggunakan Epson Connect.\n\nPenyebab: Setup Epson Connect diperlukan untuk remote printing.\n\nLangkah Penyelesaian:\n  1. Kunjungi epsonconnect.com dan buat akun Epson Connect (gratis).\n  2. Daftarkan printer ET-2400 ke akun menggunakan email dan product serial number.\n  3. Di printer, aktifkan Epson Connect: Settings > Epson Connect Services > Register.\n  4. Catat alamat email unik printer Anda (format: id@print.epsonconnect.com).\n  5. Untuk mencetak, kirim dokumen sebagai lampiran email ke alamat email printer.\n  6. Dokumen akan otomatis dicetak saat printer online.\n  7. Install aplikasi Epson iPrint di smartphone untuk fitur lebih lengkap.",
+      "metadata": {
+        "title": "Menggunakan Epson Connect untuk Print dari Mana Saja",
+        "category": "general_ops",
+        "tags": [
+          "epson connect",
+          "remote printing",
+          "cloud print",
+          "email print",
+          "mobile printing"
+        ],
+        "source_doc": "ET-2400_EpsonConnectSetup_v2.6.pdf",
+        "last_updated": "2024-03-25",
+        "gejala": "Pengguna ingin mencetak dokumen dari luar jaringan rumah atau kantor menggunakan Epson Connect.",
+        "penyebab": "Setup Epson Connect diperlukan untuk remote printing.",
+        "n_steps": 7
+      },
+      "embedding_text": "[GENERAL OPS] Menggunakan Epson Connect untuk Print dari Mana Saja\n\nGejala: Pengguna ingin mencetak dokumen dari luar jaringan rumah atau kantor menggunakan Epson Connect.\n\nPenyebab: Setup Epson Connect diperlukan untuk remote printing.\n\nLangkah Penyelesaian:\n  1. Kunjungi epsonconnect.com dan buat akun Epson Connect (gratis).\n  2. Daftarkan printer ET-2400 ke akun menggunakan email dan product serial number.\n  3. Di printer, aktifkan Epson Connect: Settings > Epson Connect Services > Register.\n  4. Catat a"
+    }
+  ]
+}
