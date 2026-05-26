@@ -85,13 +85,18 @@ export default function TicketsPage() {
   }, []);
 
   const filteredTickets = tickets.filter((ticket) => {
+    const title = ticket?.title || "";
+    const id = ticket?.id || "";
+    const status = ticket?.status || "";
+    const priority = ticket?.priority || "";
+
     const matchesSearch =
-      ticket.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      ticket.id.toLowerCase().includes(searchTerm.toLowerCase());
+      title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      id.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus =
-      statusFilter === "all" || ticket.status === statusFilter;
+      statusFilter === "all" || status === statusFilter;
     const matchesPriority =
-      priorityFilter === "all" || ticket.priority === priorityFilter;
+      priorityFilter === "all" || priority === priorityFilter;
 
     return matchesSearch && matchesStatus && matchesPriority;
   });
@@ -240,13 +245,17 @@ export default function TicketsPage() {
                         {ticket.id}
                       </span>
                     </td>
-                    <td className="px-6 py-4">
-                      <div>
-                        <p className="font-medium text-gray-900">
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex flex-col">
+                        <p className="text-sm font-medium text-gray-900">
                           {ticket.title}
                         </p>
                         <p className="text-xs text-gray-500 mt-1">
-                          {ticket.description.substring(0, 50)}...
+                          {ticket.description
+                            ? ticket.description.length > 50
+                              ? ticket.description.substring(0, 50) + "..."
+                              : ticket.description
+                            : "No description"}
                         </p>
                       </div>
                     </td>

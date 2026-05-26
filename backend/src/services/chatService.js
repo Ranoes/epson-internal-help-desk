@@ -56,24 +56,28 @@ Jika tidak ada informasi relevan, katakan tidak tahu dan sarankan eskalasi ke IT
 Gunakan bahasa Indonesia yang jelas dan berikan langkah-langkah yang spesifik.\n\nCONTEXT:\n${context}`;
 
   // 4. Generate jawaban
-  const { reply, engineUsed } = escalated
+  const aiResult = escalated
     ? {
         reply:      'Maaf, saya tidak menemukan solusi untuk masalah ini. Tim IT Support akan segera dihubungi.',
         engineUsed: 'none'
       }
-    : await aiGenerate(systemPrompt, message, imageBase64);
+    : await aiGenerate(userId, sessionId, message, imageBase64);
+
+  // AI Result from FastAPI sometimes uses 'response_text' instead of 'reply'
+  const reply = aiResult.response_text || aiResult.reply || "Maaf, sistem tidak memberikan respon.";
+  const engineUsedData = aiResult.engine_used || aiResult.engineUsed || 'ollama-local';
 
   // 5. Simpan pesan asisten
-  const asstMsgId = `msg_${Date.now()}_a`;
+  const assistantMsgId = `msg_${Date.now()}_a`;
   await prisma.chatLog.create({
     data: {
-      id:        asstMsgId,
+      id:        assistantMsgId,
       sessionId, userId,
       role:      'assistant',
       content:   reply,
-      confidence,
-      escalated,
-      engineUsed,
+      confidence: aiResult.confidence_score || confidence,
+      escalated: aiResult.escalated ?? escalated,
+      engineUsed: engineUsedData,
       kbSources: topDocs.map(d => d.id)
     }
   });
@@ -94,13 +98,7 @@ Gunakan bahasa Indonesia yang jelas dan berikan langkah-langkah yang spesifik.\n
     await triggerEscalationWebhook({ ticketId, userId, question: message });
   }
 
-  return {
-    messageId:  asstMsgId,
-    reply,
-    confidence,
-    sources:    topDocs.map(d => ({ docId: d.id, title: d.title, relevance: d.score })),
-    escalated,
-    ticketId,
-    timestamp:  new Date().toISOString()
-  };
+  return { reply, confidence, sources: topDocs, escalated, ticketId, messageId: assistantMsgId };
 }
+
+module.exports = { processChat, vectorSearch, triggerEscalationWebhook };

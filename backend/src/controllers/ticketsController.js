@@ -17,9 +17,18 @@ async function list(req, res, next) {
     res.json({
       success: true, total,
       tickets: data.map(t => ({
-        ticketId: t.id, userId: t.userId, userName: t.user.name,
-        question: t.question, sessionId: t.sessionId, status: t.status,
-        assignedTo: t.assignedTo, createdAt: t.createdAt
+        id: t.id, 
+        userId: t.userId, 
+        userName: t.user.name,
+        title: t.question.substring(0, 50) + (t.question.length > 50 ? '...' : ''),
+        description: t.question, 
+        question: t.question, 
+        sessionId: t.sessionId, 
+        status: t.status.toLowerCase(),
+        priority: t.priority?.toLowerCase() || 'medium',
+        assignedTo: t.assignedTo, 
+        createdAt: t.createdAt,
+        updatedAt: t.updatedAt || t.createdAt
       }))
     });
   } catch (err) { next(err); }

@@ -22,4 +22,34 @@ async function login(req, res, next) {
   } catch (err) { next(err); }
 }
 
-module.exports = { login };
+async function register(req, res, next) {
+  try {
+    const { username, password, name, department, role } = req.body;
+    
+    const existingUser = await prisma.user.findUnique({ where: { username } });
+    if (existingUser) {
+      return res.status(400).json({ success: false, error: 'Username already taken' });
+    }
+
+    const passwordHash = await bcrypt.hash(password, 10);
+    const userId = `usr_${Date.now()}`;
+
+    const user = await prisma.user.create({
+      data: {
+        id: userId,
+        username,
+        passwordHash,
+        name,
+        department,
+        role: role || 'user'
+      }
+    });
+
+    res.status(201).json({ 
+      success: true, 
+      user: { id: user.id, username: user.username, name: user.name, role: user.role } 
+    });
+  } catch (err) { next(err); }
+}
+
+module.exports = { login, register };

@@ -8,6 +8,7 @@ import {
   FaChartLine,
   FaArrowUp,
   FaClipboardList,
+  FaCheckCircle,
 } from "react-icons/fa";
 import apiClient from "@/lib/api-client";
 
@@ -27,19 +28,25 @@ export default function AdminDashboard() {
   useEffect(() => {
     const fetchStats = async () => {
       try {
+        console.log("Fetching analytics from /analytics/summary...");
         const response = await apiClient.get("/analytics/summary");
-        setStats(response.data);
-      } catch (err) {
+        console.log("Analytics response:", response.data);
+
+        if (response.data && response.data.success) {
+          setStats({
+            totalTickets: response.data.totalTickets ?? 0,
+            activeTickets: response.data.activeTickets ?? 0,
+            resolvedTickets: response.data.resolvedTickets ?? 0,
+            totalUsers: response.data.totalUsers ?? 0,
+            knowledgeBaseArticles: response.data.knowledgeBaseArticles ?? 0,
+            averageResolutionTime: response.data.averageResolutionTime || "N/A",
+          });
+        }
+      } catch (err: any) {
         console.error("Failed to fetch analytics:", err);
-        // Mock data for development
-        setStats({
-          totalTickets: 156,
-          activeTickets: 23,
-          resolvedTickets: 133,
-          totalUsers: 47,
-          knowledgeBaseArticles: 89,
-          averageResolutionTime: "2.5 hours",
-        });
+        if (err.response?.status === 401 || err.response?.status === 403) {
+          console.warn("Auth error - admin access required");
+        }
       } finally {
         setLoading(false);
       }
@@ -187,6 +194,3 @@ export default function AdminDashboard() {
     </div>
   );
 }
-
-// Import FaCheckCircle for the resolved tickets card
-import { FaCheckCircle } from "react-icons/fa";

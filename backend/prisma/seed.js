@@ -5,20 +5,26 @@ const prisma = new PrismaClient();
 async function main() {
   console.log('Seeding users...');
   const hash = await bcrypt.hash('password123', 10);
+  const adminHash = await bcrypt.hash('adminpass123', 10);
 
   const users = [
-    { id: 'usr_001', username: 'admin',    name: 'Admin Sistem',  role: 'admin',   department: 'IT' },
-    { id: 'usr_002', username: 'manager1', name: 'Budi Santoso',  role: 'manager', department: 'Production' },
-    { id: 'usr_003', username: 'user001',  name: 'Siti Rahayu',   role: 'user',    department: 'QC' },
-    { id: 'usr_004', username: 'user002',  name: 'Andi Wijaya',   role: 'user',    department: 'Maintenance' },
-    { id: 'usr_005', username: 'user003',  name: 'Dewi Kusuma',   role: 'user',    department: 'Assembly' },
+    { id: 'usr_001', username: 'admin',    name: 'Admin Sistem',   role: 'admin',   department: 'IT', passwordHash: hash },
+    { id: 'usr_006', username: 'admin001', name: 'Global Admin', role: 'admin',   department: 'IT', passwordHash: adminHash },
+    { id: 'usr_002', username: 'manager1', name: 'Budi Santoso',   role: 'manager', department: 'Production', passwordHash: hash },
+    { id: 'usr_003', username: 'user001',  name: 'Siti Rahayu',   role: 'user',    department: 'QC', passwordHash: hash },
+    { id: 'usr_004', username: 'user002',  name: 'Andi Wijaya',   role: 'user',    department: 'Maintenance', passwordHash: hash },
+    { id: 'usr_005', username: 'user003',  name: 'Dewi Kusuma',   role: 'user',    department: 'Assembly', passwordHash: hash },
   ];
 
   for (const u of users) {
     await prisma.user.upsert({
       where: { id: u.id },
-      update: {},
-      create: { ...u, passwordHash: hash }
+      update: {
+        username: u.username,
+        role: u.role,
+        passwordHash: u.passwordHash
+      },
+      create: u
     });
   }
   console.log('Users seeded.');

@@ -1,3 +1,2 @@
-references/
-.venv/
-chroma_db/
+.env
+*.log

@@ -29,8 +29,9 @@ async function getOne(req, res, next) {
 async function create(req, res, next) {
   try {
     const { title, category, subcategory, content, tags, sourceDocument } = req.body;
+    const newId = `kb_${Date.now()}`;
     const kb = await prisma3.knowledgeBase.create({
-      data: { title, category, subcategory, content, tags: tags || [], sourceDoc: sourceDocument }
+      data: { id: newId, title, category, subcategory, content, tags: tags || [], sourceDoc: sourceDocument }
     });
     res.status(201).json({ success: true, id: kb.id, message: 'Knowledge entry created and indexed successfully' });
   } catch (err) { next(err); }

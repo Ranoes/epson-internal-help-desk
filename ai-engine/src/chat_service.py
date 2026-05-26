@@ -1,18 +1,35 @@
 import json
 import warnings
+import os
 from langchain_community.llms import Ollama
 from langchain_community.embeddings import OllamaEmbeddings
 from langchain_community.vectorstores import Chroma
 from langchain_core.prompts import PromptTemplate
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
+from typing import Optional
+import uvicorn
+import requests
 
 warnings.filterwarnings("ignore")
 
 # Konfigurasi Path & Model
-CHROMA_DB_DIR = "./chroma_db"
-LLM_MODEL = "llama3.2"
+CHROMA_DB_DIR = "chroma_db"
+LLM_MODEL = "qwen3.5:2b" # Disesuaikan ke Qwen yang tersedia (misal: qwen2.5:1.5b atau qwen2.5:3b)
 EMBEDDING_MODEL = "nomic-embed-text"
-THRESHOLD_SCORE = 0.6  # threshold eskalasi
-EVAL_DATA_PATH = "ai-engine/data/eval_dataset.json"
+THRESHOLD_SCORE = 0.55  # Sedikit diturunkan agar chatbot lebih berani menjawab
+CLARIFICATION_THRESHOLD = 0.45 # Di bawah ini baru eskalasi
+EVAL_DATA_PATH = os.path.join("data", "eval_dataset.json")
+
+app = FastAPI()
+
+class ChatRequest(BaseModel):
+    userId: str
+    sessionId: str
+    message: str
+    imageBase64: Optional[str] = None
+    engine: str = "ollama-local"
+    complexity: float = 0.0
 
 def setup_chat_environment():
     """Inisialisasi Vector DB dan LLM Ollama"""
@@ -31,9 +48,8 @@ def setup_chat_environment():
 
 def generate_helpdesk_response(query: str, vectorstore, llm):
     """
-    Fungsi utama yang menyatukan RAG, Prompt Engineering (Tugas 3), 
-    dan Confidence Scoring & Escalation Logic (Tugas 4).
-    Nantinya fungsi ini yang akan dipanggil oleh endpoint API Ahmadhani.
+    Fungsi utama yang menyatukan RAG, Prompt Engineering, 
+    dan Confidence Scoring & Escalation Logic.
     """
     # Ambil top 3 dokumen beserta relevance score-nya (0.0 - 1.0)
     docs_and_scores = vectorstore.similarity_search_with_relevance_scores(query, k=3)
@@ -41,7 +57,7 @@ def generate_helpdesk_response(query: str, vectorstore, llm):
     # Ambil skor tertinggi dari dokumen pertama (jika ada)
     highest_score = docs_and_scores[0][1] if docs_and_scores else 0.0
     
-    # Menyiapkan kerangka respons JSON untuk API Ahmadhani
+    # Menyiapkan kerangka respons JSON
     api_response = {
         "query": query,
         "confidence_score": round(highest_score, 2),
@@ -50,8 +66,9 @@ def generate_helpdesk_response(query: str, vectorstore, llm):
         "sources": []
     }
     
-    # Logika ekskalasi
-    if highest_score < THRESHOLD_SCORE:
+    # LOGIKA BARU: Clarification vs Escalation
+    if highest_score < CLARIFICATION_THRESHOLD:
+        # Jika skor sangat rendah (benar-benar tidak nyambung), baru eskalasi
         api_response["escalated"] = True
         api_response["response_text"] = (
             "Maaf, saya tidak menemukan informasi yang relevan di panduan resmi Epson "
@@ -59,13 +76,28 @@ def generate_helpdesk_response(query: str, vectorstore, llm):
             "ke agen manusia (Customer Support) agar mendapat penanganan lebih lanjut."
         )
         return api_response
+    
+    elif highest_score < THRESHOLD_SCORE:
+        # Jika skor menengah (mungkin nyambung tapi ragu), minta klarifikasi
+        api_response["escalated"] = False
+        # Gunakan prompt singkat untuk meminta detail tambahan
+        clarification_prompt = (
+            f"Saya menemukan beberapa panduan yang mungkin berkaitan dengan Epson, "
+            f"namun saya ingin memastikan agar memberikan solusi yang tepat. "
+            f"Bisakah Anda menjelaskan lebih detail mengenai pesan error yang muncul atau "
+            f"tipe printer yang Anda gunakan? (Saat ini saya mendeteksi '{query}')"
+        )
+        api_response["response_text"] = clarification_prompt
+        return api_response
 
-    # Jika skor >= 0.6, susun context dari dokumen yang ditemukan
+    # Jika skor >= THRESHOLD_SCORE (0.55), proses dengan RAG normal
     context_text = "\n\n".join([doc.page_content for doc, score in docs_and_scores])
     
-    # Menyimpan sumber dokumen untuk transparansi
+    # Menyimpan sumber dokumen untuk transparansi (Gunakan .metadata.get('id', 'unknown'))
     for doc, score in docs_and_scores:
-        api_response["sources"].append(doc.metadata.get("id", "unknown_kb"))
+        # Cek metadata 'id' atau 'title' agar tidak muncul 'unknown_kb'
+        kb_id = doc.metadata.get("id") or doc.metadata.get("title") or "unknown_kb"
+        api_response["sources"].append(kb_id)
 
     # System Prompt Ketat
     prompt_template = """Kamu adalah asisten helpdesk teknis PT. Indonesia Epson Industry.
@@ -90,6 +122,24 @@ Jawaban Helpdesk:"""
     api_response["response_text"] = response_text.strip()
     return api_response
 
+@app.post("/chat")
+async def chat_endpoint(request: ChatRequest):
+    try:
+        if "openai" in request.engine:
+            # Handle OpenAI routing if needed (needs implementation of generate_openai)
+            # For PoC, we primarily use the RAG pipeline with local Ollama
+            pass
+        
+        # Use our existing RAG-Ollama pipeline
+        response = generate_helpdesk_response(request.message, v_store, llama_model)
+        
+        # Add engine metadata
+        response["engine_used"] = request.engine
+        
+        return response
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 if __name__ == "__main__":
     print("="*60)
     print("MENGAKSES SMART HELPDESK CHATBOT (Fase 3 & 4)")
@@ -97,7 +147,8 @@ if __name__ == "__main__":
     
     v_store, llama_model = setup_chat_environment()
     
-    # Mengambil beberapa pertanyaan uji dari Andri untuk testing
+    # Nonaktifkan sscrip pengujian otomatis agar tidak mengganggu jalannya server
+    """
     print("\n[Membaca eval_dataset.json untuk pengujian...]")
     with open(EVAL_DATA_PATH, "r", encoding="utf-8") as f:
         eval_data = json.load(f)
@@ -121,6 +172,7 @@ if __name__ == "__main__":
         print(f"[DEBUG] Confidence : {result['confidence_score']}")
         print(f"[DEBUG] Escalated  : {result['escalated']}")
         print(f"[DEBUG] Sources KB : {result['sources']}")
-    
-    print("\n" + "="*60)
-    print("Selesai! Endpoint siap diintegrasikan dengan POST /api/chat/message")
+    """
+
+    # Jalankan FastAPI Server
+    uvicorn.run(app, host="0.0.0.0", port=8000)

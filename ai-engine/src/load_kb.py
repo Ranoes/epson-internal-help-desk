@@ -20,8 +20,8 @@ import json, os, sys, argparse, hashlib
 from datetime import datetime
 from typing import Optional
 
-INPUT_PATH      = "ai-engine/data/knowledge_base.json"
-OUTPUT_PATH     = "ai-engine/data/rag_ready_kb.json"
+INPUT_PATH      = os.path.join("data", "knowledge_base.json")
+OUTPUT_PATH     = os.path.join("data", "rag_ready_kb.json")
 REQUIRED_FIELDS = ["id", "title", "category", "content", "tags", "source_doc"]
 VALID_CATEGORIES = {"quality_printing", "hardware", "firmware", "general_ops"}
 

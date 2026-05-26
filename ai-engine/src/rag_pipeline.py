@@ -4,8 +4,8 @@ from langchain_core.documents import Document
 from langchain_community.embeddings import OllamaEmbeddings
 from langchain_community.vectorstores import Chroma
 
-RAG_DATA_PATH = "ai-engine/data/rag_ready_kb.json"
-CHROMA_DB_DIR = "./chroma_db"
+RAG_DATA_PATH = os.path.join("data", "rag_ready_kb.json")
+CHROMA_DB_DIR = "chroma_db"
 
 def build_vector_store():
     print("[1/3] Memuat file rag_ready_kb.json...")
