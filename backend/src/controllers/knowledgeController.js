@@ -1,6 +1,7 @@
 const prisma3 = new (require('@prisma/client').PrismaClient)();
 const axios = require('axios');
 const { readSettings } = require('../services/runtimeSettings');
+const { convertPdfBufferToMarkdown } = require('../services/pdfToMarkdown');
 
 async function refreshKnowledgeIndex() {
   const aiEngineUrl = process.env.AI_ENGINE_URL || 'http://localhost:8000';
@@ -11,6 +12,35 @@ async function refreshKnowledgeIndex() {
   } catch (err) {
     console.warn('[KB] Failed to refresh ai-engine knowledge index:', err.message);
   }
+}
+
+function normalizeTags(rawTags) {
+  if (Array.isArray(rawTags)) {
+    return rawTags.map((tag) => String(tag).trim()).filter(Boolean);
+  }
+
+  if (typeof rawTags === 'string') {
+    const trimmed = rawTags.trim();
+    if (!trimmed) {
+      return [];
+    }
+
+    try {
+      const parsed = JSON.parse(trimmed);
+      if (Array.isArray(parsed)) {
+        return parsed.map((tag) => String(tag).trim()).filter(Boolean);
+      }
+    } catch (err) {
+      // Fall through to comma-separated parsing.
+    }
+
+    return trimmed
+      .split(',')
+      .map((tag) => tag.trim())
+      .filter(Boolean);
+  }
+
+  return [];
 }
 
 async function list(req, res, next) {
@@ -41,13 +71,47 @@ async function getOne(req, res, next) {
 
 async function create(req, res, next) {
   try {
-    const { title, category, subcategory, content, tags, sourceDocument } = req.body;
+    const { title, category, subcategory, content, sourceDocument } = req.body;
     const newId = `kb_${Date.now()}`;
+    const uploadedPdf = req.file;
+
+    if (!title || !category) {
+      return res.status(400).json({ success: false, error: 'Title and category are required.' });
+    }
+
+    let finalContent = typeof content === 'string' ? content.trim() : '';
+    let sourceDoc = typeof sourceDocument === 'string' ? sourceDocument.trim() : '';
+
+    if (uploadedPdf) {
+      finalContent = await convertPdfBufferToMarkdown(uploadedPdf.buffer, uploadedPdf.originalname);
+      sourceDoc = sourceDoc || uploadedPdf.originalname;
+    }
+
+    if (!finalContent) {
+      return res.status(400).json({
+        success: false,
+        error: 'Content is required when no PDF file is uploaded.'
+      });
+    }
+
     const kb = await prisma3.knowledgeBase.create({
-      data: { id: newId, title, category, subcategory, content, tags: tags || [], sourceDoc: sourceDocument }
+      data: {
+        id: newId,
+        title: title.trim(),
+        category,
+        subcategory: typeof subcategory === 'string' && subcategory.trim() ? subcategory.trim() : null,
+        content: finalContent,
+        tags: normalizeTags(req.body.tags),
+        sourceDoc: sourceDoc || null
+      }
     });
     await refreshKnowledgeIndex();
-    res.status(201).json({ success: true, id: kb.id, message: 'Knowledge entry created and indexed successfully' });
+    res.status(201).json({
+      success: true,
+      id: kb.id,
+      article: kb,
+      message: 'Knowledge entry created and indexed successfully'
+    });
   } catch (err) { next(err); }
 }
 

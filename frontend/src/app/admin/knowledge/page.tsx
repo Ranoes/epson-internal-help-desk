@@ -10,6 +10,8 @@ import {
   FaTrash,
   FaTimes,
   FaSave,
+  FaFilePdf,
+  FaUpload,
 } from "react-icons/fa";
 import apiClient from "@/lib/api-client";
 
@@ -19,6 +21,7 @@ interface KnowledgeArticle {
   category: string;
   content: string;
   tags: string[];
+  sourceDoc?: string | null;
   createdAt: string;
   updatedAt: string;
   views: number;
@@ -33,6 +36,7 @@ export default function KnowledgeBasePage() {
   const [editingArticle, setEditingArticle] = useState<KnowledgeArticle | null>(
     null,
   );
+  const [uploadedPdf, setUploadedPdf] = useState<File | null>(null);
   const allowedCategories = [
     "manufacturing",
     "production_line",
@@ -122,6 +126,7 @@ export default function KnowledgeBasePage() {
       setEditingArticle(null);
       setFormData({ title: "", category: "manufacturing", content: "", tags: "" });
     }
+    setUploadedPdf(null);
     setShowModal(true);
   };
 
@@ -129,11 +134,36 @@ export default function KnowledgeBasePage() {
     setShowModal(false);
     setEditingArticle(null);
     setFormData({ title: "", category: "manufacturing", content: "", tags: "" });
+    setUploadedPdf(null);
+  };
+
+  const handlePdfUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0] || null;
+    if (!file) {
+      return;
+    }
+
+    if (file.type !== "application/pdf" && !file.name.toLowerCase().endsWith(".pdf")) {
+      alert("Please select a PDF file.");
+      event.target.value = "";
+      return;
+    }
+
+    setUploadedPdf(file);
+    setFormData((current) => ({
+      ...current,
+      title: current.title || file.name.replace(/\.pdf$/i, ""),
+    }));
   };
 
   const handleSaveArticle = async () => {
-    if (!formData.title || !formData.content) {
-      alert("Please fill in all required fields");
+    if (!formData.title.trim()) {
+      alert("Please fill in the title");
+      return;
+    }
+
+    if (!uploadedPdf && !formData.content.trim()) {
+      alert("Please add article content or upload a PDF file");
       return;
     }
 
@@ -156,21 +186,44 @@ export default function KnowledgeBasePage() {
           ),
         );
       } else {
-        // Create new article
-        const response = await apiClient.post("/knowledge", {
-          ...formData,
-          tags: formData.tags.split(",").map((t) => t.trim()),
-        });
+        const tags = formData.tags
+          .split(",")
+          .map((t) => t.trim())
+          .filter(Boolean);
+
+        let response;
+        if (uploadedPdf) {
+          const payload = new FormData();
+          payload.append("title", formData.title.trim());
+          payload.append("category", formData.category);
+          payload.append("content", formData.content);
+          payload.append("tags", JSON.stringify(tags));
+          payload.append("pdf", uploadedPdf);
+
+          response = await apiClient.post("/knowledge", payload, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          });
+        } else {
+          response = await apiClient.post("/knowledge", {
+            ...formData,
+            tags,
+          });
+        }
+
+        const createdArticle = response.data.article;
         setArticles([
           ...articles,
           {
-            id: response.data.id ?? `kb-${Date.now()}`,
-            title: formData.title,
-            category: formData.category,
-            content: formData.content,
-            tags: formData.tags.split(",").map((t) => t.trim()),
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
+            id: createdArticle?.id ?? response.data.id ?? `kb-${Date.now()}`,
+            title: createdArticle?.title ?? formData.title,
+            category: createdArticle?.category ?? formData.category,
+            content: createdArticle?.content ?? formData.content,
+            tags: createdArticle?.tags ?? tags,
+            sourceDoc: createdArticle?.sourceDoc ?? uploadedPdf?.name ?? null,
+            createdAt: createdArticle?.createdAt ?? new Date().toISOString(),
+            updatedAt: createdArticle?.updatedAt ?? new Date().toISOString(),
             views: 0,
           },
         ]);
@@ -382,17 +435,55 @@ export default function KnowledgeBasePage() {
               {/* Content */}
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Content *
+                  Content
                 </label>
                 <textarea
                   value={formData.content}
                   onChange={(e) =>
                     setFormData({ ...formData, content: e.target.value })
                   }
-                  placeholder="Article content..."
+                  placeholder={
+                    uploadedPdf
+                      ? "Optional notes or manual fallback content..."
+                      : "Article content..."
+                  }
                   rows={8}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-800 outline-none font-lato"
                 />
+              </div>
+
+              {/* PDF Upload */}
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  PDF upload
+                </label>
+                <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 bg-gray-50">
+                  <input
+                    type="file"
+                    accept="application/pdf,.pdf"
+                    onChange={handlePdfUpload}
+                    className="w-full text-sm text-gray-700 file:mr-4 file:rounded-lg file:border-0 file:bg-gray-800 file:px-4 file:py-2 file:text-white hover:file:bg-gray-900"
+                  />
+                  <p className="mt-2 text-xs text-gray-500 flex items-center gap-2">
+                    <FaFilePdf size={12} />
+                    When a PDF is selected, the backend converts it to markdown before saving.
+                  </p>
+                  {uploadedPdf && (
+                    <div className="mt-3 flex items-center justify-between rounded-lg bg-white border border-gray-200 px-3 py-2 text-sm text-gray-700">
+                      <span className="flex items-center gap-2 truncate">
+                        <FaUpload size={12} className="text-gray-500" />
+                        {uploadedPdf.name}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => setUploadedPdf(null)}
+                        className="text-gray-500 hover:text-gray-800"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
 
               {/* Tags */}
