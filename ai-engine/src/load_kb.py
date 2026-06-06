@@ -212,7 +212,7 @@ def load_and_process(database_url=DATABASE_URL, output_path=OUTPUT_PATH,
         output_data = transform_for_chromadb(rag_docs)
         output_data["_meta"] = {
             "generated_at": datetime.now().isoformat(),
-            "source": input_path, "total_docs": len(rag_docs),
+            "source": database_url, "total_docs": len(rag_docs),
             "format": "chromadb_batch",
             "created_by": "Kevin Alif Mahendra (195150200111063)",
         }

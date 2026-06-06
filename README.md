@@ -33,6 +33,70 @@ docker-compose up --build
    - Backend API: http://localhost:3001
    - AI Engine: http://localhost:8000
 
+## Local LLM Guide
+
+The AI engine can run with a local Ollama model for chat and embeddings.
+
+### 1. Install Ollama
+
+Install and start Ollama on your machine, then pull the models used by this project:
+
+```sh
+ollama pull llama3.2:3b
+ollama pull nomic-embed-text
+```
+
+### 2. Configure the AI engine
+
+Edit `ai-engine/.env`:
+
+```env
+AI_PROVIDER=ollama
+OLLAMA_URL=http://localhost:11434
+OLLAMA_MODEL=llama3.2:3b
+OLLAMA_EMBEDDING_MODEL=nomic-embed-text
+DATABASE_URL=postgresql://postgres:admin@localhost:5432/helpdesk
+```
+
+### 3. Run the AI engine
+
+```sh
+cd ai-engine
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+python src/chat_service.py
+```
+
+## Knowledge Base Guide
+
+The knowledge base is stored in PostgreSQL and exported into a RAG-ready file by `ai-engine/src/load_kb.py`.
+
+### 1. Make sure the database is ready
+
+Apply the schema in `database/schema.sql` and seed or import your knowledge base records into the `knowledge_base` table.
+
+### 2. Export the knowledge base
+
+```sh
+cd ai-engine
+.venv\Scripts\Activate.ps1
+python src/load_kb.py
+```
+
+Optional formats:
+
+```sh
+python src/load_kb.py --format rag_json
+python src/load_kb.py --format chromadb
+python src/load_kb.py --strict
+```
+
+### 3. Output file
+
+By default, the loader writes to `ai-engine/data/rag_ready_kb.json`.
+
 ## Manual Setup
 
 ### 1. Database
@@ -86,7 +150,7 @@ npm run dev
 ## Environment Files
 
 - `backend/.env` should point `DATABASE_URL` to your PostgreSQL database.
-- `ai-engine/.env` should configure the AI provider and any required model/API settings.
+- `ai-engine/.env` should configure the AI provider and local LLM settings.
 - `frontend/.env.local` can be used to switch between mock API and real API.
 
 ## Useful Commands
@@ -115,6 +179,14 @@ cd ai-engine
 .venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 python src/chat_service.py
+```
+
+Knowledge base export:
+
+```sh
+cd ai-engine
+.venv\Scripts\Activate.ps1
+python src/load_kb.py
 ```
 
 ## Notes
