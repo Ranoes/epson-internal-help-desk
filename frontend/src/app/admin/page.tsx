@@ -9,6 +9,8 @@ import {
   FaArrowUp,
   FaClipboardList,
   FaCheckCircle,
+  FaRobot,
+  FaCog,
 } from "react-icons/fa";
 import apiClient from "@/lib/api-client";
 
@@ -19,28 +21,50 @@ interface DashboardStats {
   totalUsers: number;
   knowledgeBaseArticles: number;
   averageResolutionTime: string;
+  ticketGrowthPercent?: number;
+}
+
+interface AiSettings {
+  aiProvider: "ollama" | "openrouter";
+  updatedAt?: string | null;
 }
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState<DashboardStats | null>(null);
+  const [aiSettings, setAiSettings] = useState<AiSettings | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const formatGrowth = (value?: number) => {
+    if (value === undefined || Number.isNaN(value)) {
+      return null;
+    }
+
+    const sign = value > 0 ? "+" : "";
+    return `${sign}${value}% from last month`;
+  };
 
   useEffect(() => {
     const fetchStats = async () => {
       try {
         console.log("Fetching analytics from /analytics/summary...");
-        const response = await apiClient.get("/analytics/summary");
-        console.log("Analytics response:", response.data);
+        const [analyticsResponse, settingsResponse] = await Promise.all([
+          apiClient.get("/analytics/summary"),
+          apiClient.get("/admin/settings/ai"),
+        ]);
 
-        if (response.data && response.data.success) {
+        if (analyticsResponse.data && analyticsResponse.data.success) {
           setStats({
-            totalTickets: response.data.totalTickets ?? 0,
-            activeTickets: response.data.activeTickets ?? 0,
-            resolvedTickets: response.data.resolvedTickets ?? 0,
-            totalUsers: response.data.totalUsers ?? 0,
-            knowledgeBaseArticles: response.data.knowledgeBaseArticles ?? 0,
-            averageResolutionTime: response.data.averageResolutionTime || "N/A",
+            totalTickets: analyticsResponse.data.totalTickets ?? 0,
+            activeTickets: analyticsResponse.data.activeTickets ?? 0,
+            resolvedTickets: analyticsResponse.data.resolvedTickets ?? 0,
+            totalUsers: analyticsResponse.data.totalUsers ?? 0,
+            knowledgeBaseArticles: analyticsResponse.data.knowledgeBaseArticles ?? 0,
+            averageResolutionTime: analyticsResponse.data.averageResolutionTime || "N/A",
+            ticketGrowthPercent: analyticsResponse.data.ticketGrowthPercent,
           });
+        }
+        if (settingsResponse.data?.success) {
+          setAiSettings(settingsResponse.data.settings);
         }
       } catch (err: any) {
         console.error("Failed to fetch analytics:", err);
@@ -116,42 +140,44 @@ export default function AdminDashboard() {
           value={stats?.totalTickets || 0}
           icon={FaTicketAlt}
           color="bg-blue-500"
-          trend="+12% from last month"
+          trend={formatGrowth(stats?.ticketGrowthPercent) ?? undefined}
         />
         <StatCard
           label="Active Tickets"
           value={stats?.activeTickets || 0}
           icon={FaClipboardList}
           color="bg-orange-500"
-          trend="-5% from last week"
         />
         <StatCard
           label="Resolved Tickets"
           value={stats?.resolvedTickets || 0}
           icon={FaCheckCircle}
           color="bg-green-500"
-          trend="+8% from last month"
         />
         <StatCard
           label="Total Users"
           value={stats?.totalUsers || 0}
           icon={FaUsers}
           color="bg-purple-500"
-          trend="+3 new users"
         />
         <StatCard
           label="Knowledge Base"
           value={stats?.knowledgeBaseArticles || 0}
           icon={FaBook}
           color="bg-indigo-500"
-          trend="+4 new articles"
+        />
+        <StatCard
+          label="AI Provider"
+          value={aiSettings?.aiProvider === "openrouter" ? "OpenRouter" : "Ollama"}
+          icon={FaRobot}
+          color={aiSettings?.aiProvider === "openrouter" ? "bg-emerald-500" : "bg-slate-700"}
+          trend={aiSettings?.updatedAt ? `Updated ${new Date(aiSettings.updatedAt).toLocaleString()}` : "Not configured"}
         />
         <StatCard
           label="Avg Resolution Time"
           value={stats?.averageResolutionTime || "N/A"}
           icon={FaChartLine}
           color="bg-gray-700"
-          trend="Optimized"
         />
       </div>
 
@@ -182,12 +208,12 @@ export default function AdminDashboard() {
             </p>
           </a>
           <a
-            href="/admin"
-            className="p-4 bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg hover:shadow-md transition border border-purple-200 text-center"
+            href="/admin/settings"
+            className="p-4 bg-gradient-to-br from-slate-50 to-slate-100 rounded-lg hover:shadow-md transition border border-slate-200 text-center"
           >
-            <FaChartLine size={32} className="text-purple-600 mx-auto mb-2" />
-            <p className="font-semibold text-gray-900">Analytics</p>
-            <p className="text-xs text-gray-600 mt-1">View detailed reports</p>
+            <FaCog size={32} className="text-slate-700 mx-auto mb-2" />
+            <p className="font-semibold text-gray-900">AI Settings</p>
+            <p className="text-xs text-gray-600 mt-1">Switch Ollama or OpenRouter</p>
           </a>
         </div>
       </div>

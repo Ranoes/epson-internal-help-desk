@@ -6,6 +6,7 @@ import {
   FaChartLine,
   FaTicketAlt,
   FaBook,
+  FaCog,
   FaSignOutAlt,
   FaBars,
   FaTimes,
@@ -81,6 +82,11 @@ export default function AdminLayout({
       label: "Knowledge Base",
       href: "/admin/knowledge",
       icon: FaBook,
+    },
+    {
+      label: "AI Settings",
+      href: "/admin/settings",
+      icon: FaCog,
     },
   ];
 

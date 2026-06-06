@@ -6,7 +6,14 @@ const { authMiddleware: am, requireRole: rr } = require('../middlewares/auth');
 
 const kbSchema = Joi.object({
   title:          Joi.string().required(),
-  category:       Joi.string().valid('quality_printing','hardware','firmware','general_ops').required(),
+  category:       Joi.string().valid(
+                    'manufacturing',
+                    'production_line',
+                    'quality_control',
+                    'equipment_setup',
+                    'safety',
+                    'logistics'
+                  ).required(),
   subcategory:    Joi.string().optional(),
   content:        Joi.string().required(),
   tags:           Joi.array().items(Joi.string()).optional(),

@@ -36,6 +36,7 @@ app.use(globalLimiter);
 // Routes
 app.use('/api/auth',      require('./routes/auth'));
 app.use('/api/chat',      require('./routes/chat'));
+app.use('/api/admin',     require('./routes/admin'));
 app.use('/api/knowledge', require('./routes/knowledge'));
 app.use('/api/tickets',   require('./routes/tickets'));
 app.use('/api/analytics', require('./routes/analytics'));
@@ -47,6 +48,9 @@ app.get('/health', (_, res) => res.json({ status: 'ok', ts: new Date() }));
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => console.log(`Backend running on http://localhost:${PORT}`));
+
+if (require.main === module) {
+  app.listen(PORT, () => console.log(`Backend running on http://localhost:${PORT}`));
+}
 
 module.exports = app;

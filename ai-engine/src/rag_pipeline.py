@@ -1,13 +1,17 @@
 import json
 import os
 from langchain_core.documents import Document
-from langchain_community.embeddings import OllamaEmbeddings
 from langchain_community.vectorstores import Chroma
 
+from model_provider import create_embeddings, get_chroma_dir, get_embedding_model, get_provider
+
 RAG_DATA_PATH = os.path.join("data", "rag_ready_kb.json")
-CHROMA_DB_DIR = "chroma_db"
 
 def build_vector_store():
+    provider = get_provider()
+    chroma_dir = get_chroma_dir()
+    embedding_model = get_embedding_model()
+
     print("[1/3] Memuat file rag_ready_kb.json...")
     if not os.path.exists(RAG_DATA_PATH):
         raise FileNotFoundError(f"File {RAG_DATA_PATH} tidak ditemukan.")
@@ -27,19 +31,19 @@ def build_vector_store():
     print(f"      Berhasil memuat {len(documents)} dokumen RAG.")
 
     # Setup Embedding (Tugas 2c)
-    print("[2/3] Inisialisasi model embedding 'nomic-embed-text' via Ollama...")
-    embeddings = OllamaEmbeddings(model="nomic-embed-text")
+    print(f"[2/3] Inisialisasi model embedding '{embedding_model}' via {provider}...")
+    embeddings = create_embeddings()
 
     # Simpan ke ChromaDB (Tugas 2d)
     print("[3/3] Memproses vektor dan menyimpan ke ChromaDB...")
     vectorstore = Chroma.from_documents(
         documents=documents,
         embedding=embeddings,
-        persist_directory=CHROMA_DB_DIR,
+        persist_directory=chroma_dir,
         collection_metadata={"hnsw:space": "cosine"}
     )
     
-    print("\n[V] Database Vektor (ChromaDB) berhasil dibuat di direktori lokal!")
+    print(f"\n[V] Database Vektor (ChromaDB) berhasil dibuat di direktori lokal: {chroma_dir}!")
     return vectorstore
 
 def get_retriever(vectorstore):

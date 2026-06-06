@@ -65,6 +65,7 @@ export const mockAnalyticsSummary = {
     from: "2026-05-01",
     to: "2026-05-08",
   },
+  ticketGrowthPercent: 12,
   stats: {
     totalMessages: 342,
     resolvedByChatbot: 287,

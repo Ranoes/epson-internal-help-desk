@@ -27,6 +27,8 @@ export interface ChatReply {
   confidence: number;
   sources: ChatSource[];
   escalated: boolean;
+  ticketSuggested?: boolean;
+  ticketSuggestion?: string | null;
   ticketId?: string;
   timestamp: string;
 }
@@ -53,6 +55,7 @@ export interface Ticket {
   sessionId: string;
   status: "open" | "in_progress" | "resolved";
   assignedTo: string | null;
+  resolution?: string | null;
   createdAt: string;
 }
 
@@ -67,6 +70,7 @@ export interface AnalyticsSummary {
     from: string;
     to: string;
   };
+  ticketGrowthPercent?: number;
   stats: {
     totalMessages: number;
     resolvedByChatbot: number;

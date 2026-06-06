@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import {
   FaTicketAlt,
   FaSearch,
-  FaFilter,
   FaEye,
   FaEdit,
   FaTrash,
@@ -12,6 +11,7 @@ import {
   FaCheckCircle,
   FaClock,
   FaTimesCircle,
+  FaSave,
 } from "react-icons/fa";
 import apiClient from "@/lib/api-client";
 
@@ -19,11 +19,12 @@ interface Ticket {
   id: string;
   title: string;
   description: string;
-  status: "open" | "in-progress" | "resolved" | "closed";
-  priority: "low" | "medium" | "high" | "urgent";
+  status: "open" | "in_progress" | "resolved" | "closed";
   createdBy: string;
   createdAt: string;
   updatedAt: string;
+  assignedTo?: string | null;
+  resolution?: string | null;
 }
 
 export default function TicketsPage() {
@@ -31,9 +32,17 @@ export default function TicketsPage() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
-  const [priorityFilter, setPriorityFilter] = useState<string>("all");
   const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
   const [showModal, setShowModal] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [editStatus, setEditStatus] = useState<Ticket["status"]>("open");
+  const [editResolution, setEditResolution] = useState("");
+  const [editAssignedTo, setEditAssignedTo] = useState("");
+  const [newTicketUserId, setNewTicketUserId] = useState("");
+  const [newTicketSessionId, setNewTicketSessionId] = useState("");
+  const [newTicketQuestion, setNewTicketQuestion] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [creating, setCreating] = useState(false);
 
   useEffect(() => {
     const fetchTickets = async () => {
@@ -50,7 +59,6 @@ export default function TicketsPage() {
             description:
               "Office printer on 3rd floor not responding to print requests",
             status: "open",
-            priority: "high",
             createdBy: "karyawan001",
             createdAt: "2026-05-08T10:30:00",
             updatedAt: "2026-05-08T10:30:00",
@@ -59,8 +67,7 @@ export default function TicketsPage() {
             id: "TKT-002",
             title: "VPN connection issues",
             description: "Remote employees unable to connect to corporate VPN",
-            status: "in-progress",
-            priority: "urgent",
+            status: "in_progress",
             createdBy: "karyawan002",
             createdAt: "2026-05-07T14:15:00",
             updatedAt: "2026-05-08T09:00:00",
@@ -70,7 +77,6 @@ export default function TicketsPage() {
             title: "Software license renewal",
             description: "Need to renew Microsoft Office licenses for 10 users",
             status: "resolved",
-            priority: "medium",
             createdBy: "karyawan003",
             createdAt: "2026-05-05T11:20:00",
             updatedAt: "2026-05-08T08:45:00",
@@ -88,24 +94,21 @@ export default function TicketsPage() {
     const title = ticket?.title || "";
     const id = ticket?.id || "";
     const status = ticket?.status || "";
-    const priority = ticket?.priority || "";
 
     const matchesSearch =
       title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       id.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus =
       statusFilter === "all" || status === statusFilter;
-    const matchesPriority =
-      priorityFilter === "all" || priority === priorityFilter;
 
-    return matchesSearch && matchesStatus && matchesPriority;
+    return matchesSearch && matchesStatus;
   });
 
   const getStatusIcon = (status: string) => {
     switch (status) {
       case "resolved":
         return <FaCheckCircle className="text-green-600" />;
-      case "in-progress":
+      case "in_progress":
         return <FaClock className="text-yellow-600" />;
       case "closed":
         return <FaTimesCircle className="text-red-600" />;
@@ -114,16 +117,99 @@ export default function TicketsPage() {
     }
   };
 
-  const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case "urgent":
-        return "bg-red-100 text-red-800";
-      case "high":
-        return "bg-orange-100 text-orange-800";
-      case "medium":
-        return "bg-yellow-100 text-yellow-800";
-      default:
-        return "bg-green-100 text-green-800";
+  const openEditor = (ticket: Ticket) => {
+    setSelectedTicket(ticket);
+    setEditStatus(ticket.status);
+    setEditResolution(ticket.resolution || "");
+    setEditAssignedTo(ticket.assignedTo || "");
+    setShowModal(true);
+  };
+
+  const saveTicket = async () => {
+    if (!selectedTicket) return;
+
+    setSaving(true);
+    try {
+      const response = await apiClient.patch(`/tickets/${selectedTicket.id}`, {
+        status: editStatus,
+        assignedTo: editAssignedTo || null,
+        resolution: editResolution,
+      });
+
+      if (response.data?.success) {
+        setTickets((current) =>
+          current.map((ticket) =>
+            ticket.id === selectedTicket.id
+              ? {
+                  ...ticket,
+                  status: editStatus,
+                  assignedTo: editAssignedTo || null,
+                  resolution: editResolution,
+                  updatedAt: new Date().toISOString(),
+                }
+              : ticket,
+          ),
+        );
+        setShowModal(false);
+        setSelectedTicket(null);
+      }
+    } catch (error) {
+      console.error("Failed to update ticket:", error);
+      alert("Failed to update ticket");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const createTicket = async () => {
+    if (!newTicketUserId.trim() || !newTicketQuestion.trim()) return;
+
+    setCreating(true);
+    try {
+      const response = await apiClient.post("/tickets", {
+        userId: newTicketUserId.trim(),
+        sessionId: newTicketSessionId.trim() || null,
+        question: newTicketQuestion.trim(),
+      });
+
+      if (response.data?.success) {
+        const createdTicket = {
+          id: response.data.ticketId,
+          title: newTicketQuestion.trim().slice(0, 50),
+          description: newTicketQuestion.trim(),
+          status: "open" as const,
+          createdBy: newTicketUserId.trim(),
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          assignedTo: null,
+          resolution: null,
+        };
+        setTickets((current) => [createdTicket, ...current]);
+        setShowCreateModal(false);
+        setNewTicketUserId("");
+        setNewTicketSessionId("");
+        setNewTicketQuestion("");
+      }
+    } catch (error) {
+      console.error("Failed to create ticket:", error);
+      alert("Failed to create ticket");
+    } finally {
+      setCreating(false);
+    }
+  };
+
+  const deleteTicket = async (ticketId: string) => {
+    const confirmed = window.confirm("Delete this ticket?");
+    if (!confirmed) return;
+
+    try {
+      const response = await apiClient.delete(`/tickets/${ticketId}`);
+      if (response.data?.success) {
+        setTickets((current) => current.filter((ticket) => ticket.id !== ticketId));
+      }
+    } catch (error) {
+      console.error("Failed to delete ticket:", error);
+      alert("Failed to delete ticket");
     }
   };
 
@@ -150,7 +236,10 @@ export default function TicketsPage() {
             {filteredTickets.length} tickets
           </p>
         </div>
-        <button className="flex items-center gap-2 px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition shadow-lg">
+        <button
+          onClick={() => setShowCreateModal(true)}
+          className="flex items-center gap-2 px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition shadow-lg"
+        >
           <FaPlus size={16} />
           New Ticket
         </button>
@@ -182,22 +271,9 @@ export default function TicketsPage() {
           >
             <option value="all">All Status</option>
             <option value="open">Open</option>
-            <option value="in-progress">In Progress</option>
+            <option value="in_progress">In Progress</option>
             <option value="resolved">Resolved</option>
             <option value="closed">Closed</option>
-          </select>
-
-          {/* Priority Filter */}
-          <select
-            value={priorityFilter}
-            onChange={(e) => setPriorityFilter(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-800 outline-none"
-          >
-            <option value="all">All Priority</option>
-            <option value="low">Low</option>
-            <option value="medium">Medium</option>
-            <option value="high">High</option>
-            <option value="urgent">Urgent</option>
           </select>
         </div>
       </div>
@@ -219,9 +295,6 @@ export default function TicketsPage() {
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700">
                     Title
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700">
-                    Priority
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700">
                     Status
@@ -260,21 +333,10 @@ export default function TicketsPage() {
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <span
-                        className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${getPriorityColor(
-                          ticket.priority,
-                        )}`}
-                      >
-                        {ticket.priority.charAt(0).toUpperCase() +
-                          ticket.priority.slice(1)}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
                         {getStatusIcon(ticket.status)}
                         <span className="text-sm text-gray-700">
-                          {ticket.status.charAt(0).toUpperCase() +
-                            ticket.status.slice(1).replace("-", " ")}
+                          {ticket.status.replace("_", " ").replace(/\b\w/g, (c) => c.toUpperCase())}
                         </span>
                       </div>
                     </td>
@@ -286,10 +348,16 @@ export default function TicketsPage() {
                         <button className="p-2 hover:bg-gray-200 rounded transition text-gray-600">
                           <FaEye size={16} />
                         </button>
-                        <button className="p-2 hover:bg-gray-200 rounded transition text-gray-600">
+                        <button
+                          onClick={() => openEditor(ticket)}
+                          className="p-2 hover:bg-gray-200 rounded transition text-gray-600"
+                        >
                           <FaEdit size={16} />
                         </button>
-                        <button className="p-2 hover:bg-red-100 rounded transition text-red-600">
+                        <button
+                          onClick={() => deleteTicket(ticket.id)}
+                          className="p-2 hover:bg-red-100 rounded transition text-red-600"
+                        >
                           <FaTrash size={16} />
                         </button>
                       </div>
@@ -301,6 +369,148 @@ export default function TicketsPage() {
           </div>
         )}
       </div>
+
+      {showCreateModal && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl p-6">
+            <div className="flex items-start justify-between gap-4 mb-5">
+              <div>
+                <p className="text-xs uppercase tracking-wide text-gray-500">New Ticket</p>
+                <h2 className="text-2xl font-bold text-gray-900 mt-1">Create Escalation</h2>
+              </div>
+              <button
+                onClick={() => setShowCreateModal(false)}
+                className="px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition"
+              >
+                Close
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <label className="block">
+                <span className="text-sm font-semibold text-gray-700">User ID</span>
+                <input
+                  value={newTicketUserId}
+                  onChange={(e) => setNewTicketUserId(e.target.value)}
+                  className="mt-2 w-full rounded-lg border border-gray-300 px-3 py-2"
+                  placeholder="karyawan001"
+                />
+              </label>
+              <label className="block">
+                <span className="text-sm font-semibold text-gray-700">Session ID</span>
+                <input
+                  value={newTicketSessionId}
+                  onChange={(e) => setNewTicketSessionId(e.target.value)}
+                  className="mt-2 w-full rounded-lg border border-gray-300 px-3 py-2"
+                  placeholder="sess_123"
+                />
+              </label>
+            </div>
+
+            <label className="block mt-4">
+              <span className="text-sm font-semibold text-gray-700">Question</span>
+              <textarea
+                value={newTicketQuestion}
+                onChange={(e) => setNewTicketQuestion(e.target.value)}
+                rows={5}
+                className="mt-2 w-full rounded-lg border border-gray-300 px-3 py-2"
+                placeholder="Describe the issue for escalation"
+              />
+            </label>
+
+            <div className="mt-6 flex justify-end gap-3">
+              <button
+                onClick={() => setShowCreateModal(false)}
+                className="px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-50 transition"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={createTicket}
+                disabled={creating}
+                className="px-4 py-2 rounded-lg bg-gray-900 text-white hover:bg-gray-800 transition disabled:opacity-60 flex items-center gap-2"
+              >
+                <FaPlus size={14} />
+                {creating ? "Creating..." : "Create Ticket"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showModal && selectedTicket && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl p-6">
+            <div className="flex items-start justify-between gap-4 mb-5">
+              <div>
+                <p className="text-xs uppercase tracking-wide text-gray-500">Edit Ticket</p>
+                <h2 className="text-2xl font-bold text-gray-900 mt-1">{selectedTicket.id}</h2>
+                <p className="text-sm text-gray-600 mt-1">{selectedTicket.title}</p>
+              </div>
+              <button
+                onClick={() => setShowModal(false)}
+                className="px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition"
+              >
+                Close
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <label className="block">
+                <span className="text-sm font-semibold text-gray-700">Status</span>
+                <select
+                  value={editStatus}
+                  onChange={(e) => setEditStatus(e.target.value as Ticket["status"])}
+                  className="mt-2 w-full rounded-lg border border-gray-300 px-3 py-2"
+                >
+                  <option value="open">Open</option>
+                  <option value="in_progress">In Progress</option>
+                  <option value="resolved">Resolved</option>
+                  <option value="closed">Closed</option>
+                </select>
+              </label>
+
+              <label className="block">
+                <span className="text-sm font-semibold text-gray-700">Assigned To</span>
+                <input
+                  value={editAssignedTo}
+                  onChange={(e) => setEditAssignedTo(e.target.value)}
+                  className="mt-2 w-full rounded-lg border border-gray-300 px-3 py-2"
+                  placeholder="Engineer or admin name"
+                />
+              </label>
+            </div>
+
+            <label className="block mt-4">
+              <span className="text-sm font-semibold text-gray-700">Admin Reply / Resolution</span>
+              <textarea
+                value={editResolution}
+                onChange={(e) => setEditResolution(e.target.value)}
+                rows={5}
+                className="mt-2 w-full rounded-lg border border-gray-300 px-3 py-2"
+                placeholder="Write the reply that the employee will see"
+              />
+            </label>
+
+            <div className="mt-6 flex justify-end gap-3">
+              <button
+                onClick={() => setShowModal(false)}
+                className="px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-50 transition"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={saveTicket}
+                disabled={saving}
+                className="px-4 py-2 rounded-lg bg-gray-900 text-white hover:bg-gray-800 transition disabled:opacity-60 flex items-center gap-2"
+              >
+                <FaSave size={14} />
+                {saving ? "Saving..." : "Save Reply"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

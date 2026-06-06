@@ -1,0 +1,91 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "created_by": "GitHub Copilot",
+    "project": "Manufacturing Problem Knowledge Base - Epson Internal Help Desk",
+    "total_entries": 8,
+    "categories": {
+      "manufacturing": 2,
+      "production_line": 2,
+      "quality_control": 2,
+      "equipment_setup": 1,
+      "maintenance": 1,
+      "safety": 1,
+      "logistics": 1
+    }
+  },
+  "knowledge_base": [
+    {
+      "id": "kb_mb_001",
+      "title": "Conveyor Line Berhenti Mendadak",
+      "category": "production_line",
+      "content": "Gejala: Conveyor berhenti total di tengah proses produksi dan lampu status menunjukkan alarm line stop. Penyebab: Sensor antrian produk terhalang, emergency stop aktif, atau motor conveyor overload. Langkah:\n1. Pastikan tombol emergency stop tidak aktif pada panel line.\n2. Periksa sensor photoelectric pada titik masuk dan keluaran conveyor. Bersihkan debu atau material yang menutup sensor.\n3. Cek apakah ada produk yang tersangkut di jalur conveyor.\n4. Reset alarm pada PLC setelah jalur dinyatakan aman.\n5. Jika motor terasa panas atau berbau hangus, hentikan penggunaan dan hubungi maintenance.",
+      "tags": ["conveyor", "line stop", "sensor", "emergency stop"],
+      "source_doc": "SOP_Conveyor_Recovery_v1.0.pdf",
+      "last_updated": "2026-05-01"
+    },
+    {
+      "id": "kb_mb_002",
+      "title": "Barcode Label Tidak Terbaca di QC Station",
+      "category": "quality_control",
+      "content": "Gejala: Scanner QC gagal membaca barcode atau menampilkan data part yang salah. Penyebab: Kualitas cetak label buruk, posisi label miring, atau konfigurasi scanner tidak sesuai. Langkah:\n1. Periksa apakah label tercetak jelas dan tidak pudar.\n2. Pastikan label ditempel rata tanpa lipatan pada part.\n3. Bersihkan lensa scanner dan pastikan sudut baca sesuai SOP.\n4. Uji dengan label sampel yang sudah diverifikasi.\n5. Jika masih gagal, kalibrasi ulang scanner QC dan simpan profil pembacaan terbaru.",
+      "tags": ["barcode", "scanner", "qc station", "label"],
+      "source_doc": "QC_Label_Verification_Guide_v2.1.pdf",
+      "last_updated": "2026-05-02"
+    },
+    {
+      "id": "kb_mb_003",
+      "title": "Jig Assembly Tidak Sejajar",
+      "category": "equipment_setup",
+      "content": "Gejala: Part tidak masuk dengan presisi ke jig dan hasil assembly bergeser dari posisi ideal. Penyebab: Jig longgar, stopper aus, atau setting offset berubah setelah pergantian shift. Langkah:\n1. Kunci ulang jig pada base plate sesuai tanda alignment.\n2. Periksa stopper dan pin locator dari keausan atau kelonggaran.\n3. Jalankan test fit dengan sample part referensi.\n4. Jika offset tetap berubah, lakukan zeroing ulang pada alat bantu ukur.\n5. Catat hasil pengaturan pada log sheet setup harian.",
+      "tags": ["jig", "alignment", "assembly", "offset"],
+      "source_doc": "Workstation_Setup_Standard_v1.4.pdf",
+      "last_updated": "2026-05-03"
+    },
+    {
+      "id": "kb_mb_004",
+      "title": "Mesin Press Mengeluarkan Alarm Tekanan Rendah",
+      "category": "manufacturing",
+      "content": "Gejala: Mesin press berhenti dan alarm low pressure muncul pada panel kontrol. Penyebab: Tekanan udara supply turun, regulator tidak stabil, atau selang bocor. Langkah:\n1. Periksa tekanan pada gauge utama dan bandingkan dengan standar line.\n2. Pastikan kompresor aktif dan tidak ada jadwal maintenance yang mematikan supply udara.\n3. Cek selang dan fitting untuk kebocoran suara desis.\n4. Reset alarm setelah tekanan kembali normal.\n5. Jika tekanan tetap tidak stabil, pindahkan pekerjaan ke mesin cadangan dan laporkan ke teknisi.",
+      "tags": ["press", "low pressure", "air supply", "alarm"],
+      "source_doc": "Hydraulic_Press_Alarm_Reference_v3.0.pdf",
+      "last_updated": "2026-05-04"
+    },
+    {
+      "id": "kb_mb_005",
+      "title": "Sensor Suhu Oven Tidak Stabil",
+      "category": "maintenance",
+      "content": "Gejala: Suhu oven naik turun di luar toleransi dan proses curing tidak konsisten. Penyebab: Sensor thermocouple kotor, kabel sensor longgar, atau heater controller bermasalah. Langkah:\n1. Matikan oven dan pastikan suhu aman sebelum inspeksi.\n2. Cek konektor sensor suhu pada panel kontrol.\n3. Bersihkan area sensor dari debu dan residu proses.\n4. Jalankan kalibrasi suhu menggunakan alat referensi yang disetujui.\n5. Jika deviasi masih besar, ganti sensor thermocouple sesuai part number.",
+      "tags": ["oven", "temperature", "sensor", "calibration"],
+      "source_doc": "Oven_Temperature_Maintenance_v2.2.pdf",
+      "last_updated": "2026-05-05"
+    },
+    {
+      "id": "kb_mb_006",
+      "title": "Forklift Tidak Bisa Mengangkat Pallet",
+      "category": "logistics",
+      "content": "Gejala: Forklift bergerak normal tetapi garpu tidak dapat mengangkat pallet produksi. Penyebab: Hidrolik lemah, beban melebihi kapasitas, atau oli hidrolik kurang. Langkah:\n1. Verifikasi berat pallet dan pastikan masih dalam batas aman unit forklift.\n2. Cek level oli hidrolik dan kondisi kebocoran pada silinder.\n3. Uji naik-turun tanpa beban untuk melihat respons sistem.\n4. Jika lift tetap lemah, tarik unit ke area servis dan gunakan forklift cadangan.\n5. Jangan melanjutkan pengangkatan jika ada suara tidak normal dari pompa.",
+      "tags": ["forklift", "pallet", "hydraulic", "logistics"],
+      "source_doc": "Warehouse_Equipment_Safety_v1.1.pdf",
+      "last_updated": "2026-05-06"
+    },
+    {
+      "id": "kb_mb_007",
+      "title": "Operator Tidak Bisa Login ke MES Terminal",
+      "category": "production_line",
+      "content": "Gejala: Operator gagal login ke terminal MES di line produksi dan tidak bisa mengambil work order. Penyebab: Akun expired, jaringan terminal putus, atau server autentikasi sedang gangguan. Langkah:\n1. Pastikan terminal terhubung ke jaringan internal pabrik.\n2. Coba login ulang dengan akun operator yang masih aktif.\n3. Jika akun terkunci, eskalasi ke admin sistem untuk reset akses.\n4. Cek status server MES melalui dashboard internal.\n5. Bila outage terjadi, catat waktu gangguan dan lanjutkan input manual sesuai prosedur darurat.",
+      "tags": ["MES", "login", "operator", "terminal"],
+      "source_doc": "MES_Access_Recovery_v1.3.pdf",
+      "last_updated": "2026-05-07"
+    },
+    {
+      "id": "kb_mb_008",
+      "title": "Part Reject Naik Karena Dimensi Tidak Sesuai",
+      "category": "quality_control",
+      "content": "Gejala: Jumlah reject meningkat karena hasil ukur dimensi part berada di luar toleransi. Penyebab: Gauge ukur tidak terkalibrasi, setup mesin bergeser, atau material masuk tidak konsisten. Langkah:\n1. Validasi ulang alat ukur dengan master sample yang sudah disetujui.\n2. Bandingkan hasil ukur antar shift untuk melihat pola deviasi.\n3. Review parameter mesin dan pastikan tidak ada perubahan setting tanpa persetujuan.\n4. Pisahkan batch bermasalah untuk inspeksi tambahan.\n5. Laporkan temuan ke supervisor QC dan engineering jika trend reject terus naik.",
+      "tags": ["reject", "dimension", "quality control", "tolerance"],
+      "source_doc": "QC_Dimension_Control_Plan_v2.4.pdf",
+      "last_updated": "2026-05-08"
+    }
+  ]
+}

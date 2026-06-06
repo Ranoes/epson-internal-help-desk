@@ -1,4 +1,17 @@
 const prisma3 = new (require('@prisma/client').PrismaClient)();
+const axios = require('axios');
+const { readSettings } = require('../services/runtimeSettings');
+
+async function refreshKnowledgeIndex() {
+  const aiEngineUrl = process.env.AI_ENGINE_URL || 'http://localhost:8000';
+  const runtimeSettings = await readSettings();
+  const aiProvider = runtimeSettings.aiProvider || 'ollama';
+  try {
+    await axios.post(`${aiEngineUrl}/reload-knowledge`, { provider: aiProvider });
+  } catch (err) {
+    console.warn('[KB] Failed to refresh ai-engine knowledge index:', err.message);
+  }
+}
 
 async function list(req, res, next) {
   try {
@@ -33,6 +46,7 @@ async function create(req, res, next) {
     const kb = await prisma3.knowledgeBase.create({
       data: { id: newId, title, category, subcategory, content, tags: tags || [], sourceDoc: sourceDocument }
     });
+    await refreshKnowledgeIndex();
     res.status(201).json({ success: true, id: kb.id, message: 'Knowledge entry created and indexed successfully' });
   } catch (err) { next(err); }
 }
@@ -40,6 +54,7 @@ async function create(req, res, next) {
 async function update(req, res, next) {
   try {
     const kb = await prisma3.knowledgeBase.update({ where: { id: req.params.id }, data: req.body });
+    await refreshKnowledgeIndex();
     res.json({ success: true, article: kb });
   } catch (err) { next(err); }
 }
@@ -47,6 +62,7 @@ async function update(req, res, next) {
 async function remove(req, res, next) {
   try {
     await prisma3.knowledgeBase.delete({ where: { id: req.params.id } });
+    await refreshKnowledgeIndex();
     res.json({ success: true, message: 'Deleted' });
   } catch (err) { next(err); }
 }

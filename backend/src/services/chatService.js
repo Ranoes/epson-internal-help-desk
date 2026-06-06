@@ -29,6 +29,17 @@ async function triggerEscalationWebhook(payload) {
 }
 
 async function processChat(userId, sessionId, message, imageBase64 = null) {
+  const recentHistory = await prisma.chatLog.findMany({
+    where: { userId, sessionId },
+    orderBy: { createdAt: 'desc' },
+    take: 8,
+    select: { role: true, content: true }
+  });
+  const chatHistory = [
+    ...recentHistory.reverse().map((turn) => ({ role: turn.role, content: turn.content })),
+    { role: 'user', content: message }
+  ];
+
   // 1. Simpan pesan user
   await prisma.chatLog.create({
     data: {
@@ -40,34 +51,17 @@ async function processChat(userId, sessionId, message, imageBase64 = null) {
     }
   });
 
-  // 2. RAG: cari dokumen relevan
-  const topDocs    = await vectorSearch(message);
-  const confidence = topDocs.length > 0 ? topDocs[0].score : 0;
-  const escalated  = confidence < 0.60;
-
-  // 3. Build system prompt dengan context
-  const context = topDocs
-    .map(d => `[Source: ${d.title}]\n${d.content}`)
-    .join('\n\n---\n\n');
-
-  const systemPrompt = `Kamu adalah asisten helpdesk teknis PT. Indonesia Epson Industry. \
-Jawab pertanyaan karyawan HANYA berdasarkan context di bawah ini. \
-Jika tidak ada informasi relevan, katakan tidak tahu dan sarankan eskalasi ke IT Support. \
-Gunakan bahasa Indonesia yang jelas dan berikan langkah-langkah yang spesifik.\n\nCONTEXT:\n${context}`;
-
-  // 4. Generate jawaban
-  const aiResult = escalated
-    ? {
-        reply:      'Maaf, saya tidak menemukan solusi untuk masalah ini. Tim IT Support akan segera dihubungi.',
-        engineUsed: 'none'
-      }
-    : await aiGenerate(userId, sessionId, message, imageBase64);
+  // 2. Generate jawaban dari ai-engine yang sudah membaca knowledge base dari PostgreSQL
+  const aiResult = await aiGenerate(userId, sessionId, message, imageBase64, chatHistory);
 
   // AI Result from FastAPI sometimes uses 'response_text' instead of 'reply'
   const reply = aiResult.response_text || aiResult.reply || "Maaf, sistem tidak memberikan respon.";
   const engineUsedData = aiResult.engine_used || aiResult.engineUsed || 'ollama-local';
+  const confidence = typeof aiResult.confidence_score === 'number' ? aiResult.confidence_score : 0;
+  const escalated = aiResult.escalated ?? (confidence < 0.60);
+  const kbSources = Array.isArray(aiResult.sources) ? aiResult.sources : [];
 
-  // 5. Simpan pesan asisten
+  // 3. Simpan pesan asisten
   const assistantMsgId = `msg_${Date.now()}_a`;
   await prisma.chatLog.create({
     data: {
@@ -75,30 +69,27 @@ Gunakan bahasa Indonesia yang jelas dan berikan langkah-langkah yang spesifik.\n
       sessionId, userId,
       role:      'assistant',
       content:   reply,
-      confidence: aiResult.confidence_score || confidence,
-      escalated: aiResult.escalated ?? escalated,
+      confidence,
+      escalated,
       engineUsed: engineUsedData,
-      kbSources: topDocs.map(d => d.id)
+      kbSources
     }
   });
 
-  // 6. Buat tiket otomatis jika eskalasi
-  let ticketId = null;
-  if (escalated) {
-    const ticket = await prisma.ticket.create({
-      data: {
-        id:        `tkt_${Date.now()}`,
-        userId,
-        sessionId,
-        question:  message,
-        status:    'open'
-      }
-    });
-    ticketId = ticket.id;
-    await triggerEscalationWebhook({ ticketId, userId, question: message });
-  }
+  // 4. Jika eskalasi, minta user buat ticket manual dari tombol di chat UI
+  const ticketSuggested = escalated;
+  const ticketSuggestion = escalated ? 'Buat Ticket Eskalasi' : null;
 
-  return { reply, confidence, sources: topDocs, escalated, ticketId, messageId: assistantMsgId };
+  return {
+    reply,
+    confidence,
+    sources: kbSources,
+    escalated,
+    ticketSuggested,
+    ticketSuggestion,
+    messageId: assistantMsgId,
+    timestamp: new Date().toISOString(),
+  };
 }
 
 module.exports = { processChat, vectorSearch, triggerEscalationWebhook };

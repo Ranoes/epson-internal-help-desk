@@ -20,7 +20,7 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
             : "bg-gray-50 text-gray-900 border border-gray-200 rounded-bl-none shadow-sm"
         }`}
       >
-        <p className="text-sm">{message.content}</p>
+        <p className="text-sm whitespace-pre-line leading-6">{message.content}</p>
         {!isUser && message.confidence && (
           <p className="text-xs mt-2 opacity-70 flex items-center gap-1">
             <FaCheckCircle size={12} className="text-green-600" />

@@ -1,9 +1,10 @@
 const axios = require('axios');
+const { readSettings } = require('./runtimeSettings');
 
 class AIService {
   constructor() {
     this.aiEngineUrl = process.env.AI_ENGINE_URL || 'http://localhost:8000';
-    this.openaiApiKey = process.env.OPENAI_API_KEY;
+    this.openaiApiKey = process.env.OPENROUTER_API_KEY || process.env.OPENAI_API_KEY;
   }
 
   calculateComplexity(message) {
@@ -18,12 +19,11 @@ class AIService {
     return Math.min((keywordHits * 0.25) + (lengthScore * 0.5), 1.0);
   }
 
-  async processChat(userId, sessionId, message, imageBase64 = null) {
+  async processChat(userId, sessionId, message, imageBase64 = null, chatHistory = null) {
     const complexity = this.calculateComplexity(message);
-    const hasImage = !!imageBase64;
-    
-    // Choose engine based on guide logic
-    let engine = 'ollama-local';
+    const runtimeSettings = await readSettings();
+    const aiProvider = runtimeSettings.aiProvider || 'ollama';
+    const engine = aiProvider === 'openrouter' ? 'openrouter-api' : 'ollama-local';
 
     try {
       // Call AI Engine (FastAPI/Python service)
@@ -32,7 +32,9 @@ class AIService {
         sessionId: String(sessionId),
         message: String(message),
         imageBase64: imageBase64 || null,
+        chatHistory: Array.isArray(chatHistory) ? chatHistory : null,
         engine: String(engine),
+        provider: String(aiProvider),
         complexity: Number(complexity)
       };
 
@@ -51,8 +53,8 @@ class AIService {
   }
 
   // Add alias selectAndGenerate to match how it's required in chatService.js
-  async selectAndGenerate(userId, sessionId, message, imageBase64 = null) {
-    return this.processChat(userId, sessionId, message, imageBase64);
+  async selectAndGenerate(userId, sessionId, message, imageBase64 = null, chatHistory = null) {
+    return this.processChat(userId, sessionId, message, imageBase64, chatHistory);
   }
 }
 

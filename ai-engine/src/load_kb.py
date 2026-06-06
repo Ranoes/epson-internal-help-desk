@@ -6,24 +6,38 @@ Author  : Kevin Alif Mahendra | NIM: 195150200111063
 Project : Smart Helpdesk AI Chatbot - Epson ET-2400
 
 Deskripsi:
-  Load /data/knowledge_base.json, validasi semua field,
-  output ke format yang dibutuhkan Rasky untuk RAG pipeline.
+    Load knowledge base dari PostgreSQL, validasi semua field,
+    output ke format yang dibutuhkan untuk RAG pipeline.
 
 Cara pakai:
-  python load_kb.py
-  python load_kb.py --output custom.json
-  python load_kb.py --format chromadb
-  python load_kb.py --strict
+    python load_kb.py
+    python load_kb.py --output custom.json
+    python load_kb.py --format chromadb
+    python load_kb.py --strict
 """
 
 import json, os, sys, argparse, hashlib
 from datetime import datetime
 from typing import Optional
 
-INPUT_PATH      = os.path.join("data", "knowledge_base.json")
-OUTPUT_PATH     = os.path.join("data", "rag_ready_kb.json")
-REQUIRED_FIELDS = ["id", "title", "category", "content", "tags", "source_doc"]
-VALID_CATEGORIES = {"quality_printing", "hardware", "firmware", "general_ops"}
+from dotenv import load_dotenv
+import psycopg
+from psycopg.rows import dict_row
+
+BASE_DIR        = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+load_dotenv(os.path.join(BASE_DIR, ".env"), override=True)
+OUTPUT_PATH     = os.path.join(BASE_DIR, "data", "rag_ready_kb.json")
+DATABASE_URL    = os.getenv("DATABASE_URL", "")
+REQUIRED_FIELDS = ["id", "title", "category", "content"]
+VALID_CATEGORIES = {
+    "manufacturing",
+    "production_line",
+    "quality_control",
+    "equipment_setup",
+    "maintenance",
+    "safety",
+    "logistics",
+}
 
 
 def validate_entry(entry: dict, index: int) -> list:
@@ -45,11 +59,8 @@ def validate_entry(entry: dict, index: int) -> list:
             if kw not in entry["content"]:
                 errors.append(f"[entry #{index}] Content tidak memiliki bagian '{kw}'")
 
-    if "tags" in entry:
-        if not isinstance(entry["tags"], list):
-            errors.append(f"[entry #{index}] Field 'tags' harus berupa list")
-        elif len(entry["tags"]) == 0:
-            errors.append(f"[entry #{index}] Field 'tags' tidak boleh kosong")
+    if "tags" in entry and entry["tags"] is not None and not isinstance(entry["tags"], list):
+        errors.append(f"[entry #{index}] Field 'tags' harus berupa list")
 
     return errors
 
@@ -65,6 +76,24 @@ def validate_all(entries: list) -> tuple:
             ids_seen[eid] = i + 1
     problem_indices = set(e.split("entry #")[1].split("]")[0] for e in all_errors if "entry #" in e)
     return all_errors, len(entries) - len(problem_indices)
+
+
+def fetch_knowledge_base_rows(database_url: str) -> list:
+    if not database_url:
+        raise ValueError("DATABASE_URL harus diisi agar loader bisa membaca PostgreSQL.")
+
+    if "connect_timeout=" not in database_url:
+        database_url = f"{database_url}{'&' if '?' in database_url else '?'}connect_timeout=5"
+
+    query = """
+        SELECT id, title, category, subcategory, content, tags, source_doc, created_at, updated_at
+        FROM knowledge_base
+        ORDER BY created_at ASC
+    """
+    with psycopg.connect(database_url, row_factory=dict_row) as connection:
+        with connection.cursor() as cursor:
+            cursor.execute(query)
+            return cursor.fetchall()
 
 
 def parse_content_sections(content: str) -> dict:
@@ -106,6 +135,7 @@ def build_rag_document(entry: dict, chunk_size: int = 512) -> dict:
         "metadata"      : {
             "title"      : entry.get("title", ""),
             "category"   : entry.get("category", ""),
+            "subcategory": entry.get("subcategory", ""),
             "tags"       : entry.get("tags", []),
             "source_doc" : entry.get("source_doc", ""),
             "last_updated": entry.get("last_updated", ""),
@@ -125,20 +155,32 @@ def transform_for_chromadb(rag_docs: list) -> dict:
     }
 
 
-def load_and_process(input_path=INPUT_PATH, output_path=OUTPUT_PATH,
+def load_and_process(database_url=DATABASE_URL, output_path=OUTPUT_PATH,
                      output_format="rag_json", strict=False) -> Optional[dict]:
     print("=" * 60)
     print("  KB Loader - Smart Helpdesk RAG Pipeline")
     print("  Kevin Alif Mahendra | 195150200111063")
     print("=" * 60)
 
-    print(f"\n[1/4] Loading knowledge base dari: {input_path}")
-    if not os.path.exists(input_path):
-        print(f"  ERROR: File tidak ditemukan: {input_path}")
+    print("\n[1/4] Loading knowledge base dari PostgreSQL...")
+    try:
+        rows = fetch_knowledge_base_rows(database_url)
+    except Exception as error:
+        print(f"  ERROR: Tidak bisa membaca PostgreSQL: {error}")
         return None
-    with open(input_path, "r", encoding="utf-8") as f:
-        data = json.load(f)
-    entries = data.get("knowledge_base", [])
+
+    entries = []
+    for row in rows:
+        entries.append({
+            "id": row["id"],
+            "title": row["title"],
+            "category": row["category"],
+            "subcategory": row.get("subcategory"),
+            "content": row["content"],
+            "tags": row.get("tags") or [],
+            "source_doc": row.get("source_doc") or "",
+            "last_updated": row.get("updated_at").isoformat() if row.get("updated_at") else "",
+        })
     print(f"  OK: Berhasil load {len(entries)} entri")
 
     print(f"\n[2/4] Validasi semua field ...")
@@ -178,7 +220,8 @@ def load_and_process(input_path=INPUT_PATH, output_path=OUTPUT_PATH,
         output_data = {
             "metadata": {
                 "generated_at": datetime.now().isoformat(),
-                "source": input_path, "total_docs": len(rag_docs),
+                "source": database_url,
+                "total_docs": len(rag_docs),
                 "format": "rag_json", "validation_errors": len(all_errors),
                 "created_by": "Kevin Alif Mahendra (195150200111063)",
             },
@@ -196,10 +239,10 @@ def load_and_process(input_path=INPUT_PATH, output_path=OUTPUT_PATH,
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Load KB untuk RAG pipeline Epson ET-2400")
-    parser.add_argument("--input",  default=INPUT_PATH)
+    parser.add_argument("--database-url", default=DATABASE_URL)
     parser.add_argument("--output", default=OUTPUT_PATH)
     parser.add_argument("--format", default="rag_json", choices=["rag_json", "chromadb"])
     parser.add_argument("--strict", action="store_true")
     args = parser.parse_args()
-    result = load_and_process(args.input, args.output, args.format, args.strict)
+    result = load_and_process(args.database_url, args.output, args.format, args.strict)
     sys.exit(0 if result else 1)

@@ -33,9 +33,17 @@ export default function KnowledgeBasePage() {
   const [editingArticle, setEditingArticle] = useState<KnowledgeArticle | null>(
     null,
   );
+  const allowedCategories = [
+    "manufacturing",
+    "production_line",
+    "quality_control",
+    "equipment_setup",
+    "safety",
+    "logistics",
+  ];
   const [formData, setFormData] = useState({
     title: "",
-    category: "General",
+    category: "manufacturing",
     content: "",
     tags: "",
   });
@@ -51,33 +59,33 @@ export default function KnowledgeBasePage() {
         setArticles([
           {
             id: "KB-001",
-            title: "How to reset your password",
-            category: "Account",
+            title: "Assembly line scanner not reading part labels",
+            category: "manufacturing",
             content:
-              "Click on your profile picture and select Settings. Choose Password and follow the prompts...",
-            tags: ["password", "account", "security"],
+              "Check the scanner lens for dust, verify label contrast, and confirm the part label size matches the scanner profile.",
+            tags: ["scanner", "label", "manufacturing"],
             createdAt: "2026-04-01T10:00:00",
             updatedAt: "2026-05-08T14:00:00",
             views: 245,
           },
           {
             id: "KB-002",
-            title: "Setting up VPN on Windows",
-            category: "Network",
+            title: "Incorrect torque reading on workstation tool",
+            category: "equipment_setup",
             content:
-              "Go to Settings > Network & Internet > VPN. Click Add VPN connection and enter the company server...",
-            tags: ["vpn", "network", "windows"],
+              "Recalibrate the torque tool, inspect the battery level, and confirm the tightening profile is assigned to the correct workstation.",
+            tags: ["torque", "calibration", "tooling"],
             createdAt: "2026-04-15T09:30:00",
             updatedAt: "2026-05-07T11:20:00",
             views: 189,
           },
           {
             id: "KB-003",
-            title: "Printer troubleshooting guide",
-            category: "Hardware",
+            title: "Quality check station rejects good parts",
+            category: "quality_control",
             content:
-              "1. Check if the printer is powered on. 2. Verify network connection. 3. Check printer queue...",
-            tags: ["printer", "hardware", "troubleshoot"],
+              "Review the inspection threshold, clean the sensor, and validate the sample part against the latest approved specification.",
+            tags: ["qc", "inspection", "sensor"],
             createdAt: "2026-03-20T13:45:00",
             updatedAt: "2026-05-06T16:30:00",
             views: 423,
@@ -112,7 +120,7 @@ export default function KnowledgeBasePage() {
       });
     } else {
       setEditingArticle(null);
-      setFormData({ title: "", category: "General", content: "", tags: "" });
+      setFormData({ title: "", category: "manufacturing", content: "", tags: "" });
     }
     setShowModal(true);
   };
@@ -120,7 +128,7 @@ export default function KnowledgeBasePage() {
   const handleCloseModal = () => {
     setShowModal(false);
     setEditingArticle(null);
-    setFormData({ title: "", category: "General", content: "", tags: "" });
+    setFormData({ title: "", category: "manufacturing", content: "", tags: "" });
   };
 
   const handleSaveArticle = async () => {
@@ -153,7 +161,19 @@ export default function KnowledgeBasePage() {
           ...formData,
           tags: formData.tags.split(",").map((t) => t.trim()),
         });
-        setArticles([...articles, response.data]);
+        setArticles([
+          ...articles,
+          {
+            id: response.data.id ?? `kb-${Date.now()}`,
+            title: formData.title,
+            category: formData.category,
+            content: formData.content,
+            tags: formData.tags.split(",").map((t) => t.trim()),
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            views: 0,
+          },
+        ]);
       }
       handleCloseModal();
     } catch (err) {
@@ -344,15 +364,19 @@ export default function KnowledgeBasePage() {
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
                   Category *
                 </label>
-                <input
-                  type="text"
+                <select
                   value={formData.category}
                   onChange={(e) =>
                     setFormData({ ...formData, category: e.target.value })
                   }
-                  placeholder="e.g., Account, Network, Hardware"
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-800 outline-none"
-                />
+                >
+                  {allowedCategories.map((category) => (
+                    <option key={category} value={category}>
+                      {category}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               {/* Content */}

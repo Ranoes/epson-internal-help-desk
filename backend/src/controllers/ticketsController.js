@@ -5,6 +5,10 @@ async function list(req, res, next) {
     const { status, page = 1, limit = 20 } = req.query;
     const where = {};
     if (status) where.status = status;
+    const role = req.user?.role;
+    if (role && role !== 'admin' && role !== 'manager') {
+      where.userId = req.user.id;
+    }
     const skip = (parseInt(page) - 1) * parseInt(limit);
     const [total, data] = await Promise.all([
       prisma4.ticket.count({ where }),
@@ -20,13 +24,14 @@ async function list(req, res, next) {
         id: t.id, 
         userId: t.userId, 
         userName: t.user.name,
+        createdBy: t.user.name,
         title: t.question.substring(0, 50) + (t.question.length > 50 ? '...' : ''),
         description: t.question, 
         question: t.question, 
         sessionId: t.sessionId, 
         status: t.status.toLowerCase(),
-        priority: t.priority?.toLowerCase() || 'medium',
         assignedTo: t.assignedTo, 
+        resolution: t.resolution,
         createdAt: t.createdAt,
         updatedAt: t.updatedAt || t.createdAt
       }))
@@ -55,4 +60,13 @@ async function updateStatus(req, res, next) {
   } catch (err) { next(err); }
 }
 
-module.exports = { list, create, updateStatus };
+async function remove(req, res, next) {
+  try {
+    await prisma4.ticket.delete({
+      where: { id: req.params.id }
+    });
+    res.json({ success: true });
+  } catch (err) { next(err); }
+}
+
+module.exports = { list, create, updateStatus, remove };
