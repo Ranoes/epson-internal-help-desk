@@ -19,7 +19,7 @@ The frontend is pre-configured to use mock data, so you can develop without the 
 npm run dev
 ```
 
-Then open [http://localhost:3000](http://localhost:3000) in your browser.
+Then open the Caddy single entry point in your browser (for example, `http://helpdesk.internal:8080`).
 
 ### Demo Credentials
 
@@ -32,7 +32,7 @@ Once the backend is ready, update `.env.local`:
 
 ```env
 NEXT_PUBLIC_USE_MOCK_API=false
-NEXT_PUBLIC_API_BASE_URL=http://your-backend-server:3001/api
+NEXT_PUBLIC_API_BASE_URL=/api
 ```
 
 Then restart the dev server.

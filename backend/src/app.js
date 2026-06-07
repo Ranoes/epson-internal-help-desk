@@ -12,15 +12,11 @@ const app = express();
 // Security headers
 app.use(helmet());
 
-// CORS - whitelist intranet
-const allowedOrigins = (process.env.INTRANET_WHITELIST || '').split(',').map(s => s.trim());
+// CORS - allow all origins (public access via Caddy/Tailscale)
 app.use(cors({
-  origin: (origin, cb) => {
-    if (!origin) return cb(null, true); // Postman / server-to-server
-    const ok = allowedOrigins.some(ip => origin.includes(ip));
-    ok ? cb(null, true) : cb(new Error('Not allowed by CORS'));
-  },
-  credentials: true
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 // Logging

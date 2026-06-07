@@ -1,0 +1,19 @@
+http://:8080 {
+    # 1. Route Frontend (React/Vite)
+    reverse_proxy localhost:3000
+
+    # 2. Route FastAPI Backend
+    handle /api/* {
+        reverse_proxy localhost:3001
+    }
+
+    # 3. Route AI Engine Python
+    handle /ai/* {
+        reverse_proxy localhost:8000
+    }
+
+    # 4. Route Ollama
+    handle /ollama/* {
+        reverse_proxy localhost:11434
+    }
+}

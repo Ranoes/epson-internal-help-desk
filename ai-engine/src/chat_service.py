@@ -1,6 +1,7 @@
 import warnings
 from langchain_core.prompts import PromptTemplate
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional
 import uvicorn
@@ -15,6 +16,14 @@ CLARIFICATION_THRESHOLD = 0.45 # Di bawah ini baru eskalasi
 LLM_MODEL = get_llm_model()
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 VECTORSTORE_CACHE = {}
 LLM_CACHE = {}

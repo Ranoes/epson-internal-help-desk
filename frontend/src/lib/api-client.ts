@@ -7,7 +7,8 @@ const MOCK_DELAY_MS = 800;
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const apiClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3001/api",
+  // Use Caddy single entry point. All backend calls stay relative to current origin.
+  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || "/api",
   headers: {
     "Content-Type": "application/json",
   },
