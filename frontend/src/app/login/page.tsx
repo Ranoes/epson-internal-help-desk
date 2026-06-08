@@ -5,13 +5,7 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import apiClient from "@/lib/api-client";
 import { LoginResponse } from "@/types/api";
-import {
-  FaUser,
-  FaLock,
-  FaSignInAlt,
-  FaChevronDown,
-  FaChevronUp,
-} from "react-icons/fa";
+import { FaUser, FaLock, FaSignInAlt } from "react-icons/fa";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -22,7 +16,6 @@ export default function LoginPage() {
   } = useForm();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [showCredentials, setShowCredentials] = useState(false);
 
   const onSubmit = async (data: any) => {
     setIsLoading(true);
@@ -151,65 +144,6 @@ export default function LoginPage() {
                 Register here
               </a>
             </p>
-          </div>
-
-          {/* Demo Credentials */}
-          <div className="mt-6 bg-blue-50 rounded-lg border border-blue-300 overflow-hidden">
-            <button
-              type="button"
-              onClick={() => setShowCredentials(!showCredentials)}
-              className="w-full px-4 py-3 flex items-center justify-between text-blue-800 hover:bg-blue-100 transition"
-            >
-              <span className="text-xs font-semibold">📝 Demo Credentials</span>
-              {showCredentials ? (
-                <FaChevronUp size={14} />
-              ) : (
-                <FaChevronDown size={14} />
-              )}
-            </button>
-            {showCredentials && (
-              <div className="px-4 pb-3 bg-white border-t border-blue-300 animate-in fade-in slide-in-from-top-2 duration-200">
-                <div className="mb-3">
-                  <p className="text-xs text-blue-800 font-semibold mb-1">
-                    User
-                  </p>
-                  <p className="text-xs text-blue-700 mb-1">
-                    <strong>Username:</strong>{" "}
-                    <code className="bg-blue-100 px-2 py-1 rounded">
-                      karyawan001
-                    </code>
-                  </p>
-                  <p className="text-xs text-blue-700 mb-2">
-                    <strong>Password:</strong>{" "}
-                    <code className="bg-blue-100 px-2 py-1 rounded">
-                      password123
-                    </code>
-                  </p>
-                </div>
-
-                <div className="mb-3">
-                  <p className="text-xs text-blue-800 font-semibold mb-1">
-                    Admin
-                  </p>
-                  <p className="text-xs text-blue-700 mb-1">
-                    <strong>Username:</strong>{" "}
-                    <code className="bg-blue-100 px-2 py-1 rounded">
-                      admin001
-                    </code>
-                  </p>
-                  <p className="text-xs text-blue-700 mb-2">
-                    <strong>Password:</strong>{" "}
-                    <code className="bg-blue-100 px-2 py-1 rounded">
-                      adminpass123
-                    </code>
-                  </p>
-                </div>
-
-                <p className="text-xs text-blue-600">
-                  (Using mock API for development)
-                </p>
-              </div>
-            )}
           </div>
         </div>
       </div>

@@ -58,8 +58,10 @@ export default function AdminDashboard() {
             activeTickets: analyticsResponse.data.activeTickets ?? 0,
             resolvedTickets: analyticsResponse.data.resolvedTickets ?? 0,
             totalUsers: analyticsResponse.data.totalUsers ?? 0,
-            knowledgeBaseArticles: analyticsResponse.data.knowledgeBaseArticles ?? 0,
-            averageResolutionTime: analyticsResponse.data.averageResolutionTime || "N/A",
+            knowledgeBaseArticles:
+              analyticsResponse.data.knowledgeBaseArticles ?? 0,
+            averageResolutionTime:
+              analyticsResponse.data.averageResolutionTime || "N/A",
             ticketGrowthPercent: analyticsResponse.data.ticketGrowthPercent,
           });
         }
@@ -103,8 +105,10 @@ export default function AdminDashboard() {
             </p>
           )}
         </div>
-        <div className={`p-3 rounded-lg ${color}`}>
-          <Icon size={24} className="text-white" />
+        <div
+          className={`w-12 h-12 flex items-center justify-center rounded-lg ${color}`}
+        >
+          <Icon size={20} className="text-white" color="#ffffff" />
         </div>
       </div>
     </div>
@@ -139,39 +143,49 @@ export default function AdminDashboard() {
           label="Total Tickets"
           value={stats?.totalTickets || 0}
           icon={FaTicketAlt}
-          color="bg-blue-500"
+          color="bg-gray-700"
           trend={formatGrowth(stats?.ticketGrowthPercent) ?? undefined}
         />
         <StatCard
           label="Active Tickets"
           value={stats?.activeTickets || 0}
           icon={FaClipboardList}
-          color="bg-orange-500"
+          color="bg-gray-700"
         />
         <StatCard
           label="Resolved Tickets"
           value={stats?.resolvedTickets || 0}
           icon={FaCheckCircle}
-          color="bg-green-500"
+          color="bg-gray-700"
         />
         <StatCard
           label="Total Users"
           value={stats?.totalUsers || 0}
           icon={FaUsers}
-          color="bg-purple-500"
+          color="bg-gray-700"
         />
         <StatCard
           label="Knowledge Base"
           value={stats?.knowledgeBaseArticles || 0}
           icon={FaBook}
-          color="bg-indigo-500"
+          color="bg-gray-700"
         />
         <StatCard
           label="AI Provider"
-          value={aiSettings?.aiProvider === "openrouter" ? "OpenRouter" : "Ollama"}
+          value={
+            aiSettings?.aiProvider === "openrouter" ? "OpenRouter" : "Ollama"
+          }
           icon={FaRobot}
-          color={aiSettings?.aiProvider === "openrouter" ? "bg-emerald-500" : "bg-slate-700"}
-          trend={aiSettings?.updatedAt ? `Updated ${new Date(aiSettings.updatedAt).toLocaleString()}` : "Not configured"}
+          color={
+            aiSettings?.aiProvider === "openrouter"
+              ? "bg-emerald-500"
+              : "bg-slate-700"
+          }
+          trend={
+            aiSettings?.updatedAt
+              ? `Updated ${new Date(aiSettings.updatedAt).toLocaleString()}`
+              : "Not configured"
+          }
         />
         <StatCard
           label="Avg Resolution Time"
@@ -191,7 +205,9 @@ export default function AdminDashboard() {
             href="/admin/tickets"
             className="p-4 bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg hover:shadow-md transition border border-blue-200 text-center"
           >
-            <FaTicketAlt size={32} className="text-blue-600 mx-auto mb-2" />
+            <div className="p-3 rounded-lg bg-blue-500 mx-auto mb-2 inline-flex items-center justify-center">
+              <FaTicketAlt size={20} className="text-white" />
+            </div>
             <p className="font-semibold text-gray-900">Manage Tickets</p>
             <p className="text-xs text-gray-600 mt-1">
               View and resolve tickets
@@ -201,7 +217,9 @@ export default function AdminDashboard() {
             href="/admin/knowledge"
             className="p-4 bg-gradient-to-br from-green-50 to-green-100 rounded-lg hover:shadow-md transition border border-green-200 text-center"
           >
-            <FaBook size={32} className="text-green-600 mx-auto mb-2" />
+            <div className="p-3 rounded-lg bg-green-500 mx-auto mb-2 inline-flex items-center justify-center">
+              <FaBook size={20} className="text-white" />
+            </div>
             <p className="font-semibold text-gray-900">Knowledge Base</p>
             <p className="text-xs text-gray-600 mt-1">
               Manage articles and content
@@ -211,9 +229,13 @@ export default function AdminDashboard() {
             href="/admin/settings"
             className="p-4 bg-gradient-to-br from-slate-50 to-slate-100 rounded-lg hover:shadow-md transition border border-slate-200 text-center"
           >
-            <FaCog size={32} className="text-slate-700 mx-auto mb-2" />
+            <div className="p-3 rounded-lg bg-slate-700 mx-auto mb-2 inline-flex items-center justify-center">
+              <FaCog size={20} className="text-white" />
+            </div>
             <p className="font-semibold text-gray-900">AI Settings</p>
-            <p className="text-xs text-gray-600 mt-1">Switch Ollama or OpenRouter</p>
+            <p className="text-xs text-gray-600 mt-1">
+              Switch Ollama or OpenRouter
+            </p>
           </a>
         </div>
       </div>

@@ -1,0 +1,399 @@
+
+
+=== PAGE 1 ===
+
+OVERVIEW  DAN  KONTEKS  PROYEK  
+Dokumen  ini  adalah  panduan  teknis  lengkap  yang  ditujukan  kepada  seluruh  anggota  tim  A5  
+Tim
+ 
+10
+ 
+dalam
+ 
+mengembangkan
+ 
+sistem
+ 
+Smart
+ 
+Helpdesk
+ 
+Chatbot
+ 
+untuk
+ 
+PT.
+ 
+Indonesia
+ 
+Epson
+ 
+Industry.
+ 
+Baca
+ 
+seluruh
+ 
+bagian
+ 
+yang
+ 
+relevan
+ 
+dengan
+ 
+peran
+ 
+Anda
+ 
+sebelum
+ 
+mulai
+ 
+mengerjakan
+ 
+task.
+   
+Latar  Belakang  &  Masalah  yang  Diselesaikan  PT.  Indonesia  Epson  Industry  adalah  perusahaan  manufaktur  printer  besar.  Saat  ini,  proses  
+helpdesk
+ 
+internal
+ 
+mereka
+ 
+masih
+ 
+manual
+ 
+—
+ 
+laporan
+ 
+masalah
+ 
+ditulis
+ 
+di
+ 
+kertas
+ 
+(Problem
+ 
+Report
+ 
+Form)
+ 
+atau
+ 
+email.
+ 
+Akibatnya:
+ •
+        
+Tidak  ada  sistem  terpusat  untuk  melacak  masalah  •
+        
+Teknisi  baru  kesulitan  menemukan  solusi  untuk  masalah  yang  sudah  pernah  terjadi  •
+        
+Knowledge  teknis  bersifat  personal,  tidak  tersharing  ke  seluruh  tim  •
+        
+Risiko  stopline  produksi  akibat  lambatnya  penanganan  masalah  
+printer/hardware/firmware
+   
+Solusi  yang  Dibangun  Sebuah  Smart  Helpdesk  Chatbot  dengan  arsitektur  hybrid  yang  fleksibel.  Frontend  dan  
+database
+ 
+berjalan
+ 
+di
+ 
+jaringan
+ 
+internal
+ 
+Epson,
+ 
+sedangkan
+ 
+AI
+ 
+engine
+ 
+dapat
+ 
+menggunakan
+ 
+model
+ 
+lokal,
+ 
+API
+ 
+eksternal,
+ 
+atau
+ 
+kombinasi
+ 
+keduanya
+ 
+tergantung
+ 
+kebutuhan.
+ 
+Chatbot
+ 
+ini:
+ •
+        
+Menerima  pertanyaan  karyawan  dalam  bahasa  alami  (teks  &  gambar)  •
+        
+Mencari  jawaban  dari  knowledge  base  berisi  laporan  teknis  manufaktur  printer  
+(sintetik)
+ •
+        
+Menggunakan  RAG  (Retrieval-Augmented  Generation)  agar  jawaban  sesuai  
+knowledge
+ 
+base
+ •
+        
+AI  engine  bersifat  modular:  bisa  Ollama  lokal,  API  eksternal  
+(OpenAI/Anthropic/Gemini),
+ 
+atau
+ 
+keduanya
+ 
+secara
+ 
+bersamaan
+ 
+dengan
+ 
+routing
+ 
+otomatis
+ •
+        
+Data  sensitif  (chat  logs,  knowledge  base,  user  data)  tetap  tersimpan  di  server  
+internal
+   
+Stack  Teknologi  
+Layer  Teknologi  Keterangan  
+Frontend  Next.js  (React)  UI  chatbot,  dashboard  admin,  login  page  
+Backend  API  Express.js  /  Fastify  +  Node.js  REST  API,  business  logic,  orchestration  
+
+=== PAGE 2 ===
+
+AI  Engine  (Lokal)  Ollama  +  Clawbot  (opsional)  Model  LLM  lokal  untuk  pertanyaan  standar  —  cepat,  gratis,  privat  
+AI  Engine  (Eksternal)  OpenAI  API  /  Anthropic  API  /  Gemini  
+Model  cloud  untuk  pertanyaan  kompleks  yang  butuh  reasoning  lebih  dalam  
+AI  Router  Logika  routing  di  backend  Menentukan  apakah  query  dikirim  ke  lokal  atau  API  eksternal  berdasarkan  kompleksitas  
+Workflow  Automation  n8n  (opsional)  Automasi  pipeline  RAG,  notifikasi  email,  scheduled  KB  update  
+RAG  Pipeline  LangChain  /  LlamaIndex  Chunking,  embedding,  retrieval  dokumen  
+Vector  DB  ChromaDB  /  pgvector  Menyimpan  embedding  knowledge  base  
+Database  PostgreSQL  +  Prisma  ORM  Chat  logs,  tiket,  user,  knowledge  entries  
+Deployment  Ubuntu  Server  (On-Premise)  Server  internal  PT.  Epson  
+  Catatan  Penting:  Clawbot  dan  n8n  bersifat  opsional.  Arsitektur  AI  bersifat  hybrid  dan  
+fleksibel
+ 
+—
+ 
+bisa
+ 
+memakai
+ 
+Ollama
+ 
+lokal
+ 
+saja,
+ 
+API
+ 
+eksternal
+ 
+saja,
+ 
+atau
+ 
+keduanya
+ 
+secara
+ 
+bersamaan.
+ 
+Pemilihan
+ 
+engine
+ 
+per-request
+ 
+ditentukan
+ 
+oleh
+ 
+AI
+ 
+Router
+ 
+di
+ 
+backend
+ 
+berdasarkan
+ 
+kompleksitas
+ 
+pertanyaan
+ 
+dan
+ 
+konfigurasi
+ 
+tim.
+    
+ARSITEKTUR  SISTEM  
+Gambaran  Arsitektur  Sistem  terdiri  dari  3  layer  utama  yang  berkomunikasi  melalui  REST  API  JSON:    Layer  Komponen  
+Client  Layer  Browser  (Chrome/Edge)  di  intranet  Epson  →  Next.js  Frontend  (Chat  UI,  Login,  Dashboard  Admin)  
+Application  Layer  Express.js  Backend  API  →  AI  Router  →  [Ollama  Lokal  |  API  Eksternal  |  Keduanya]  →  RAG  Pipeline  (Retrieval)  →  Response  Generator  →  Escalation  Handler  
+Data  Layer  PostgreSQL  (chat  logs,  tiket,  users)  +  Vector  DB  (embeddings  knowledge  base)  +  Knowledge  Base  Files  (PDF/JSON)  
+  
+Alur  Request  Chatbot  (End-to-End)  Berikut  alur  lengkap  dari  saat  pengguna  mengirim  pesan  hingga  mendapat  jawaban:    
+
+=== PAGE 3 ===
+
+#  Step  Detail  
+1  User  Input  Karyawan  mengetik  pertanyaan  (teks)  atau  upload  gambar  defect  printer  via  browser  
+2  POST  /api/chat  Frontend  mengirim  JSON  payload  ke  backend:  {  sessionId,  userId,  message,  imageBase64?  }  
+3  AI  Router  Backend  menentukan  engine  mana  yang  dipakai:  Ollama  lokal  (pertanyaan  sederhana/standar)  atau  API  eksternal  (pertanyaan  kompleks/multimodal)  
+4  Query  Embedding  Pertanyaan  diubah  menjadi  vector  embedding  menggunakan  model  embedding  lokal  
+5  Vector  Search  Embedding  dibandingkan  dengan  vector  database  (ChromaDB)  untuk  mencari  dokumen  paling  relevan  
+6  Context  Injection  Top-K  dokumen  relevan  dimasukkan  ke  prompt  sebagai  context  (RAG)  
+7  LLM  Generation  Engine  terpilih  (Ollama  atau  API  eksternal)  generate  jawaban  berdasarkan  context  +  pertanyaan  asli  
+8  Response  Check  Jika  confidence  rendah  /  jawaban  tidak  ditemukan  →  trigger  escalation  
+9  Log  &  Store  Percakapan  disimpan  ke  PostgreSQL  (chat_logs  table)  
+10  Return  Response  Backend  mengirim  JSON  response  ke  frontend  →  ditampilkan  di  chat  UI  
+  
+Strategi  Hybrid  AI  Routing  Sistem  menggunakan  AI  Router  yang  secara  otomatis  memilih  engine  berdasarkan  
+karakteristik
+ 
+pertanyaan.
+ 
+Tidak
+ 
+ada
+ 
+kewajiban
+ 
+full
+ 
+on-premise
+ 
+—
+ 
+keputusan
+ 
+ada
+ 
+di
+ 
+tangan
+ 
+tim
+ 
+berdasarkan
+ 
+kebutuhan
+ 
+dan
+ 
+budget.
+   Tipe  Pertanyaan  Engine  yang  Dipilih  Contoh  Alasan  
+Sederhana  &  ada  di  KB  Ollama  Lokal  (llama3.2)  Cara  ganti  tinta,  error  E-01  
+Cepat,  gratis,  privat  —  cukup  untuk  pertanyaan  standar  
+Kompleks  /  reasoning  dalam  
+API  Eksternal  (GPT-4o  /  Gemini)  
+Analisis  penyebab  akar  masalah  multi-faktor  
+Model  lokal  kurang  kemampuan  reasoning,  butuh  model  besar  
+Analisis  gambar  (defect  foto)  
+API  Eksternal  multimodal  
+Upload  foto  garis  pada  print  
+Model  lokal  (LLaVA)  terbatas;  GPT-4o  Vision  lebih  akurat  
+Laporan  analitik  &  summary  
+API  Eksternal  Generate  rangkuman  top-issues  mingguan  
+Butuh  kemampuan  summarization  berkualitas  tinggi  
+Fallback  jika  API  down  Ollama  Lokal  Semua  tipe  Lokal  selalu  tersedia  meski  tidak  ada  internet  
+  
+
+=== PAGE 4 ===
+
+Logika  Routing  (Pseudocode)  
+//  ai-engine/src/router.js  //  Routing  logic:  tentukan  engine  berdasarkan  karakteristik  query    function  selectEngine(query,  hasImage,  complexityScore)  {    //  Selalu  pakai  lokal  dulu  jika  sederhana  dan  tidak  ada  gambar    if  (!hasImage  &&  complexityScore  <  0.5)  {   return  'ollama-local';     //  Murah,  cepat,  privat    }      //  Gambar  wajib  pakai  API  eksternal  multimodal    if  (hasImage)  {   return  'openai-gpt4o-vision';    //  Atau  gemini-pro-vision    }      //  Pertanyaan  kompleks  (multi-step  reasoning,  analisis  mendalam)    if  (complexityScore  >=  0.5)  {   return  'openai-gpt4o-mini';   //  Terjangkau  tapi  lebih  pintar  dari  lokal   //  Atau:  'anthropic-claude-haiku'  untuk  alternatif  yang  lebih  hemat    }      return  'ollama-local';   //  Default  fallback  }    //  complexityScore  dihitung  dari:  panjang  pertanyaan,  jumlah  entitas,  //  apakah  mengandung  kata  "analisis",  "kenapa",  "bandingkan",  "rekomendasi",  dll.  
+  
+Perbandingan  Pilihan  Engine  
+Engine  Biaya  Kecepatan  Kualitas  Kapan  Pakai  
+Ollama  (Lokal)  Gratis  setelah  setup  
+Tergantung  GPU/CPU  
+Cukup  untuk  FAQ  
+Pertanyaan  standar,  fallback,  dev/testing  
+GPT-4o-mini  ~$0.15/1M  token  input  
+Cepat  (~2-4  detik)  
+Sangat  Baik  Pertanyaan  kompleks,  reasoning  mendalam  
+GPT-4o  ~$2.5/1M  token  input  
+Sedang  (~3-6  detik)  
+Terbaik  Analisis  gambar  defect,  kasus  kritis  
+Claude  Haiku  ~$0.25/1M  token  input  
+Sangat  Cepat  Baik  Alternatif  hemat  GPT-4o-mini  
+Gemini  Flash  ~$0.075/1M  token  Sangat  Cepat  Baik  Volume  tinggi,  biaya  minimum  
+Rekomendasi:  Mulai  dengan  Ollama  untuk  semua  query  di  fase  MVP.  Setelah  sistem  stabil,  
+aktifkan
+ 
+hybrid
+ 
+routing
+ 
+untuk
+ 
+pertanyaan
+ 
+yang
+ 
+memang
+ 
+membutuhkan
+ 
+model
+ 
+lebih
+ 
+besar.
+ 
+Budget
+ 
+API
+ 
+eksternal
+ 
+bisa
+ 
+dikendalikan
+ 
+dengan
+ 
+membatasi
+ 
+routing
+ 
+hanya
+ 
+pada
+ 
+query
+ 
+dengan
+ 
+complexityScore
+ 
+tinggi.
+     

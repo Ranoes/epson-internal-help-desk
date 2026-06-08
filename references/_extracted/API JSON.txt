@@ -1,0 +1,166 @@
+
+
+=== PAGE 1 ===
+
+.  SPESIFIKASI  API  JSON  (Backend  
+Contract)
+ 
+Berikut  adalah  kontrak  API  yang  harus  disetujui  seluruh  tim  sebelum  implementasi.  Semua  
+endpoint
+ 
+menggunakan
+ 
+format
+ 
+JSON.
+ 
+Base
+ 
+URL:
+ 
+http://[internal-server]:3001/api
+   
+Authentication  
+POST  /api/auth/login  
+//  Request  Body  {    "username":  "karyawan001",    "password":  "password123"  }    //  Response  200  OK  {    "success":  true,    "token":  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",    "user":  {   "id":  "usr_001",   "name":  "Budi  Santoso",   "role":  "user"   //  "user"  |  "admin"  |  "manager"    }  }    //  Response  401  Unauthorized  {    "success":  false,    "error":  "Invalid  credentials"  }  
+  
+Chat  
+POST  /api/chat/message  
+
+=== PAGE 2 ===
+
+//  Request  Body  {    "sessionId":  "sess_abc123",    "userId":  "usr_001",    "message":  "Printer  ET-2400  hasil  print  bergaris,  bagaimana  solusinya?",    "imageBase64":  null   //  opsional,  base64  string  jika  ada  gambar  }    //  Response  200  OK  {    "success":  true,    "messageId":  "msg_xyz789",    "reply":  "Berdasarkan  knowledge  base:  Garis  pada  hasil  print  biasanya  disebabkan  oleh  printhead  tersumbat.  Langkah  penyelesaian:  1)  Jalankan  Head  Cleaning  dari  menu  printer...  2)  ...",    "confidence":  0.87,    "sources":  [   {  "docId":  "kb_023",  "title":  "SOP  Printhead  Cleaning  ET-Series",  "relevance":  0.91  }    ],    "escalated":  false,    "timestamp":  "2026-05-06T08:30:00Z"  }    //  Response  jika  tidak  ada  jawaban  (escalation  triggered)  {    "success":  true,    "messageId":  "msg_xyz790",    "reply":  "Maaf,  saya  tidak  menemukan  solusi  untuk  masalah  ini  di  knowledge  base.  Tiket  telah  dibuat  untuk  tim  IT  Support.",    "confidence":  0.12,    "sources":  [],    "escalated":  true,    "ticketId":  "tkt_00045",    "timestamp":  "2026-05-06T08:31:00Z"  }  
+  
+GET  /api/chat/history/:sessionId  
+//  Response  200  OK  {    "success":  true,    "sessionId":  "sess_abc123",    "messages":  [   {     "messageId":  "msg_xyz001",     "role":  "user",     "content":  "Printer  ET-2400  hasil  print  bergaris",     "timestamp":  "2026-05-06T08:29:00Z"   },   {     "messageId":  "msg_xyz789",     "role":  "assistant",     "content":  "Berdasarkan  knowledge  base:  Garis  pada  hasil  print...",     "confidence":  0.87,     "timestamp":  "2026-05-06T08:30:00Z"   }    ]  }  
+  
+
+=== PAGE 3 ===
+
+Knowledge  Base  
+GET  /api/knowledge  
+//  Query  params:  ?page=1&limit=20&category=hardware&search=printhead    //  Response  200  OK  {    "success":  true,    "total":  145,    "page":  1,    "limit":  20,    "data":  [   {     "id":  "kb_023",     "title":  "SOP  Printhead  Cleaning  ET-Series",     "category":  "hardware",     "subcategory":  "quality_printing",     "content":  "...",     "tags":  ["printhead",  "cleaning",  "ET-2400",  "garis"],     "createdAt":  "2026-01-15T00:00:00Z",     "updatedAt":  "2026-04-01T00:00:00Z"   }    ]  }  
+  
+POST  /api/knowledge  (Admin  only)  
+//  Request  Body  {    "title":  "Troubleshooting  Firmware  Error  Code  E-01",    "category":  "firmware",    "subcategory":  "error_codes",    "content":  "Error  E-01  pada  printer  ET-4850  menandakan...",    "tags":  ["firmware",  "error",  "E-01",  "ET-4850"],    "sourceDocument":  "Technical  Report  TR-2026-042"  }    //  Response  201  Created  {    "success":  true,    "id":  "kb_146",    "message":  "Knowledge  entry  created  and  indexed  successfully"  }  
+  
+Tiket  &  Eskalasi  
+GET  /api/tickets  
+
+=== PAGE 4 ===
+
+//  Query  params:  ?status=open&page=1&limit=20    //  Response  200  OK  {    "success":  true,    "data":  [   {     "ticketId":  "tkt_00045",     "userId":  "usr_001",     "userName":  "Budi  Santoso",     "question":  "Masalah  yang  tidak  dapat  dijawab  chatbot",     "sessionId":  "sess_abc123",     "status":  "open",   //  "open"  |  "in_progress"  |  "resolved"     "assignedTo":  null,     "createdAt":  "2026-05-06T08:31:00Z"   }    ]  }  
+  
+Analytics  (Admin/Manager)  
+GET  /api/analytics/summary  
+//  Query  params:  ?from=2026-05-01&to=2026-05-06    //  Response  200  OK  {    "success":  true,    "period":  {  "from":  "2026-05-01",  "to":  "2026-05-06"  },    "stats":  {   "totalMessages":  342,   "resolvedByChatbot":  287,   "escalated":  55,   "resolutionRate":  0.839,   "avgConfidence":  0.81,   "topIssues":  [     {  "category":  "quality_printing",  "count":  98  },     {  "category":  "hardware_part",  "count":  74  },     {  "category":  "firmware_error",  "count":  56  }   ]    }  }  
+   
+STRUKTUR  DATA  SINTETIK  
+KNOWLEDGE
+ 
+BASE
+ 
+Karena  PT.  Epson  tidak  dapat  membagikan  data  asli,  knowledge  base  dibuat  secara  sintetik  
+berdasarkan
+ 
+referensi
+ 
+publik
+ 
+Epson
+ 
+Support
+ 
+dan
+ 
+tipe
+ 
+masalah
+ 
+manufaktur
+ 
+printer
+ 
+yang
+ 
+umum.
+ 
+Data
+ 
+ini
+ 
+mencerminkan
+ 
+realitas
+ 
+operasional
+ 
+printer
+ 
+ET-Series
+ 
+dan
+ 
+mencakup
+ 
+kategori
+ 
+Hardware,
+ 
+Firmware,
+ 
+dan
+ 
+Quality
+ 
+Printing.
+   
+
+=== PAGE 5 ===
+
+Skema  Tabel  Database  (PostgreSQL)  
+--  Tabel:  knowledge_base  CREATE  TABLE  knowledge_base  (    id            VARCHAR(20)  PRIMARY  KEY,   --  kb_001,  kb_002,  ...    title         VARCHAR(255)  NOT  NULL,    category      VARCHAR(50)  NOT  NULL,      --  hardware,  firmware,  quality_printing    subcategory   VARCHAR(100),    content       TEXT  NOT  NULL,             --  isi  solusi  /  SOP    tags          TEXT[],                    --  array  of  keywords    source_doc    VARCHAR(255),             --  referensi  dokumen  asli    embedding_id  VARCHAR(100),             --  ID  di  vector  DB    created_at    TIMESTAMPTZ  DEFAULT  NOW(),    updated_at    TIMESTAMPTZ  DEFAULT  NOW()  );    --  Tabel:  chat_logs  CREATE  TABLE  chat_logs  (    id            VARCHAR(20)  PRIMARY  KEY,    session_id    VARCHAR(50)  NOT  NULL,    user_id       VARCHAR(20)  NOT  NULL,    role          VARCHAR(10)  NOT  NULL,      --  user  |  assistant    content       TEXT  NOT  NULL,    confidence    FLOAT,    escalated     BOOLEAN  DEFAULT  FALSE,    kb_sources    TEXT[],                    --  array  of  kb_id  yang  dipakai    created_at    TIMESTAMPTZ  DEFAULT  NOW()  );    --  Tabel:  tickets  CREATE  TABLE  tickets  (    id            VARCHAR(20)  PRIMARY  KEY,    user_id       VARCHAR(20)  NOT  NULL,    session_id    VARCHAR(50),    question      TEXT  NOT  NULL,    status        VARCHAR(20)  DEFAULT  'open',  --  open|in_progress|resolved    assigned_to   VARCHAR(20),    resolution    TEXT,    created_at    TIMESTAMPTZ  DEFAULT  NOW(),    updated_at    TIMESTAMPTZ  DEFAULT  NOW()  );    --  Tabel:  users  CREATE  TABLE  users  (    id            VARCHAR(20)  PRIMARY  KEY,    username      VARCHAR(100)  UNIQUE  NOT  NULL,    password_hash  VARCHAR(255)  NOT  NULL,    name          VARCHAR(255),    role          VARCHAR(20)  DEFAULT  'user',   --  user  |  admin  |  manager    department    VARCHAR(100),    created_at    TIMESTAMPTZ  DEFAULT  NOW()  );  
+  
+Contoh  Data  Sintetik  Knowledge  Base  (JSON)  Berikut  5  contoh  entri  knowledge  base  untuk  masalah  printer  manufaktur.  Kevin  bertanggung  
+jawab
+ 
+membuat
+ 
+minimal
+ 
+30
+ 
+entri
+ 
+serupa.
+   
+
+=== PAGE 6 ===
+
+[    {   "id":  "kb_001",   "title":  "Garis  Horizontal  pada  Hasil  Print  -  Printhead  Tersumbat",   "category":  "quality_printing",   "subcategory":  "print_defect",   "content":  "Gejala:  Hasil  cetak  menunjukkan  garis  horizontal  putih  atau  berwarna  yang  berulang  pada  dokumen  atau  foto.  Penyebab:  Nozzle  printhead  tersumbat  oleh  tinta  kering.  Langkah  Penyelesaian:  1)  Buka  menu  Settings  >  Maintenance  pada  printer  ET-2400/ET-4850.  2)  Pilih  Print  Head  Cleaning  dan  jalankan  proses  standard  cleaning  (estimasi  3-5  menit).  3)  Cetak  nozzle  check  pattern  untuk  verifikasi.  4)  Jika  masih  bergaris,  jalankan  Power  Cleaning  (gunakan  lebih  banyak  tinta).  5)  Jika  setelah  3x  Power  Cleaning  masih  bergaris,  lakukan  pengecekan  fisik  printhead  dan  hubungi  supervisor  teknis.",   "tags":  ["garis",  "horizontal",  "printhead",  "nozzle",  "tersumbat",  "ET-2400",  "ET-4850",  "quality_printing"],   "source_doc":  "Epson  ET-Series  Technical  Manual  v3.2  -  Section  5.1"    },    {   "id":  "kb_002",   "title":  "Error  Firmware  E-01  -  Paper  Feed  Problem",   "category":  "firmware",   "subcategory":  "error_codes",   "content":  "Gejala:  Printer  menampilkan  kode  error  E-01  dan  berhenti  beroperasi.  Penyebab:  Sensor  paper  feed  mendeteksi  kertas  macet  atau  feed  roller  aus  sehingga  kertas  tidak  dapat  ditarik  dengan  benar.  Langkah  Penyelesaian:  1)  Matikan  printer  dan  cabut  kabel  power.  Tunggu  30  detik.  2)  Buka  cover  belakang  dan  periksa  apakah  ada  kertas  yang  tersangkut.  Keluarkan  kertas  secara  perlahan  tanpa  merobek.  3)  Bersihkan  feed  roller  dengan  kain  microfiber  sedikit  lembap  (jangan  basah).  4)  Nyalakan  kembali  dan  test  print.  5)  Jika  error  E-01  muncul  kembali  setelah  feed  roller  bersih,  feed  roller  kemungkinan  aus  dan  perlu  penggantian  (Part  No:  1533563).",   "tags":  ["E-01",  "error",  "paper  feed",  "roller",  "macet",  "firmware",  "sensor"],   "source_doc":  "Epson  Internal  Error  Code  Reference  Book  2025  -  p.12"    },    {   "id":  "kb_003",   "title":  "Warna  Print  Tidak  Akurat  /  Color  Shift",   "category":  "quality_printing",   "subcategory":  "color_accuracy",   "content":  "Gejala:  Warna  pada  hasil  cetak  berbeda  signifikan  dari  tampilan  di  layar  monitor  atau  standar  produksi.  Merah  terlihat  oranye,  biru  terlihat  ungu,  atau  warna  pucat  secara  keseluruhan.  Penyebab:  1)  Ink  cartridge  hampir  habis  pada  salah  satu  warna.  2)  Printhead  alignment  tidak  akurat.  3)  Pengaturan  ICC  profile  tidak  sesuai  media  cetak.  Langkah  Penyelesaian:  1)  Cek  ink  level  dari  software  Epson  Status  Monitor  -  pastikan  semua  warna  di  atas  20%.  2)  Jalankan  Print  Head  Alignment  dari  menu  Maintenance.  3)  Pastikan  pengaturan  paper  type  di  driver  printer  sesuai  jenis  kertas  yang  digunakan.  4)  Jika  produksi  batch,  gunakan  media  cert  yang  sudah  di-approve  QC.",   "tags":  ["warna",  "color",  "shift",  "tidak  akurat",  "ICC",  "alignment",  "ink  level"],   "source_doc":  "SOP  QC  Color  Management  Rev.4  -  Dokumen  Internal  Epson"    },    {   "id":  "kb_004",   "title":  "Printer  Tidak  Terdeteksi  di  Jaringan  /  Network  Discovery  Failed",   "category":  "hardware",   "subcategory":  "connectivity",   "content":  "Gejala:  Printer  tidak  muncul  di  daftar  printer  pada  komputer  padahal  sudah  terhubung  ke  LAN.  Status  lampu  WiFi/Ethernet  berkedip  atau  mati.  Penyebab:  IP  address  konflik,  DHCP  lease  expired,  atau  NIC  printer  mengalami  hang.  Langkah  Penyelesaian:  1)  Cetak  halaman  Network  Status  dari  panel  printer  (Settings  >  Network  Status).  Catat  IP  address  printer  saat  ini.  2)  Pastikan  printer  dan  komputer  berada  di  subnet  yang  sama  (misal  192.168.1.x).  3)  Ping  IP  printer  dari  komputer  (cmd:  ping  192.168.1.105).  4)  Jika  tidak  merespons,  reset  network  settings  printer:  Settings  >  
+
+=== PAGE 7 ===
+
+Restore  Default  Settings  >  Network  Settings  Only.  5)  Assign  IP  statis  untuk  printer  produksi  agar  tidak  berubah  -  koordinasi  dengan  tim  IT.",   "tags":  ["network",  "jaringan",  "tidak  terdeteksi",  "LAN",  "IP",  "DHCP",  "connectivity"],   "source_doc":  "Panduan  Konfigurasi  Jaringan  Printer  Epson  -  IT  SOP  v2.1"    },    {   "id":  "kb_005",   "title":  "Firmware  Update  Gagal  -  Printer  Brick  /  Tidak  Bisa  Boot",   "category":  "firmware",   "subcategory":  "firmware_update",   "content":  "PERINGATAN:  Kondisi  ini  kritis.  Jangan  matikan  printer.  Gejala:  Proses  update  firmware  terhenti  di  tengah  jalan  karena  mati  listrik  atau  koneksi  terputus.  Printer  tidak  dapat  boot  normal.  Layar  menampilkan  update  error  atau  blank.  Langkah  Penyelesaian:  1)  JANGAN  cabut  power  printer.  2)  Hubungi  supervisor  IT  SEGERA.  3)  Sambungkan  printer  langsung  ke  komputer  via  USB  (bukan  jaringan).  4)  Download  Epson  Firmware  Recovery  Tool  dari  repository  internal  IT  (share:  \\fileserver\tools\epson\recovery).  5)  Jalankan  recovery  tool  dalam  mode  administrator.  Pilih  model  printer  yang  sesuai  dan  ikuti  instruksi.  6)  Proses  recovery  membutuhkan  15-30  menit  -  jangan  interupsi.  7)  Jika  recovery  gagal,  unit  perlu  dibawa  ke  service  bench  -  buat  tiket  ke  IT  Support.",   "tags":  ["firmware",  "update",  "gagal",  "brick",  "recovery",  "boot",  "kritis"],   "source_doc":  "Prosedur  Emergency  Firmware  Recovery  -  Confidential  Internal  Doc  IT-2026"    }  ]  
+  
+Panduan  Pembuatan  Data  Sintetik  Lanjutan  Kevin  (Data  Analyst)  bertanggung  jawab  memperluas  knowledge  base  sintetik  ini.  Gunakan  
+panduan
+ 
+berikut:
+   Kategori  Subkategori  Target  Jumlah  Entri  
+quality_printing  print_defect,  color_accuracy,  alignment,  banding  
+12  entri  
+hardware  connectivity,  paper_feed,  ink_system,  part_replacement  
+10  entri  
+firmware  error_codes,  firmware_update,  factory_reset,  diagnostics  
+8  entri  
+general_ops  preventive_maintenance,  daily_checklist,  onboarding  
+5  entri  
+  Format  setiap  entri  harus  mengikuti  struktur:  Gejala  →  Penyebab  →  Langkah  Penyelesaian  
+(numbered).
+ 
+Referensi:
+ 
+https://epson.com/Support/Printers/All-In-Ones/ET-Series/Epson-ET-2400/s/SPT_C11CJ672
+01#questions
+     

@@ -31,11 +31,31 @@ if (USE_MOCK_API) {
 
     // Route to mock responses
     if (config.url === "/auth/login" && config.method === "post") {
+      // Parse provided credentials (config.data may be a JSON string)
+      let body: any = config.data || {};
+      try {
+        if (typeof body === "string") body = JSON.parse(body);
+      } catch (e) {
+        body = config.data;
+      }
+
+      const username = (body && body.username) || "";
+
+      // Simple mock: usernames containing 'admin' -> admin role, others -> user
+      const isAdmin = String(username).toLowerCase().includes("admin");
+      const user = isAdmin
+        ? { id: "admin_001", name: "Admin User", role: "admin" }
+        : { id: "usr_001", name: "Budi Santoso", role: "user" };
+
       return {
         ...config,
         adapter: () =>
           Promise.resolve({
-            data: mockData.mockLoginResponse,
+            data: {
+              success: true,
+              token: mockData.mockLoginResponse.token,
+              user,
+            },
             status: 200,
             statusText: "OK",
             headers: {},

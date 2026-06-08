@@ -1,0 +1,76 @@
+
+
+=== PAGE 1 ===
+
+  Rashky  Rahmadian  Jauhara   |  AI  /  NLP  Engineer   |  NIM:  235150201111066  
+Tugas  1:  Setup  Ollama  di  Server  
+Install  Ollama  di  server  Ubuntu  (on-premise).  Pull  model:  ollama  pull  llama3.2  (atau  model  yang  disepakati  tim).  Test  dengan  curl  ke  http://localhost:11434/api/generate.  Dokumentasikan  versi  model  dan  resource  yang  dipakai  (RAM,  GPU  VRAM).  
+Tugas  2:  Implementasi  RAG  Pipeline  
+Gunakan  LangChain  (Python)  atau  LlamaIndex  untuk  membangun  RAG  pipeline:  (a)  Document  Loader:  load  file  JSON  dari  Kevin  ke  pipeline.  (b)  Text  Splitter:  chunk  setiap  entri  knowledge  base  (chunk_size=512,  overlap=50).  (c)  Embedding:  gunakan  model  lokal  (nomic-embed-text  via  Ollama).  (d)  Vector  Store:  simpan  ke  ChromaDB  lokal.  (e)  Retriever:  similarity  search  top-3  dokumen.  
+Tugas  3:  Prompt  Engineering  Buat  system  prompt  yang  membatasi  chatbot  hanya  menjawab  berdasarkan  context  yang  diberikan.  Contoh:  'Kamu  adalah  asisten  helpdesk  teknis  PT.  Epson.  Jawab  HANYA  berdasarkan  context  berikut.  Jika  tidak  ada  informasi  relevan,  katakan  tidak  tahu  dan  sarankan  eskalasi.'  Test  dengan  30  pertanyaan  uji  dari  Andri.  
+Tugas  4:  Confidence  Scoring  &  Escalation  Logic  
+Implementasi  logika:  jika  similarity  score  retrieval  <  0.6  (threshold  dapat  di-tune),  set  escalated=true  dan  confidence  rendah.  Return  response  yang  menyarankan  eskalasi.  Integrate  dengan  endpoint  POST  /api/chat/message  dari  Ahmadhani.  
+Tugas  5:  Integrasi  Multimodal  (Image)  
+Jika  model  mendukung  (LLava  atau  model  multimodal):  tambah  kemampuan  menerima  imageBase64  di  prompt.  Test  dengan  gambar  defect  print  sederhana.  Jika  model  lokal  tidak  support,  gunakan  deskripsi  teks  sebagai  fallback.  
+Tugas  6:  Evaluasi  Akurasi  Buat  script  evaluasi:  buat  30  pasang  (pertanyaan,  jawaban_expected).  Hitung:  precision,  recall,  dan  relevance  score.  Target  akurasi  >=  80%  sesuai  kriteria  keberhasilan  LK01.  Koordinasi  dengan  Andri  untuk  skenario  pengujian.  
+Deliverable  Ollama  berjalan  di  server,  RAG  pipeline  terimplementasi,  confidence  scoring  aktif,  dokumentasi  akurasi.  
+  Ahmadhani  Athaillah   |  Backend  Developer  &  Database  Engineer   |  NIM:  235150207111069  
+Tugas  1:  Setup  Backend  Project  
+Inisialisasi  project  Express.js  atau  Fastify  di  /backend.  Setup:  dotenv  untuk  config,  helmet  untuk  security  header,  cors  dengan  whitelist  intranet  IP,  morgan  untuk  logging  request.  Struktur  folder:  /routes,  /controllers,  /services,  /middlewares,  /models.  
+Tugas  2:  Database  Setup  &  Migration  
+Install  PostgreSQL.  Buat  database:  epson_helpdesk.  Implementasi  semua  tabel  dari  Bab  4.1  menggunakan  Prisma  ORM  (prisma  migrate  dev).  Buat  seed  file  dengan  sample  users  (admin,  manager,  beberapa  user)  dan  5  tiket  dummy.  
+Tugas  3:  Implementasi  Semua  API  Endpoint  
+Implementasi  semua  endpoint  dari  Bab  3  dokumen  ini:  Auth  (POST  /login),  Chat  (POST  /message,  GET  /history),  Knowledge  (GET,  POST,  PUT,  DELETE),  Tickets  (GET,  POST,  PATCH  status),  Analytics  (GET  /summary).  Gunakan  JWT  middleware  untuk  proteksi  endpoint.  
+
+=== PAGE 2 ===
+
+Tugas  4:  Integrasi  dengan  AI  Engine  
+Buat  service  layer  yang  menghubungkan  backend  ke  Ollama/RAG  pipeline  dari  Rasky.  Saat  POST  /api/chat/message  diterima,  backend  memanggil  AI  service,  mendapat  response  +  confidence  +  sources,  lalu  simpan  ke  chat_logs  dan  return  ke  frontend.  Handle  timeout  (max  30  detik).  
+Tugas  5:  Eskalasi  &  Tiket  Otomatis  
+Jika  escalated=true  dari  AI  engine,  backend  otomatis:  (1)  Insert  ke  tabel  tickets  dengan  status  'open'.  (2)  Log  ke  chat_logs  dengan  flag  escalated=true.  (3)  (Opsional)  Trigger  notifikasi  via  n8n  webhook  ke  email  admin.  Return  ticketId  ke  frontend.  
+Tugas  6:  Error  Handling  &  Validasi  
+Semua  endpoint  harus  memiliki:  input  validation  (joi  atau  zod),  error  handling  middleware  (return  JSON  error  yang  konsisten),  dan  rate  limiting  dasar  (express-rate-limit:  100  req/menit  per  IP).  Handle  edge  case:  Ollama  down,  DB  connection  error.  
+Deliverable  Backend  berjalan  di  port  3001,  semua  endpoint  tested  (Postman  collection),  database  migrasi  bersih,  integrasi  AI  engine  sukses.  
+  Kevin  Alif  Mahendra   |  Data  Analyst  &  Data  Steward   |  NIM:  195150200111063  
+Tugas  1:  Buat  Knowledge  Base  Sintetik  
+Buat  minimal  35  entri  knowledge  base  JSON  mengikuti  format  Bab  4.2.  Distribusi:  12  quality_printing,  10  hardware,  8  firmware,  5  general_ops.  Setiap  entri  WAJIB  memiliki:  id  unik,  title  jelas,  content  dengan  format  Gejala→Penyebab→Langkah  (numbered),  tags  relevan,  source_doc  (boleh  fiktif  tapi  realistis).  File  output:  /data/knowledge_base.json  
+Tugas  2:  Referensi  Epson  Support  
+Kunjungi  halaman:  https://epson.com/Support/Printers/All-In-Ones/ET-Series/Epson-ET-2400/s/SPT_C11CJ67201#questions  -  Catat  tipe-tipe  masalah  yang  sering  muncul  (quality  print,  scan,  connectivity).  Gunakan  sebagai  referensi  untuk  membuat  data  sintetik  yang  realistis.  Buat  catatan  singkat  (/docs/kb-research-notes.md).  
+Tugas  3:  Data  Pipeline  ke  Vector  DB  
+Koordinasi  dengan  Rasky  untuk  memastikan  format  JSON  knowledge  base  dapat  di-load  langsung  ke  RAG  pipeline.  Buat  script  sederhana  (Python)  yang:  load  /data/knowledge_base.json  →  validasi  semua  field  ada  →  output  ke  format  yang  dibutuhkan  Rasky.  Simpan  di  /scripts/load_kb.py.  
+Tugas  4:  Buat  Dataset  Evaluasi  
+Buat  file  /data/eval_dataset.json  berisi  30  pasang:  {  'question':  '...',  'expected_answer_keywords':  ['...'],  'category':  '...',  'kb_id_expected':  'kb_xxx'  }.  Pertanyaan  harus  bervariasi:  exact  match,  parafrase,  pertanyaan  ambigu.  Koordinasi  dengan  Andri  untuk  aligns  dengan  skenario  pengujian.  
+Tugas  5:  Dashboard  Data  Analitik  
+Koordinasi  dengan  Ilham  untuk  desain  tampilan  dashboard.  Siapkan  query  SQL  yang  menghasilkan:  top  10  kategori  masalah,  chatbot  resolution  rate  per  minggu,  tren  eskalasi.  Buat  file  /database/analytics_queries.sql.  Data  ini  akan  dipakai  Adrian  untuk  laporan  ke  stakeholder.  
+Deliverable  File  knowledge_base.json  (35+  entri),  eval_dataset.json  (30  entri),  load_kb.py  script,  analytics_queries.sql,  kb-research-notes.md.  
+  Ilham  Muhammad  Rickwanto   |  UI/UX  Designer  &  Frontend  Developer   |  NIM:  235150400111003  
+
+=== PAGE 3 ===
+
+Tugas  1:  Desain  di  Figma  Buat  wireframe  dan  mockup  untuk:  (1)  Halaman  Login,  (2)  Chat  Interface  (mirip  WhatsApp  Web),  (3)  History  percakapan,  (4)  Dashboard  Admin  (statistik  +  tabel  tiket),  (5)  Halaman  Knowledge  Base  Management.  Export  ke  PNG  dan  simpan  di  /docs/design/.  Share  link  Figma  ke  tim.  
+Tugas  2:  Setup  Next.js  Project  Inisialisasi  project  Next.js  14+  di  /frontend  dengan:  TypeScript,  Tailwind  CSS,  ESLint.  Install  dependencies:  axios  (HTTP  client),  react-query  atau  SWR  (data  fetching  &  caching),  react-hook-form  (form  handling),  zustand  atau  context  API  (state  management).  
+Tugas  3:  Chat  UI  Component  Buat  komponen  utama  chat:  ChatWindow  (container),  MessageBubble  (user  &  assistant  style  berbeda),  InputBar  (text  input  +  attach  image  button  +  send  button),  TypingIndicator  (animasi  3  titik  saat  bot  thinking),  SourcesPanel  (tampilkan  sumber  knowledge  base  dari  response).  Styling:  profesional,  clean,  dark  sidebar.  
+Tugas  4:  Integrasi  API  Backend  
+Hubungkan  frontend  ke  backend  Ahmadhani:  POST  /api/chat/message  saat  user  kirim  pesan,  GET  /api/chat/history  saat  halaman  chat  dibuka,  POST  /api/auth/login  untuk  login  flow,  simpan  JWT  token  di  httpOnly  cookie  atau  localStorage.  Handle  loading  state  dan  error  state.  
+Tugas  5:  Dashboard  Admin  Buat  halaman  /admin  yang  hanya  bisa  diakses  role  admin/manager:  Tampilkan  data  dari  GET  /api/analytics/summary  (grafik  sederhana  menggunakan  recharts  atau  chart.js),  Tabel  tiket  dari  GET  /api/tickets  dengan  filter  status,  Tabel  knowledge  base  dari  GET  /api/knowledge  dengan  tombol  tambah/edit/hapus.  
+Tugas  6:  Responsif  &  UX  Polish  
+Pastikan  UI  berjalan  baik  di  browser  Chrome  dan  Edge.  Tambah:  toast  notification  untuk  sukses/error,  konfirmasi  dialog  sebelum  hapus  knowledge  entry,  empty  state  yang  informatif,  error  boundary  untuk  handle  crash  gracefully.  
+Deliverable  Figma  mockup,  Next.js  project  running,  semua  halaman  ter-implementasi,  integrasi  API  sukses,  tampilan  profesional.  
+  Andri  Khairi  Nuralfian   |  QA  Engineer  &  Documentation   |  NIM:  235150407111019  
+Tugas  1:  Rencana  Pengujian  Buat  dokumen  Test  Plan  (/docs/test-plan.md)  yang  mencakup:  scope  pengujian,  jenis  pengujian  (black-box,  UAT,  performance),  tools  yang  dipakai  (Postman,  k6,  SUS  questionnaire),  kriteria  pass/fail  sesuai  LK01  (akurasi  >80%,  SUS  score  >=70,  response  time  <3s).  
+Tugas  2:  Black-Box  Testing  (30  Skenario)  
+Koordinasi  dengan  Kevin  untuk  dataset  eval.  Buat  30  skenario  pengujian  dalam  format  tabel:  No  |  Input  Pertanyaan  |  Expected  Output  |  Actual  Output  |  Pass/Fail  |  Confidence  Score.  Kategorikan:  pertanyaan  yang  ada  di  KB,  pertanyaan  mirip  (parafrase),  pertanyaan  di  luar  KB  (harus  eskalasi).  Simpan  di  /docs/testing/blackbox-results.xlsx.  
+Tugas  3:  API  Testing  dengan  Postman  
+Buat  Postman  Collection  untuk  semua  endpoint  di  Bab  3.  Test  setiap  endpoint  dengan:  happy  path  (input  valid),  negative  test  (input  invalid,  auth  gagal,  kb  tidak  ada),  edge  case  (string  kosong,  gambar  sangat  besar).  Export  collection  ke  /docs/testing/postman-collection.json.  
+Tugas  4:  User  Acceptance  Test  (UAT)  
+Buat  kuesioner  UAT:  5  task  scenario  (login,  ajukan  pertanyaan,  lihat  history,  lihat  tiket,  logout)  +  SUS  questionnaire  10  pertanyaan.  Test  dengan  minimal  3-5  responden  simulasi  (bisa  anggota  tim  sendiri  untuk  PoC).  Hitung  SUS  score.  Dokumentasikan  di  /docs/testing/uat-results.md.  
+
+=== PAGE 4 ===
+
+Tugas  5:  Performance  Testing  (Dasar)  
+Gunakan  k6  atau  Apache  JMeter  untuk  simulasi:  50  concurrent  users  mengirim  pesan  ke  POST  /api/chat/message  selama  1  menit.  Catat:  response  time  p95,  error  rate,  throughput.  Target:  p95  <  5  detik  (wajar  untuk  LLM),  error  rate  <  5%.  Simpan  report  di  /docs/testing/performance-report.md.  
+Tugas  6:  Dokumentasi  Teknis  Proyek  
+Buat  dan  maintain  dokumentasi  di  /docs:  README  setup  (cara  install  dan  run  lokal),  API  documentation  (generate  dari  Postman  atau  buat  manual),  Panduan  Deploy  ke  server  Ubuntu  (step-by-step),  Changelog  setiap  sprint.  Review  dan  proofread  semua  dokumen  sebelum  dikumpulkan.  
+Deliverable  Test  Plan,  Black-box  results  (30  skenario),  Postman  collection,  UAT  results  +  SUS  score,  Performance  report,  Dokumentasi  teknis  lengkap.  
+ 
+   

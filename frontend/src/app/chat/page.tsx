@@ -16,6 +16,7 @@ import {
   FaPlus,
   FaComments,
 } from "react-icons/fa";
+import LogoutConfirmModal from "@/components/LogoutConfirmModal";
 
 interface Message extends HistoryMessage {
   sessionId?: string;
@@ -31,7 +32,8 @@ interface ChatSession {
 const createSessionId = () =>
   `sess_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`;
 
-const getSessionStorageKey = (userId: string) => `chat_active_session_${userId}`;
+const getSessionStorageKey = (userId: string) =>
+  `chat_active_session_${userId}`;
 
 export default function ChatPage() {
   const router = useRouter();
@@ -77,7 +79,9 @@ export default function ChatPage() {
       const fallbackSession = existingSessions[0]?.sessionId;
       const activeSession =
         savedActiveSession &&
-        existingSessions.some((session) => session.sessionId === savedActiveSession)
+        existingSessions.some(
+          (session) => session.sessionId === savedActiveSession,
+        )
           ? savedActiveSession
           : fallbackSession;
 
@@ -163,7 +167,10 @@ export default function ChatPage() {
     setSessions((current) => {
       const nextSession: ChatSession = {
         sessionId: targetSessionId,
-        preview: cleanPreview.length > 60 ? `${cleanPreview.slice(0, 60)}...` : cleanPreview,
+        preview:
+          cleanPreview.length > 60
+            ? `${cleanPreview.slice(0, 60)}...`
+            : cleanPreview,
         updatedAt: nowIso,
         lastRole,
       };
@@ -258,9 +265,7 @@ export default function ChatPage() {
 
       if (response.data?.success) {
         setLastEscalation((current) =>
-          current
-            ? { ...current, ticketId: response.data.ticketId }
-            : current,
+          current ? { ...current, ticketId: response.data.ticketId } : current,
         );
       }
     } catch (error) {
@@ -271,11 +276,15 @@ export default function ChatPage() {
     }
   };
 
-  const handleLogout = () => {
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+
+  const doLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     router.push("/login");
   };
+
+  const handleLogout = () => setShowLogoutModal(true);
 
   if (!user) {
     return (
@@ -300,12 +309,18 @@ export default function ChatPage() {
       >
         <div className="p-6 border-b border-slate-200">
           <div className="flex items-center justify-between gap-2">
-            {!sidebarCollapsed && <img src="/images/epson-logo.svg" alt="Epson" className="h-10" />}
+            {!sidebarCollapsed && (
+              <img src="/images/epson-logo.svg" alt="Epson" className="h-10" />
+            )}
             <button
               onClick={() => setSidebarCollapsed((state) => !state)}
               className="h-9 w-9 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-100 flex items-center justify-center"
             >
-              {sidebarCollapsed ? <FaChevronRight size={14} /> : <FaChevronLeft size={14} />}
+              {sidebarCollapsed ? (
+                <FaChevronRight size={14} />
+              ) : (
+                <FaChevronLeft size={14} />
+              )}
             </button>
           </div>
           {!sidebarCollapsed && (
@@ -356,7 +371,9 @@ export default function ChatPage() {
                   {sidebarCollapsed ? "Session" : session.preview || "Session"}
                 </p>
                 {!sidebarCollapsed && (
-                  <p className={`text-[11px] mt-1 ${isActive ? "text-slate-200" : "text-slate-500"}`}>
+                  <p
+                    className={`text-[11px] mt-1 ${isActive ? "text-slate-200" : "text-slate-500"}`}
+                  >
                     {new Date(session.updatedAt).toLocaleString()}
                   </p>
                 )}
@@ -376,7 +393,9 @@ export default function ChatPage() {
             <div className="rounded-xl bg-amber-50 border border-amber-200 p-3 text-amber-900">
               <p className="font-semibold">Eskalasi aktif</p>
               <p className="text-xs mt-1">
-                {lastEscalation.ticketId ? `Ticket: ${lastEscalation.ticketId}` : "Silakan buat ticket eskalasi."}
+                {lastEscalation.ticketId
+                  ? `Ticket: ${lastEscalation.ticketId}`
+                  : "Silakan buat ticket eskalasi."}
               </p>
             </div>
           )}
@@ -385,7 +404,7 @@ export default function ChatPage() {
             className="w-full px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition text-sm font-semibold flex items-center justify-center gap-2"
           >
             <FaSignOutAlt size={16} />
-            Logout
+            {!sidebarCollapsed && <span>Logout</span>}
           </button>
         </div>
       </aside>
@@ -444,9 +463,7 @@ export default function ChatPage() {
           <div className="border-t border-amber-200 bg-amber-50 px-6 py-4">
             <div className="max-w-4xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-3">
               <div>
-                <p className="font-semibold text-amber-900">
-                  Butuh eskalasi?
-                </p>
+                <p className="font-semibold text-amber-900">Butuh eskalasi?</p>
                 <p className="text-sm text-amber-800">
                   {lastEscalation.ticketId
                     ? `Ticket eskalasi sudah dibuat: ${lastEscalation.ticketId}.`
@@ -478,6 +495,14 @@ export default function ChatPage() {
         <div className="bg-white border-t border-gray-200 p-4">
           <InputBar onSendMessage={handleSendMessage} disabled={isLoading} />
         </div>
+        <LogoutConfirmModal
+          open={showLogoutModal}
+          onCancel={() => setShowLogoutModal(false)}
+          onConfirm={() => {
+            setShowLogoutModal(false);
+            doLogout();
+          }}
+        />
       </main>
     </div>
   );
