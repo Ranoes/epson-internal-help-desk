@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   FaTicketAlt,
   FaUsers,
@@ -30,6 +31,7 @@ interface AiSettings {
 }
 
 export default function AdminDashboard() {
+  const router = useRouter();
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [aiSettings, setAiSettings] = useState<AiSettings | null>(null);
   const [loading, setLoading] = useState(true);
@@ -87,14 +89,21 @@ export default function AdminDashboard() {
     icon: Icon,
     color,
     trend,
+    onClick,
   }: {
     label: string;
     value: string | number;
     icon: React.ComponentType<any>;
     color: string;
     trend?: string;
+    onClick?: () => void;
   }) => (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition">
+    <div
+      onClick={onClick}
+      className={`bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition ${
+        onClick ? "cursor-pointer hover:border-gray-400" : ""
+      }`}
+    >
       <div className="flex items-start justify-between">
         <div>
           <p className="text-sm text-gray-600 font-medium">{label}</p>
@@ -145,30 +154,35 @@ export default function AdminDashboard() {
           icon={FaTicketAlt}
           color="bg-gray-700"
           trend={formatGrowth(stats?.ticketGrowthPercent) ?? undefined}
+          onClick={() => router.push("/admin/tickets")}
         />
         <StatCard
           label="Active Tickets"
           value={stats?.activeTickets || 0}
           icon={FaClipboardList}
           color="bg-gray-700"
+          onClick={() => router.push("/admin/tickets?filter=active")}
         />
         <StatCard
           label="Resolved Tickets"
           value={stats?.resolvedTickets || 0}
           icon={FaCheckCircle}
           color="bg-gray-700"
+          onClick={() => router.push("/admin/tickets?filter=resolved")}
         />
         <StatCard
           label="Total Users"
           value={stats?.totalUsers || 0}
           icon={FaUsers}
           color="bg-gray-700"
+          onClick={() => router.push("/admin/users")}
         />
         <StatCard
           label="Knowledge Base"
           value={stats?.knowledgeBaseArticles || 0}
           icon={FaBook}
           color="bg-gray-700"
+          onClick={() => router.push("/admin/knowledge")}
         />
         <StatCard
           label="AI Provider"

@@ -37,6 +37,9 @@ app.use('/api/knowledge', require('./routes/knowledge'));
 app.use('/api/tickets',   require('./routes/tickets'));
 app.use('/api/analytics', require('./routes/analytics'));
 
+// Root route
+app.get('/', (_, res) => res.json({ message: 'Epson Help Desk API', status: 'running' }));
+
 // Health check
 app.get('/health', (_, res) => res.json({ status: 'ok', ts: new Date() }));
 

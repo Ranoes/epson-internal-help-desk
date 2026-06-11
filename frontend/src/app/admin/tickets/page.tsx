@@ -345,7 +345,11 @@ export default function TicketsPage() {
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
-                        <button className="p-2 hover:bg-gray-200 rounded transition text-gray-600">
+                        <button
+                          onClick={() => openEditor(ticket)}
+                          className="p-2 hover:bg-blue-100 rounded transition text-blue-600 active:bg-blue-200"
+                          title="View ticket details"
+                        >
                           <FaEye size={16} />
                         </button>
                         <button

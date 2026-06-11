@@ -24,11 +24,18 @@ async function login(req, res, next) {
 
 async function register(req, res, next) {
   try {
-    const { username, password, name, department, role } = req.body;
+    const { username, email, password, name, department, role } = req.body;
     
     const existingUser = await prisma.user.findUnique({ where: { username } });
     if (existingUser) {
       return res.status(400).json({ success: false, error: 'Username already taken' });
+    }
+
+    if (email) {
+      const existingEmail = await prisma.user.findUnique({ where: { email } });
+      if (existingEmail) {
+        return res.status(400).json({ success: false, error: 'Email already taken' });
+      }
     }
 
     const passwordHash = await bcrypt.hash(password, 10);
@@ -38,6 +45,7 @@ async function register(req, res, next) {
       data: {
         id: userId,
         username,
+        email: email || null,
         passwordHash,
         name,
         department,
@@ -47,7 +55,7 @@ async function register(req, res, next) {
 
     res.status(201).json({ 
       success: true, 
-      user: { id: user.id, username: user.username, name: user.name, role: user.role } 
+      user: { id: user.id, username: user.username, email: user.email, name: user.name, role: user.role } 
     });
   } catch (err) { next(err); }
 }
